@@ -12,3 +12,7 @@ const test = 'foobar!';
 
 //  include(); Si no encuentra el fichero saldra un warning pero ejecuta
 //  require();  Si no encuentra el fichero saldra un error y NO ejecuta
+
+$ruta=$_SERVER['PHP_SELF'].$SERVER['DOCUMENT_ROOT'];
+
+echo "<a href=verCodigo.php?ruta=".$ruta.">BOTON PARA VER CODIGO</a>";

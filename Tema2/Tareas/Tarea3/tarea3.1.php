@@ -71,6 +71,9 @@ echo "</p >";
 
 echo " <a href='./tarea3.2.php' class='btn btn-dark text-white center tarea2'>Ir a apartado 2</a>";
 
+$ruta = $_SERVER['SCRIPT_FILENAME'];
+echo "<a href=http://".$_SERVER['SERVER_ADDR']."/verCodigo.php?ruta=".$ruta.">Ver Contenido</a>";   
+
 
 
 

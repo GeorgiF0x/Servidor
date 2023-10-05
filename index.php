@@ -107,3 +107,10 @@
 
 </body>
 </html>
+
+<?php
+
+
+$ruta = $_SERVER['SCRIPT_FILENAME'];
+echo "<a href=http://".$_SERVER['SERVER_ADDR']."/verCodigo.php?ruta=".$ruta.">Ver Contenido</a>";
+
