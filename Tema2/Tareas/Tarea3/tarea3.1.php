@@ -1,3 +1,7 @@
+<?php
+
+include("/var/www/Servidor/Fragmentos/header.html");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,11 +18,22 @@
     </style>
 </head>
 <body>
+
+<nav class="navbar navbar-expand-lg justify-content-center">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <a href="./tarea3.1.php" class="btn btn-dark text-white">Ejercicio 1</a>
+            </li>
+            <li class="nav-item mx-3">
+            <a href="./pagina3.2.php" class="btn btn-dark text-white">Ejercicio 2, 3 y 4</a>
+            </li>
+        </ul>
+    </nav>
     
 </body>
 </html>
+
 <?php
-include("/var/www/Servidor/Fragmentos/header.html");
 
 echo "<h1 class='text-center fw-bold fst-italic mt-3 mb-3'>Tarea 003</h1>";
 
@@ -69,10 +84,12 @@ echo date("d/m/y D", strtotime("+60 day"));
 echo "</p >";
 
 
-echo " <a href='./tarea3.2.php' class='btn btn-dark text-white center tarea2'>Ir a apartado 2</a>";
+echo "<br>";
 
 $ruta = $_SERVER['SCRIPT_FILENAME'];
-echo "<a href=http://".$_SERVER['SERVER_ADDR']."/verCodigo.php?ruta=".$ruta.">Ver Contenido</a>";   
+echo "<div class='text-center mt-2'><a class='btn btn-dark text-white' href=http://".$_SERVER['SERVER_ADDR']."/verCodigo.php?ruta=".$ruta.">Ver Contenido</a></div>";   
+
+
 
 
 

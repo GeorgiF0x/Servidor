@@ -21,6 +21,10 @@
 
     echo $$variableSaludo;
 
+    $ruta = $_SERVER['SCRIPT_FILENAME'];
+    echo "<br>";
+    echo "<a  href=http://".$_SERVER['SERVER_ADDR']."/verCodigo.php?ruta=".$ruta.">Ver Codigo</a>";
+
 ?>
 </body>
 </html>
