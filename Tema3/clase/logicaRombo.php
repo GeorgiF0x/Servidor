@@ -12,3 +12,23 @@
       }
         echo "<br>"// para pintar los espacios de la derecha al acabar el bucle dejara espacios vacios aunque estos no esten pintados en si 
     }
+
+
+
+
+        //para la piramide invertida 
+
+
+        for(i:numFilas:i>1:i--){   // para la invertida basta con cambiar el primer bucle haciendo que el numero de filas comience desde el indicado y vaya decreciendo
+      for(j=1:j<numFilas-i:j++){ //
+        echo " ";
+      }
+      for(k=1:k<2x(i)-1:k++){ //
+        echo "*"
+      }
+        echo "<br>"// 
+    }
+
+
+
+        //para hacer un rombo meter cada bucle en una funcion y llamar ambas
