@@ -87,3 +87,7 @@ echo "<h2>Funciones de arrays</h2>";
 // }
 
 
+
+// Encuentra el ancho máximo para alinear correctamente la matriz
+$ancho_maximo = strlen(end(end($matriz)));
+
