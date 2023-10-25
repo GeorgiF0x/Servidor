@@ -63,27 +63,34 @@ function recuerdaSelect($name,$value){
     }
 }
 
-//valida formulario
+//comprobar si la fecha es mayor de 18
+function comprobarEdad($name){
+    $hoy = new datetime();
+    if(enviado() && isset($_REQUEST[$name]) &&  strtotime($_REQUEST[$name])->diff($hoy)< 18){
+        echo "es menor de edad";
+    };
+}
 
+//valida formulario
 function validarFormulario(&$errores){
 
         if(textVacio('Nombre')){
-           $errores['Nombre']="Nombre esta vacio";
+           $errores['Nombre']="<-Nombre esta vacio";
         }
         if(textVacio('Apellido')){
-            $errores['Apellido']="Apellido esta Vacio";
+            $errores['Apellido']="<-Apellido esta Vacio";
         }
        if(radioVacio('genero')){
-        $errores['genero']="No has marcado Genero";
+        $errores['genero']="<-No has marcado Genero";
        }
        if(radioVacio('aficion')){
-        $errores['aficion']="No has seleccionado ninguna aficion";
+        $errores['aficion']="<-No has seleccionado ninguna aficion";
        }if(textVacio('fecha_nacimiento')){
-        $errores['fecha_nacimiento']="No has puesto ninguna fecha ";
+        $errores['fecha_nacimiento']="<-No has puesto ninguna fecha ";
        }if(selectVacio('equipos')){
-        $errores['equipos']="No has seleccionado equipo";
+        $errores['equipos']="<-No has seleccionado equipo";
        }if(textVacio('fichero')){
-            $errores['fichero']="no has seleccionado un fichero";
+            $errores['fichero']="<-No has seleccionado un fichero";
        }if(count($errores)==0){
             return true;
        }else{

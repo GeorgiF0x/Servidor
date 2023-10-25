@@ -100,11 +100,11 @@
                 <!-- El input hidden no se ve desde el cliente pero si recoge datos -->
                 <input type="hidden" name="oculto" value="USUARIO007s">
         </p>
-        <p class="text-danger">
+        <!-- <p class="text-danger"> -->
                 <?php
-                    errores($errores,'fichero');
+                    // errores($errores,'fichero');
                 ?>
-            </p>
+            <!-- </p> -->
         <p class="center">
             <!-- El boton Submit para verificar que se ha enviado el formulario -->
             <input type="submit" value="Enviar" name="Enviar">

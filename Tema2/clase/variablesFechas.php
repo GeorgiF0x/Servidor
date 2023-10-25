@@ -42,6 +42,7 @@ calcularAnio($tiempoRestado);
 $cumple= new DateTime('1998-08-21');
 $hoy = new DateTime(); //sin argumentos es como poner now 
 $intervalo= $cumple->diff($hoy);
+echo "***********";
 
 echo "<pre>";
 print_r($intervalo);
