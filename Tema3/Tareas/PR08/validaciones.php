@@ -65,10 +65,17 @@ function recuerdaSelect($name,$value){
 
 //comprobar si la fecha es mayor de 18
 function comprobarEdad($name){
-    $hoy = new datetime();
-    if(enviado() && isset($_REQUEST[$name]) &&  strtotime($_REQUEST[$name])->diff($hoy)< 18){
-        echo "es menor de edad";
-    };
+    if (enviado() && isset($_REQUEST[$name])) {
+        $fechaNacimiento = new DateTime($_REQUEST[$name]);
+        $hoy = new DateTime();
+        $diferencia = $fechaNacimiento->diff($hoy);
+        
+        if ($diferencia->y < 18) {
+            echo "Es menor de 18 años.";
+        } else {
+            echo "Es mayor de 18 años.";
+        }
+    }
 }
 
 //valida formulario
