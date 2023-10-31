@@ -27,3 +27,9 @@ body {
     background-image: linear-gradient(to right, #000000, #780e7a);
   }
 
+  footer{
+    position: fixed !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+  }
