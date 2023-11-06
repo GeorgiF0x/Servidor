@@ -101,26 +101,31 @@ function calcularLetraDni(&$dni){
 function validarFormulario(&$errores){
 
         if(textVacio('Nombre')){
-           $errores['Nombre']="<-Nombre esta vacio";
+           $errores['Nombre']="Nombre esta vacio->";
+        }elseif (!preg_match('/^[A-Za-z ]+$/', $_REQUEST['Nombre'])) {
+            $errores['Nombre'] = "Nombre no es válido -> ";
         }
         if(textVacio('Apellido')){
-            $errores['Apellido']="<-Apellido esta Vacio";
+            $errores['Apellido']="Apellido esta Vacio->";
         }
-       if(radioVacio('genero')){
-        $errores['genero']="<-No has marcado Genero";
+       if(textVacio('Contraseña')){
+        $errores['Contraseña']="Contaseña esta Vacio->";
+    }if(textVacio('repContraseña')){
+        $errores['repContraseña']="Repetir contraseña Vacio-> ";
+       } if(textVacio('Fecha')){
+        $errores['Fecha']="Fecha esta Vacio->";
+    }if(textVacio('DNI')){
+        $errores['DNI']="DNI esta Vacio->";
+    }
+    if(textVacio('Email')){
+        $errores['Email']="EMAIL esta Vacio->";
+    }
+    if(textVacio('Fichero')){
+            $errores['Fichero']="<-No has seleccionado un fichero";
        }
-       if(radioVacio('aficion')){
-        $errores['aficion']="<-No has seleccionado ninguna aficion";
-       }if(textVacio('fecha_nacimiento')){
-        $errores['fecha_nacimiento']="<-No has puesto ninguna fecha ";
-       }if(selectVacio('equipos')){
-        $errores['equipos']="<-No has seleccionado equipo";
-       }if(textVacio('fichero')){
-            $errores['fichero']="<-No has seleccionado un fichero";
-       }if(count($errores)==0){
+      if(count($errores)==0){
             return true;
        }else{
         return false;
        }
-    
 }

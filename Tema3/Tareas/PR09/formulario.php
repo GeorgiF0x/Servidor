@@ -21,33 +21,63 @@
             print_r($_REQUEST);
         }else{
     ?>
-     <form action="" method="get" class="mt-5 text-center mx-5 just"  enctype="multipart/form-data">
+     <form action="" method="post" class="mt-5 text-center mx-5 just"  enctype="multipart/form-data">
         <p>
-        <label for="idNombre">Nombre : <input type="text" placeholder="Nombre" name="Nombre" id="idNombre" pattern="[A-Za-z{3}]" Value=<?php recuerda('Nombre')?> ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'Nombre');
                 ?>
             </span>
-            <label for="idNombre">Apellido : <input type="text" placeholder="Apellido" name="Apellido" id="idApellido" pattern="[A-Za-z{3}]" Value=<?php recuerda('Apellido')?> ></label><br><br>
-            <span class="text-danger">
-                <?php
-                    errores($errores,'Apellido');
-                ?>
-            </span>
-            <label for="idNombre">Contraseña : <input type="text" placeholder="Contraseña" name="Contraseña" id="idContraseña" pattern="[A-Za-z{3}]"> ></label><br><br>
+        <label for="idNombre">Nombre : <input type="text" placeholder="Nombre" name="Nombre" id="idNombre" " Value=<?php recuerda('Nombre')?> ></label><br><br>
+        <span class="text-danger">
+            <?php
+                errores($errores,'Apellido');
+            ?>
+        </span>
+            <label for="idApellido">Apellido : <input type="text" placeholder="Apellido" name="Apellido" id="idApellido"  Value=<?php recuerda('Apellido')?> ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'Contraseña');
                 ?>
             </span>
-              <label for="idNombre">Repetir Contraseña : <input type="text" placeholder="repContraseña" name="repContraseña" id="idrepContraseña" pattern="[A-Za-z{3}]"> ></label><br><br>
+            <label for="idContraseña">Contraseña : <input type="text" placeholder="Contraseña" name="Contraseña" id="idContraseña"  ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'repContraseña');
                 ?>
             </span>
-            <label for="hombre">Fecha : <input  type="date" name="fecha" id="" placeholder="dd/mm/yyyy" value=<?php recuerda('fecha')?>></label><br>
+              <label for="idrepContraseña">Repetir Contraseña : <input type="text" placeholder="repContraseña" name="repContraseña" id="idrepContraseña"></label><br><br>
+              <span class="text-danger">
+                  <?php
+                      errores($errores,'Fecha');
+                  ?>
+              </span>
+            <label for="idFecha">Fecha : <input type="text" placeholder="dd/mm/yyy" name="Fecha" id="idFecha"  ></label><br><br>
+            <span class="text-danger">
+                <?php
+                    errores($errores,'DNI');
+                ?>
+            </span>
+            <label for="isDNI">DNI : <input type="text"  name="DNI" id="idDNI"  ></label><br><br>
+            <span class="text-danger">
+                <?php
+                    errores($errores,'Email');
+                ?>
+            </span>
+            <label for="Email">Correo Eletronico : <input type="text"  name="Email" id="idEmail" placeholder="correo@loquesea.com" ></label><br><br>
+            
+                <input type="file" name="Fichero" id="idfichero">
+                <p class="text-danger">
+                        <?php
+                            errores($errores,'fichero');
+                        ?>
+                    </p>
+        
+        <p class="center">
+            <!-- El boton Submit para verificar que se ha enviado el formulario -->
+            <input type="submit" value="Enviar" name="Enviar">
+            <input type="reset" value="Borrar" name="Borrar">
+        </p>
         </p>
 
 
