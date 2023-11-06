@@ -80,52 +80,103 @@ function comprobarEdad($name){
 
 //funciones para validar y calcular letra de dni 
 
-function validarDni($dni){
+function comprobarLetraDNI($dni) {
+    $letrasValidas = "TRWAGMYFPDXBNJZSQVHLCKE";
+    $dniSinLetra = substr($dni, 0, 8);
+    $letraProporcionada = strtoupper(substr($dni, 8, 1));
+    $letraCalculada = $letrasValidas[$dniSinLetra % 23];
 
-    $dniSinletra=substr($dni,8);
-    $arrayDNI=["T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"];
-    $dniSinletra=$dniSinletra.$arrayDNI[(int)$dniSinletra % 23];
-    if($dni<=>$dniSinletra){
-        echo "el dni es correcto";
-    }else {
-        echo "el dni no es valido";
-    }
+    return $letraProporcionada === $letraCalculada;
 }
 
-function calcularLetraDni(&$dni){
-    $arrayDNI=["T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"];
-    $dni+=$arrayDNI[(int)$dniSinletra % 23];
-}
+
 
 //valida formulario
 function validarFormulario(&$errores){
 
         if(textVacio('Nombre')){
            $errores['Nombre']="Nombre esta vacio->";
-        }elseif (!preg_match('/^[A-Za-z ]+$/', $_REQUEST['Nombre'])) {
-            $errores['Nombre'] = "Nombre no es válido -> ";
+        }elseif (!preg_match('/^[A-Za-z ]{3,}$/', $_REQUEST['Nombre'])) {
+            $errores['Nombre'] = "Nombre no cumple el patron -> ";
         }
         if(textVacio('Apellido')){
             $errores['Apellido']="Apellido esta Vacio->";
+        } 
+        elseif (!preg_match('/^[A-Za-z ]{3,}\s[A-Za-z ]{3,}$/', $_REQUEST['Apellido'])) {
+            $errores['Apellido'] = "Apellido no cumple el patron -> ";
         }
-       if(textVacio('Contraseña')){
-        $errores['Contraseña']="Contaseña esta Vacio->";
-    }if(textVacio('repContraseña')){
+        if (textVacio('Contraseña')) {
+            $errores['Contraseña'] = "Contraseña está vacía -> ";
+        }
+         elseif (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/', $_REQUEST['Contraseña'])) {
+            $errores['Contraseña'] = "Contraseña no tiene el formato del patron -> ";
+        } 
+        elseif ($_REQUEST['Contraseña'] !== $_REQUEST['repContraseña']) {
+            $errores['repContraseña'] = "Las contraseñas no coinciden -> ";
+        }
+        if(textVacio('repContraseña')){
         $errores['repContraseña']="Repetir contraseña Vacio-> ";
-       } if(textVacio('Fecha')){
-        $errores['Fecha']="Fecha esta Vacio->";
-    }if(textVacio('DNI')){
-        $errores['DNI']="DNI esta Vacio->";
-    }
-    if(textVacio('Email')){
-        $errores['Email']="EMAIL esta Vacio->";
-    }
-    if(textVacio('Fichero')){
-            $errores['Fichero']="<-No has seleccionado un fichero";
        }
+        if (textVacio('Fecha')) {
+        $errores['Fecha'] = "Fecha está vacía -> ";
+    } 
+    elseif (!preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $_REQUEST['Fecha'])) {
+        $errores['Fecha'] = "Formato de fecha no válido -> ";
+    }
+    if (textVacio('DNI')) {
+        $errores['DNI'] = "DNI está vacío -> ";
+    } 
+    elseif (!preg_match('/^\d{8}[A-Za-z]?$/', $_REQUEST['DNI'])) {
+        $errores['DNI'] = "Formato de DNI no válido -> ";
+    }
+     elseif (!comprobarLetraDNI($_REQUEST['DNI'])) {
+        $errores['DNI'] = "La letra del DNI es incorrecta -> ";
+    }
+    if (textVacio('Email')) {
+        $errores['Email'] = "Email está vacío -> ";
+    } elseif (!preg_match('/^.+@.+\..{2,}$/', $_REQUEST['Email'])) {
+        $errores['Email'] = "El formato del email no es válido -> ";
+    }
+    if (textVacio('Fichero')) {
+        $errores['Fichero'] = "No has seleccionado un fichero -> ";
+    } elseif (!preg_match('/\.(jpg|jpeg|png|bmp)$/i', $_FILES['Fichero']['name'])) { //i para que sean mayusculas o minusculas 
+        $errores['Fichero'] = "El formato del fichero no es válido. Sube un fichero jpg, jpeg, png o bmp -> ";
+    }
       if(count($errores)==0){
             return true;
        }else{
         return false;
        }
 }
+
+
+
+if(count($_FILES) != 0) {
+    echo "<pre>";
+    print_r($_FILES);
+    
+    // Ruta para guardar el fichero
+    $ruta = "/var/www/Servidor/Tema3/Tareas/PR09/";
+    $ruta .= basename($_FILES['Fichero']['name']);
+    
+    if(move_uploaded_file($_FILES['Fichero']['tmp_name'], $ruta)) {
+        echo "Archivo subido";
+    } else {
+        echo "Ha fallado al subir el archivo";
+    }
+}
+
+    //subir varios Ficheros 
+    // $numFichero=count($_FILES);
+    
+    // for ($i=0; $i <=$numFichero ; $i++) { 
+    //     $ruta.=basename($_FILES['Fichero']['name'][$i]);
+    //     if(move_uploaded_file($_FILES['Fichero']['tmp_name'][$i],$ruta)){
+    //         echo "archivo subido";
+    //         echo "<pre>";
+    //         print_r($_FILES);
+    //     }else{
+    //     echo "fallo al subir los Ficheros";
+    //     pintarBr(); 
+    // }
+

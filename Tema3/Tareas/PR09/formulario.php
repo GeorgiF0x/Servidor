@@ -40,38 +40,38 @@
                     errores($errores,'Contraseña');
                 ?>
             </span>
-            <label for="idContraseña">Contraseña : <input type="text" placeholder="Contraseña" name="Contraseña" id="idContraseña"  ></label><br><br>
+            <label for="idContraseña">Contraseña : <input type="text" placeholder="Contraseña" name="Contraseña" id="idContraseña"  Value=<?php recuerda('Contraseña')?> ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'repContraseña');
                 ?>
             </span>
-              <label for="idrepContraseña">Repetir Contraseña : <input type="text" placeholder="repContraseña" name="repContraseña" id="idrepContraseña"></label><br><br>
+              <label for="idrepContraseña">Repetir Contraseña : <input type="text" placeholder="repContraseña" name="repContraseña" id="idrepContraseña"  Value=<?php recuerda('repContraseña')?>></label><br><br>
               <span class="text-danger">
                   <?php
                       errores($errores,'Fecha');
                   ?>
               </span>
-            <label for="idFecha">Fecha : <input type="text" placeholder="dd/mm/yyy" name="Fecha" id="idFecha"  ></label><br><br>
+            <label for="idFecha">Fecha : <input type="text" placeholder="dd/mm/yyy" name="Fecha" id="idFecha"  Value=<?php recuerda('Fecha')?> ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'DNI');
                 ?>
             </span>
-            <label for="isDNI">DNI : <input type="text"  name="DNI" id="idDNI"  ></label><br><br>
+            <label for="isDNI">DNI : <input type="text"  name="DNI" id="idDNI"  Value=<?php recuerda('DNI')?> ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'Email');
                 ?>
             </span>
-            <label for="Email">Correo Eletronico : <input type="text"  name="Email" id="idEmail" placeholder="correo@loquesea.com" ></label><br><br>
+            <label for="Email">Correo Eletronico : <input type="text"  name="Email" id="idEmail" placeholder="correo@loquesea.com"  Value=<?php recuerda('Email')?>></label><br><br>
             
-                <input type="file" name="Fichero" id="idfichero">
-                <p class="text-danger">
-                        <?php
-                            errores($errores,'fichero');
-                        ?>
-                    </p>
+            <input type="file" name="Fichero" id="idfichero">
+            <p class="text-danger">
+                    <?php
+                        errores($errores,'Fichero');
+                    ?>
+            </p>
         
         <p class="center">
             <!-- El boton Submit para verificar que se ha enviado el formulario -->
@@ -79,7 +79,10 @@
             <input type="reset" value="Borrar" name="Borrar">
         </p>
         </p>
-
+    <?php
+    $ruta = $_SERVER['SCRIPT_FILENAME'];
+    echo "<div class='text-center mt-2'><a class='btn btn-dark text-white' href=http://".$_SERVER['SERVER_ADDR']."/verCodigo.php?ruta=".$ruta.">Ver Codigo</a></div>";   
+    ?>
 
 
 <?php
