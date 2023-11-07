@@ -34,19 +34,19 @@
                 errores($errores,'Apellido');
             ?>
         </span>
-            <label for="idApellido">Apellido : <input type="text" placeholder="Apellido" name="Apellido" id="idApellido"  Value=<?php recuerda('Apellido')?> ></label><br><br>
+            <label for="idApellido">Apellido : <input type="text" placeholder="Apellido" name="Apellido" id="idApellido"  Value=<?php recuerda('Apellido ')?> ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'Contraseña');
                 ?>
             </span>
-            <label for="idContraseña">Contraseña : <input type="text" placeholder="Contraseña" name="Contraseña" id="idContraseña"  Value=<?php recuerda('Contraseña')?> ></label><br><br>
+            <label for="idContraseña">Contraseña : <input type="password" placeholder="Contraseña" name="Contraseña" id="idContraseña"  Value=<?php recuerda('Contraseña')?> ></label><br><br>
             <span class="text-danger">
                 <?php
                     errores($errores,'repContraseña');
                 ?>
             </span>
-              <label for="idrepContraseña">Repetir Contraseña : <input type="text" placeholder="repContraseña" name="repContraseña" id="idrepContraseña"  Value=<?php recuerda('repContraseña')?>></label><br><br>
+              <label for="idrepContraseña">Repetir Contraseña : <input type="password" placeholder="repContraseña" name="repContraseña" id="idrepContraseña"  Value=<?php recuerda('repContraseña')?>></label><br><br>
               <span class="text-danger">
                   <?php
                       errores($errores,'Fecha');

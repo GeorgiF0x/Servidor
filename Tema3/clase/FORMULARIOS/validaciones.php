@@ -82,9 +82,11 @@ function validarFormulario(&$errores){
         $errores['fecha_nacimiento']="No has puesto ninguna fecha ";
        }if(selectVacio('equipos')){
         $errores['equipos']="No has seleccionado equipo";
-       }if(textVacio('fichero')){
-            $errores['fichero']="no has seleccionado un fichero";
-       }if(count($errores)==0){
+       }
+    //    if(textVacio('fichero')){
+    //         $errores['fichero']="no has seleccionado un fichero";
+    //    }
+       if(count($errores)==0){
             return true;
        }else{
         return false;

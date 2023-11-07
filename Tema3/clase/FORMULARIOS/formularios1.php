@@ -95,8 +95,8 @@
         <p>
         <p>
             <!-- Fichero recoge los datos en un fichero temporal , el fichero se ve desde la variable Files-->
-                <h4>Subir fichero</h4>
-                <input type="file" name="fichero" id="idfichero">
+                <!-- <h4>Subir fichero</h4>
+                <input type="file" name="fichero" id="idfichero"> -->
                 <!-- El input hidden no se ve desde el cliente pero si recoge datos -->
                 <input type="hidden" name="oculto" value="USUARIO007s">
         </p>
