@@ -7,7 +7,7 @@
 <?
        if (isset($_GET['guardar'])) {
            header("Location: ./notas.php");
-           modificarCSV($_REQUEST['nombre'],$_REQUEST['ev1'],$_REQUEST['ev2'],$_REQUEST['ev3']);
+           añadirCSV($_REQUEST['nombre'],$_REQUEST['ev1'],$_REQUEST['ev2'],$_REQUEST['ev3']);
     }
 ?>
 
@@ -29,8 +29,3 @@
 
 </body>
 </html>
-<?php
-
-    include("/var/www/Servidor/Fragmentos/footer.html");
-
-?>

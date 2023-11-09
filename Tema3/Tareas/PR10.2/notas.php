@@ -1,20 +1,23 @@
 <?php
-    // include("./validaciones.php");
+    include("./validaciones.php");
     include("/var/www/Servidor/Fragmentos/header.html");
 ?>
 
 <?php
             if (isset($_GET['rem']) && isset($_GET['oculto'])) {
               $indiceEliminar = $_GET['oculto'];
-              eliminarRegistro($_GET['oculto']);
-              header("Location: ./eliminar.php");
-              exit();
+              eliminarRegistro($indiceEliminar);
           }
 
           if (isset($_GET['mod']) && isset($_GET['oculto'])) {
             header("Location: ./Modificar.php?indice=" . $_GET['oculto']);
             exit();
         }
+
+        if (isset($_GET['add'])) {
+          header("Location: ./Modificar.php?indice=" . $_GET['oculto']);
+          exit();
+      }
     ?>
 
 
@@ -66,9 +69,13 @@
             while ($ArrayDatos = fgetcsv ($fp, filesize("notas.csv"), ";")) { 
                 foreach ($ArrayDatos as $key => $value) {
                     echo "<td> ". $ArrayDatos[$key]. " </td>";
+                    if($key==0){
+                      $nombre=$value;
+                    }
                 }
                 echo '<form action="" method="get" class="mt-5 text-center mx-5 just"  enctype="multipart/form-data"> ';
-                echo "<td> <input type='hidden' name='oculto' value='".$conta."'";
+                echo "<td> <input type='hidden' name='oculto' value='".$nombre."'";
+                echo "<td> <input type='hidden' name='oculto2' value='".$conta."'";
                 echo "<td> <input class='btn btn-dark' type='submit' name='mod' value='Modificar'>";
                 echo "<td> <input class='btn btn-danger' type='submit' name='rem' value='Eliminar'><td>";
                 echo "</form>";
@@ -81,11 +88,7 @@
     </table>
     <form action="" method="get" class="mt-5 text-center mx-5 "  enctype="multipart/form-data">
     <input class='btn btn-primary' type='submit' name='add' value='Añadir Campo'><td>
-      <?
-      if(isset($_REQUEST['add'])){
-        header("Location: ./Añadir.php");
-      }
-      ?>
+
     </form>
 </form>
 </div>

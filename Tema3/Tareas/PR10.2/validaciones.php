@@ -16,72 +16,60 @@ function leerSCV(){
 
 function añadirCSV($nombre,$valor1,$valor2,$valor3){
     $fp = fopen ("notas.csv","a");
-    fwrite ($fp, "\n".$nombre.";".$valor1.";".$valor2.";".$valor3);
+        $texto=[$nombre,$valor1,$valor2,$valor3];
+    fputcsv ($fp,$texto,";");
     fclose($fp);
 }
 
-function modificarCSV($valor1,$valor2,$valor3){
-    $fp = fopen ("notas.csv","r+");
-    while ($data = fgetcsv ($fp, filesize("notas.csv"), ";")) {
-        echo $data[0].' -> '.$data[1];
-        fwrite ($fp, $data[0],$data[1]=$valor1.";");
+function modificarCSV($valor1,$valor2,$valor3,$valor4){
+    
+    $tmp = tempnam('.',"tem.csv");
+    chmod($tmp,0777);
+    if((!$fp=fopen("notas.csv",'r')) || (!$ft = fopen($tmp,'w')));    
+else{        
+    $texto=[$valor1,$valor2,$valor3,$valor4];
+
+    while ($leido = fgetcsv($fp, filesize("notas.csv"), ";")) {
+        if($leido[0]!= $valor1){
+            fputcsv($ft,$leido,";");
+            
+        }else if($leido[0]== $valor1){
+            fputcsv($ft,$texto,";");
         }
+    }
+    fclose($fp);
+    fclose($ft);
+    unlink("notas.csv");
+    rename($tmp,"notas.csv");
 }
-
-añadirCSV("GEORGI2",7,7,10);
-
-
-
-function eliminarRegistro($indice) {
-    // Abre el fp CSV en modo lectura y escritura
-    $fp = fopen("notas.csv", "r+");
-    // Lee todas las líneas del fp
-    $registros = [];
-    while ($fila = fgetcsv($fp, filesize("notas.csv"), ";")) {
-        $registros[] = $fila;
-    }
-    // Cierra el fp
-    fclose($fp);
-    // Elimina el registro con el índice proporcionado
-    if (isset($registros[$indice])) {
-        unset($registros[$indice]);
-    }
-    // Abre el fp en modo escritura para sobrescribir el contenido
-    $fp = fopen("notas.csv", "w");
-    // Escribe los registros actualizados en el fp
-    foreach ($registros as $registro) {
-        fputcsv($fp, $registro, ";");
-    }
-    // Cierra el fp
-    fclose($fp);
 }
 
 
+// añadirCSV("GEORGI2",7,7,10);
 
-function actualizarDatosCSV($filePath) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
-        // Formulario enviado, actualizar el archivo CSV con los nuevos datos
-        $fp = fopen($filePath, "r+");
-        // Saltar la fila de encabezado
-        fgetcsv($fp, filesize($filePath), ";");
-        while ($ArrayDatos = fgetcsv($fp, filesize($filePath), ";")) {
-            // Guardar la posición actual del puntero
-            $posicion = ftell($fp);
-            // Recorrer cada fila y actualizar los datos
-            foreach ($ArrayDatos as $key => $value) {
-                if (isset($_POST['campo_' . $key])) {
-                    // Actualizar el valor con los datos enviados
-                    $ArrayDatos[$key] = $_POST['campo_' . $key];
-                }
-            }
-            // Mover el puntero de archivo al principio de la fila
-            fseek($fp, $posicion);
-            // Escribir los datos actualizados de nuevo al archivo
-            fputcsv($fp, $ArrayDatos, ";");
+
+
+function eliminarRegistro($valor) {
+    $tmp = tempnam('.',"tem.csv");
+    chmod($tmp,0777);
+    if((!$fp=fopen("notas.csv",'r')) || (!$ft = fopen($tmp,'w')));    
+else{        
+
+    while ($leido = fgetcsv($fp, filesize("notas.csv"), ";")) {
+        if($leido[0]!= $valor){
+            fputcsv($ft,$leido,";");   
         }
-        fclose($fp);
     }
+    fclose($fp);
+    fclose($ft);
+    unlink("notas.csv");
+    rename($tmp,"notas.csv");
 }
+}
+
+
+
+
 
 
 function enviadoModificar(){
