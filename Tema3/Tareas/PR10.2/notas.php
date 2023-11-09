@@ -4,11 +4,17 @@
 ?>
 
 <?php
-            // if(enviadoModificar()){
-            //         header("Location: ./Modificar.php");
-            // }elseif(enviadoEliminar()){
-            //         header("Location: ./Eliminar.php");
-            // }
+            if (isset($_GET['rem']) && isset($_GET['oculto'])) {
+              $indiceEliminar = $_GET['oculto'];
+              eliminarRegistro($_GET['oculto']);
+              header("Location: ./eliminar.php");
+              exit();
+          }
+
+          if (isset($_GET['mod']) && isset($_GET['oculto'])) {
+            header("Location: ./Modificar.php?indice=" . $_GET['oculto']);
+            exit();
+        }
     ?>
 
 
