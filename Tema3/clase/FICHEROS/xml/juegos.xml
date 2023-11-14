@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<juegos><juego id="1" disponible="Si"><nombre>FIFA</nombre><dispositivos><dispositivos>XBOX</dispositivos><dispositivos>PS5</dispositivos></dispositivos></juego><juego id="2" disponible="No"><nombre>GTA</nombre><dispositivos><dispositivos>XBOX</dispositivos></dispositivos></juego><juego id="3" disponible="S&#xED;"><nombre>TETRIS</nombre><dispositivos><dispositivos>PC</dispositivos><dispositivos>XBOX</dispositivos><dispositivos>PS5</dispositivos></dispositivos></juego></juegos>
