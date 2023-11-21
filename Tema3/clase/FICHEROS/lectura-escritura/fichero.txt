@@ -1,0 +1,3 @@
+ener el tamaño total del ar Texto a escribir ". Luego, ese valor se utiliza como $length en fread() para leer el archivo completo. Esto asegura que todo el contenido del archivo se lea en una sola operación.
+
+Recuerda cerrar el archivo usando fclose() cuando hayas terminado d

@@ -1,0 +1,20 @@
+Escribe el contenido de string al flujo de archivo apuntado por handle.
+Texto que quiero escribir
+
+
+
+
+
+Parámetros 
+handle
+Resource que apunta a un fichero del sitema que normalmente es creado usando fopen().
+
+string
+La cadena que va a ser escrita.
+
+length
+Si se da el argumento length, la escritura se detendrá después de que length bytes hayan sido escritos o se alcance el final de string, lo que suceda primero.
+
+Observe que si el argumento length se da, la opción de configuración magic_quotes_runtime será ignorada y no se eliminarán las barras de string.
+
+Valores devueltos Mi nueva linea\nMi nueva linea\nMi nueva linea
