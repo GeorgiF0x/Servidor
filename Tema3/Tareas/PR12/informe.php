@@ -1,8 +1,7 @@
-<?
+<?php
 
 require('./fpdf186/fpdf.php');
 require('header.php');
-
 
 $arrayCliente = array('Pepe', '12345678L', 'C/Buena 1', 'Granada España');
 
@@ -22,16 +21,30 @@ $pdf->SetX(110);
 $pdf->Write(110, $arrayCliente[3]);
 $pdf->SetFont('Courier', 'B', 20);
 
-$array = array(array("concepto" => "Laptop", "cantidad" => 2, "precio" => 800, "iva" => 0.16),
-    array("concepto" => "Monitor", "cantidad" => 1, "precio" => 200, "iva" => 0.16),
-    array("concepto" => "Teclado", "cantidad" => 3, "precio" => 30, "iva" => 0.16),
-    array("concepto" => "Mouse", "cantidad" => 4, "precio" => 15, "iva" => 0.16),
-    array("concepto" => "Impresora", "cantidad" => 1, "precio" => 150, "iva" => 0.16),
-    array("concepto" => "Disco Duro", "cantidad" => 2, "precio" => 100, "iva" => 0.16));
+$array = array(
+    array("concepto" => "Laptop", "cantidad" => 2, "precio" => 800, "iva" => 0.21),
+    array("concepto" => "Monitor", "cantidad" => 1, "precio" => 200, "iva" => 0.21),
+    array("concepto" => "Teclado", "cantidad" => 3, "precio" => 30, "iva" => 0.21),
+    array("concepto" => "Mouse", "cantidad" => 4, "precio" => 15, "iva" => 0.21),
+    array("concepto" => "Impresora", "cantidad" => 1, "precio" => 150, "iva" => 0.21),
+    array("concepto" => "Disco Duro", "cantidad" => 2, "precio" => 100, "iva" => 0.21)
+);
 
 $pdf->SetY(110);
-$pdf->SetFont('Courier','B',10);
+$pdf->SetFont('Courier', 'B', 10);
 crearTabla($array, $pdf);
+
+$total = calcularTotal($array);
+
+$pdf->SetY($pdf->GetY() + 10);
+$pdf->SetX(10); 
+$pdf->SetFont('Courier', 'B', 14);
+$pdf->Cell(40, 10, "Total:", 0, 0, 'C');
+$text = "€";
+$pdf->Cell(40, 10, number_format($total, 2) , 0, 0, 'C');  
+$pdf->Write(10, iconv('UTF-8', 'windows-1252', $text));
+
+
 function crearTabla($array, $pdf)
 {
     $pdf->setFillColor(245, 14, 5);
@@ -40,37 +53,42 @@ function crearTabla($array, $pdf)
     $pdf->Line(93, 69, 93, 35);
     $pdf->Cell(40, 10, "Concepto", 1, 0, 'C', true);
     $pdf->Cell(40, 10, "Cantidad ", 1, 0, 'C', true);
-    $pdf->Cell(40, 10, "Precio ", 1, 0, 'C', true);
+    $text = "€";
+    $pdf->Cell(40, 10, "Precio ".iconv('UTF-8', 'windows-1252', $text), 1, 0, 'C', true);
     $pdf->Cell(40, 10, "I.V.A", 1, 0, 'C', true);
     $pdf->Ln();
-
-
     
-    // $text = "€";
-    // $pdf->Write(0,iconv('UTF-8', 'windows-1252', $text));
     foreach ($array as $row) {
-        $conta=0;
-        foreach ($row as $dato) {
-            if($conta % 2 == 0){
-                $pdf->setFillColor(179, 173, 173);
+        $pdf->setFillColor(255, 255, 255);
+        $pdf->setTextColor(0, 0, 0);
+
+        foreach ($row as $clave => $dato) {
+            if ($clave === "precio") {
+                $text = "€";
+                $pdf->Cell(40, 10, number_format($dato, 2)." ".iconv('UTF-8', 'windows-1252', $text) , "B", 0, 'C', true);
+            } else {
+                $pdf->Cell(40, 10, $dato, "B", 0, 'C', true);
             }
-            $pdf->setFillColor(255, 255, 255);
-            $pdf->setTextColor(0, 0, 0);
-            $pdf->Cell(40, 10, $dato, "B", 0, 'C', true);
         }
-        $conta++;
+
         $pdf->Ln();
     }
-    // function calcularTotal($array){
-    //     foreach ($array as $fila) {
-    //         foreach ($fila as $valor ) {
-    //             echo $valor. "<br>";
-    //         }
-    //     }
-    // }
-    
-    // calcularTotal($array);
-    
 }
+
+
+
+
+function calcularTotal($array)
+{
+    $total = 0;
+    foreach ($array as $row) {
+        $total += $row["precio"];
+    }
+    return $total;
+}
+
+
 $pdf->Output();
+?>
+
 

@@ -9,8 +9,8 @@ class Header extends FPDF
         $this->SetFont('Courier','B',20);
         $this->Image("./logo.jpg",10,10,20,30);
         $this->SetTextColor(100,100,100);
-        $this->setX(70);
-        $this->Write(5,"PR12");
+        $this->setX(50);
+        $this->Write(5,"Georgi Borisov Aleksandrov PR12");
         $this->setX(30);
         $this->SetTextColor(254, 3, 7 );
         $this->Write(30,"Mi empresa");
