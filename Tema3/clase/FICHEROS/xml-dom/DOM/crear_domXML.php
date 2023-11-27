@@ -2,17 +2,17 @@
 
     $dom = new DOMDocument('1.0','utf-8');
 
-    $raiz= $dom->appendChild($dom->createElement('instrumentos'));
+    $raiz= $dom->appendChild($dom->createElement('instrumentos')); //se crea el elemento raiz
 
-    $intrumento = $dom->createElement('intrumento');
+    $intrumento = $dom->createElement('intrumento'); //primer elemento
 
-    $nombre=$dom->createElement("nombre","guitarra");
-    $familia = $dom->createElement("familia","cuerda");
-    $raiz->appendChild($intrumento);
-    $intrumento->appendChild($nombre);
+    $nombre=$dom->createElement("nombre","guitarra"); //primer campo del elemento , se escribe "nombreElmento", "valor"
+    $familia = $dom->createElement("familia","cuerda");//segundo campo del elemento
+    $raiz->appendChild($intrumento); // se inserta  en el elemento raiz el primer elemento 
+    $intrumento->appendChild($nombre);// se insertan los  campos del elemento al propio elemento
     $intrumento->appendChild($familia);
     $intrumento->setAttribute('id','1');
-
+    //otro ejemplo mas 
     $intrumento=$raiz->appendChild($dom->createElement('intrumento'));
     $intrumento->appendChild($dom->createElement('nombre','violin'));
     $intrumento->appendChild($dom->createElement('familia','cuerda'));
@@ -24,10 +24,9 @@
     $dom->formatOutput = true;
     $dom->save("instrumentos.xml");
 
-    //leer el fichero
+    //leer el fichero y recorrelo 
     $dom->load('instrumentos.xml');
     // print_r($dom);
-    
     foreach ($dom->childNodes as $instrumentos) {
         foreach ($instrumentos->childNodes as $instrumento) {
             if ($instrumento->nodeType == 1) {
@@ -35,14 +34,14 @@
                 $nodo = $instrumento->firstChild;
                 do {
                     if ($nodo->nodeType == 1) {
-                        echo "\n" . $nodo->tagName . ":" . $nodo->nodeValue;
+                        echo "\n" . $nodo->tagName . ":" . $nodo->nodeValue."<br>";
                     }
                 } while ($nodo = $nodo->nextSibling);
             }
         }
     }
 
-
+    //para reccorer segun los nombres de sus campos 
     $instrumentoLista=$dom->getElementsByTagName('intrumento');
     echo "<h2>Recorrer con getElement </h2>";
     foreach($instrumentoLista as $value){
