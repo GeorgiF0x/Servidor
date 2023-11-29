@@ -4,7 +4,6 @@
 //crear y escribirlo
 
 $xml= new SimpleXMLElement("<juegos></juegos>"); //indicar en el argumento la etiqueta principal del XML 
-
 $juego1= $xml->addChild("juego"); //para crear un elemento HIJO del elemento PRINCIPAL
 $juego1->addAttribute("id","1");
 $juego1->addAttribute("disponible","Si");
