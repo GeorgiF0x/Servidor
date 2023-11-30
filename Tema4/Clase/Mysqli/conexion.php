@@ -7,15 +7,17 @@ try {
         $RequestNombre='miguel'; //imaginar que llega desde un formulario 
         $RequestEdad=20;
         //$sql = "insert into alumnos (nombre,edad) values (".$RequestNombre."".$RequestEdad.")";
-
         //consultas Preparadas
         $sql = "insert into alumnos (nombre,edad) values (?,?)";
-
         $stmt=mysqli_prepare($conexion,$sql);
         mysqli_stmt_bind_param($stmt,'si',$RequestNombre,$RequestEdad);
         mysqli_stmt_execute($stmt);
-        mysqli_query($conexion,$sql);
+        // ejecucion de la sentencia sin preparar 
+        // mysqli_query($conexion,$sql);
+
+        
         mysqli_close($conexion);
+
     }else{
         echo "error MYSLQ";
     }
@@ -40,7 +42,4 @@ try {
     1045 ACCESO DENEGADO
     */
 }
-
-
-
 ?>
