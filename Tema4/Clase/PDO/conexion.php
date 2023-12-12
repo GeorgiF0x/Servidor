@@ -55,13 +55,13 @@ try{
     $con= new PDO($DSN,USER,PASS);
     //leer la base de datos con PDO 
         //Consultas preparadas con :
-        $sql="select * from tiempo where grados < 5";
+        $sql="select * from tiempo where grados < 0";
         $stmt=$con->query($sql);
         $stmt->execute();
-        $stmt->bindColumn(1,$descripcion);
-        $stmt->bindColumn(2,$grados);
-        while($row=$result->fetch(PDO::FETCH_BOUND)){ //mirar opciones de fetch en el manual 
-            echo "<br> Hoy es un ".$descripcion." y hace : ".$grados." Grados <br>";
+        $stmt->bindColumn(1,$desc);
+        $stmt->bindColumn(2,$grad);
+        while($row=$result->fetch(PDO::FETCH_BOUND)){ //mirar opciones de fetch en el manual  
+            echo "<br>BOUND Hoy es un ".$desc." y hace : ".$grad." Grados <br>";
         }
 }catch(PDOException $e){
     echo $e->getMessage();
