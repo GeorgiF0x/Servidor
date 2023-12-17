@@ -1,36 +1,54 @@
 <?php
-    include("./Fragmentos/footer.html");
-    include("./conexionBD.php");
-    include("./funciones/funciones.php");
+include("./Fragmentos/footer.html");
+include("./funciones/funciones.php");
 ?>
-<?php
-            if (isset($_GET['modificar'])) {
-              $indiceEliminar = $_GET['oculto'];
-              eliminarRegistro($indiceEliminar);
-          }
-    ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Título de tu página</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <table class="table border">
-          <?
-          imprimirTodo()
-          ?>
-    </table>
-    <form action="post">
-        <p>Nombre Ejercicio:<input type="text" name="NomEjer" id=""></p>
-        <p>Repeticiones:<input type="number" name="Repes" id=""></p>
-        <p>Series:<input type="number" name="Repes" id=""></p>
-        <p>
-            <input type="button" value="Borrar" name="">
-            <input type="button" value="Consultar" name="">
-            <input type="button" value="Modificar" name="">
-        </p>
-    </form>
+<?php
+
+      if (isset($_REQUEST['add'])) {
+        header('Location: ./add.php');
+      }
+      
+      
+      ?>
+    <div class="container mt-5">
+    <form action="" method="get">
+            <div class="mb-3">
+                <p>
+                    <input type="submit" class="btn btn-primary" name='imprimir' value="Imprimir Tabla">
+                </p>
+            </div>
+            <div class="mb-3 input-group">
+                <input type="text" class="form-control" name="buscar" id="" placeholder="Buscar Por DNI">
+                <input name = 'botonBusca' type="submit" value="Buscar" class='btn btn-dark'>
+                <input name = 'add' type="submit" value="Nuevo Registro" class='btn btn-success'>
+            </div>
+        </form>
+    </div>
+    <?php 
+    //   if (!empty($_REQUEST['eliminar'])) {
+    //     eliminarRegistro($_REQUEST['DNI']);
+    //     leerTabla();
+    //   }
+ if (isset($_REQUEST['imprimir'])) {
+    imprimir(); 
+ }
+
+//   if (isset($_REQUEST['botonBusca'])) {
+//       buscarPorDNI($_REQUEST['busca']); 
+//   }
+ ?>
+
 </body>
+
+</html>
+

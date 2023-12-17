@@ -16,7 +16,6 @@ try {
         
     
 } catch (\Throwable $th) {
-
     echo mysqli_connect_errno(). "<br>";
     echo mysqli_connect_error();
     mysqli_close($conexion);

@@ -1,6 +1,4 @@
--- Crear la base de datos
-CREATE DATABASE GYM;
-\c GYM;
+
 
 -- Crear la tabla 'ejercicios'
 CREATE TABLE ejercicios (
