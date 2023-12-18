@@ -102,3 +102,17 @@ function validaFormulario(&$errores) {
     if (count($errores) == 0) return true;
     return false;
 }
+
+function validarFormulario2(&$errores) {
+    if (textoVacio('NomEjer')) $errores['NomEjer'] = 'El nombre del ejercicio no puede estar vacío.';
+    if (!textoVacio('NomEjer') && strlen($_REQUEST['NomEjer']) > 200) $errores['validarEjercicio'] = 'El nombre del ejercicio no puede superar los 200 caracteres.';
+
+    if (textoVacio('Repes')) $errores['Repes'] = 'Las repeticiones no pueden estar vacías.';
+    if (!textoVacio('Repes') && (!is_numeric($_REQUEST['Repes']) || $_REQUEST['Repes'] < 1)) $errores['validarRepeticiones'] = 'Introduzca un número válido de repeticiones (mayor o igual a 1).';
+
+    if (textoVacio('Series')) $errores['Series'] = 'Las series no pueden estar vacías.';
+    if (!textoVacio('Series') && (!is_numeric($_REQUEST['Series']) || $_REQUEST['Series'] < 1)) $errores['validarSeries'] = 'Introduzca un número válido de series (mayor o igual a 1).';
+
+    if (count($errores) == 0) return true;
+    return false;
+}
