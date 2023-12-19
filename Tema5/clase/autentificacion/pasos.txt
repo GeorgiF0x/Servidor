@@ -7,7 +7,6 @@ allow all
 georgi@georgi:~$ cd /etc/apache2
 georgi@georgi:/etc/apache2$ sudo mkdir auth
 georgi@georgi:/etc/apache2$ cd auth
-
 georgi@georgi:/etc/apache2/auth$ sudo htpasswd -c users georgi
 georgi@georgi:/etc/apache2/auth$ sudo htpasswd  users admin
 georgi@georgi:/etc/apache2/auth$ sudo htpasswd -c admin admin 

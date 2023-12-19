@@ -60,6 +60,7 @@ while ($array = $result->fetch(PDO::FETCH_ASSOC)){
         echo '</table>';
         echo'</div>';
     } catch (PDOException $e) {
+        ejecutarScript();
         switch ($e->getCode()){
             case 0:
                 echo "No encuentra todos los parámetros de la secuencia. <br> Prueba a crear la base de datos.";
@@ -80,20 +81,20 @@ while ($array = $result->fetch(PDO::FETCH_ASSOC)){
                     echo "La base de datos  no existe
                     <br>";
                 
-              
+                 
                     break;
                
             case 1146:
                 echo "Error al encontrar la tabla indicada";
          
-             
+          
                 break;
             case 1064:
                 echo "No se han indicado los valores a insertar en la BD";
                 break;
                 case '42P01':
                 echo "Tabla no definida";
-               
+          
                     break;
                 case'42P04':
                 echo "La base de datos no existe <br>";
@@ -154,7 +155,6 @@ function ejecutarScript(){
 
 function crearTabla(){
     try {
-        $con = new PDO($DSN, USER, PASS);
         $DSN = 'pgsql:host=' . IP . ';dbname=gym';//conectamos a la base de datos creada
         $con = new PDO($DSN, USER, PASS);
         $script = file_get_contents('/var/www/Servidor/Tema4/Tareas/PR13/script.sql');
@@ -235,7 +235,7 @@ function addRegistro(){
         $con = new PDO($DSN, USER, PASS);
 
         
-        echo '<h3 class="text-success text-center">Conexión exitosa a la base de datos</h3>';
+    
 
         $sql = "INSERT INTO ejercicios (ejercicio, repeticiones, series) VALUES (?, ?, ?)";
         $stmt = $con->prepare($sql);
@@ -246,8 +246,7 @@ function addRegistro(){
 
         $stmt->execute(array($ejercicio, $repeticiones, $series));
 
-        echo '<h3 class="text-success text-center">Registro agregado correctamente</h3>';
-        imprimir();
+       
     } catch (PDOException $e) {
         switch ($e->getCode()){
             case 0:
