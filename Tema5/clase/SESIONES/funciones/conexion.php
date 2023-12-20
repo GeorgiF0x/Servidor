@@ -11,48 +11,71 @@ function validarUsuario($user, $pass) {
         $DSN = 'mysql:host=' . IP . ';dbname=sesiones';
         $con = new PDO($DSN, USER, PASS);
         
-        $sql = "select * from usuarios where nombre = ? and clave = ?";
+        $sql = "select * from usuarios where usuario = ? and clave = ?";
         $stmt = $con->prepare($sql);
         $pass=sha1($pass);
-        $usuario=$stmt->execute([$user, $pass]); 
+        $stmt->execute([$user, $pass]); 
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($usuario){
+
+        if ($usuario) {
             return $usuario;
-        }else{
+        } else {
             return false;
         }
-
     } catch (PDOException $e) {
-        // Manejo de excepciones
+        
         echo $e->getMessage();
     } finally {
-        // Cierra la conexión en el bloque finally para asegurarte de que siempre se cierre
+        
         unset($con);
     }
 }
 
-function verificarPermisos($perfil){
-    $DSN = 'mysql:host=' . IP . ';dbname=sesiones';
+
+function misPaginas(){
+    try {
+        $DSN = 'mysql:host=' . IP . ';dbname=sesiones';
         $con = new PDO($DSN, USER, PASS);
         
-        $sql = "select perfil from usuarios where usuarios  = ?";
+        $sql = "select url from paginas where codigo in 
+        (select codigoPagina from accede where codigoPerfil= ?)";
         $stmt = $con->prepare($sql);
-        $Permisousuario=$stmt->execute([$perfil]); 
-        $Permisousuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($Permisousuario){
-            return $Permisousuario;
+        $stmt->execute($_SESSION['usuario']['perfil']);
+        $paginas=array();
+        while ($pagina= $stmt->fetch(PDO::FETCH_ASSOC)){
+            array_push($paginas,$pagina['url']);
+        }
+        if(count($paginas)>0){
+            $_SESSION['usuario']['paginas']=$paginas;
+            return $paginas;
         }else{
             return false;
         }
+  
+    } catch (PDOException $e) {
         
-
-    if($usuario){
-            return $usuario;
-        }else{
-            return false;
-        }
-      
+        echo $e->getMessage();
+    } finally {
+        
+        unset($con);
+    }
 }
+
+function sesionIniciada(){
+    if(!isset($_SESSION['usuario'])){
+        $_SESSION['error']="no tienes permiso para entrar a la pagina USER";
+        header('Location : ./login.php');
+        exit;
+    }
+}
+function permisosPagina($url){
+   if(!in_array($url,$_SESSION['usuario']['paginas'])){
+    $_SESSION['error']="no tienes permiso para ir a la pagina" .$url;
+    header( "Location ./login.php");
+   }
+}
+
+
 
 
 

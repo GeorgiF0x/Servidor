@@ -1,0 +1,35 @@
+//pasos
+
+   1 -cual es el problema
+        
+        -INtroduccion con el problema y que me lleva a automatizarlo (en este caso la venta de productos)
+    
+    2-REQUISITOS
+
+
+       requisitos
+
+        -La pagina debe tener un home en el que se muestra , los productos mas vendidos/ofertas etc..
+
+        - Un usuario se puede registrar
+
+        -Un usuario no registrado debe tener el acceso a un login
+
+        CASOS DE USO  (por ejemplo modificar perfil , que a su vez ramifica en gestioar datos de facturacion,de dirrecion,personales)
+
+
+            UML
+        -Un usuario ADMINISTRADOR 
+            -insertar productos en el almacen,cambiar precios y dar de alta un producto nuevo
+                podra generar albaranes de pedidos que contienen productos 
+        -Un usuario MODERADOR
+            -insertar productos en el almacen
+        -Un usuario LOGEADO (normal)
+            -ver /mod
+
+        3- ANALISIS BASE DE DATOS
+
+            -ENTIDAD/RELACION(NO NORMALIZADO)
+
+            -RELACIONAL(NORMALIZADO)
+
