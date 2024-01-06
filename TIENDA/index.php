@@ -1,6 +1,11 @@
+<?php
+    require ("./funciones/funciones.php");
+    //verificar si existe la bdd
+    // verificarBDD();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -487,3 +492,4 @@
 </body>
 
 </html>
+
