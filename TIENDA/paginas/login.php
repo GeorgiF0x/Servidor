@@ -44,7 +44,7 @@
 
                         <form method="post" >
                             <div class="mb-3">
-                                <label for="username" class="form-label">Nombre de usuario:</label>
+                                <label for="username" class="form-label">Nombre de user:</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
                             </div>
                             <div class="mb-3">

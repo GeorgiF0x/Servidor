@@ -176,7 +176,7 @@
 
                 <article class=" mx-auto col-xl-2   ">
                     <div class="card" style="width: 18rem;">
-                        <img src="Media/16267-sotya-100-protein-1000g-v3.webp" class="card-img-top img-responsive"
+                        <img src="Media/producto1.webp" class="card-img-top img-responsive"
                             alt="...">
                         <div class="card-body">
                             <h5 class="card-title fw-bold ">Proteina whey sabor fresa</h5>
@@ -190,7 +190,7 @@
                 
                 <article class=" mx-auto col-xl-2   ">
                     <div class="card  " style="width: 18rem;">
-                        <img src="Media/big-only-whey-cacaolat-edicion-limitada.webp"
+                        <img src="Media/producto2.webp"
                             class="card-img-top img-responsive" alt="...">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Proteina Whey Cacaolat </h5>
@@ -203,7 +203,7 @@
 
                 <article class=" mx-auto col-xl-2   ">
                     <div class="card" style="width: 18rem;">
-                        <img src="Media/Caseina.jpg" class="card-img-top img-responsive" alt="..." height="287px">
+                        <img src="Media/producto3.jpg"class="card-img-top img-responsive" alt="..." height="287px">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Caseina Gold Standard</h5>
                             <p class="card-text">Caseina sabor Vainilla
@@ -216,7 +216,7 @@
                 </article>
                 <article class=" mx-auto col-xl-2   ">
                     <div class="card" style="width: 18rem;">
-                        <img src="Media/chocolate.jpg" class="card-img-top img-responsive" alt="...">
+                        <img src="Media/producto4.jpg" class="card-img-top img-responsive" alt="...">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Proteina Whey Sabor Chocolate</h5>
                             <p class="card-text">Proteina  100% sabor chocolate</p>
@@ -229,7 +229,7 @@
             <section class="row mt-4">
                 <article class=" mx-auto col-xl-2   ">
                     <div class="card" style="width: 18rem;">
-                        <img src="Media/clear.jpg" class="card-img-top img-responsive" alt="...">
+                        <img src="Media/producto5.jpg" class="card-img-top img-responsive" alt="...">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Whey iso</h5>
                             <p class="card-text">Proteina de suero de leche whey iso baja en grasas y carbohidratos</p>
@@ -240,7 +240,7 @@
                 </article>
                 <article class=" mx-auto col-xl-2   ">
                     <div class="card" style="width: 18rem;">
-                        <img src="Media/isoWhey.jpg" class="card-img-top img-responsive" alt="...">
+                        <img src="Media/producto6.jpg" class="card-img-top img-responsive" alt="...">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Proteina Whey Iso zero</h5>
                             <p class="card-text">Proteina iso con cero azucares añadidos.</p>
@@ -252,7 +252,7 @@
 
                 <article class=" se mx-auto col-xl-2   ">
                     <div class="card" style="width: 18rem;">
-                        <img src="Media/serious-mass-6-lb-272-kg.webp" class="card-img-top img-responsive" alt="...">
+                        <img src="Media/producto7.webp" class="card-img-top img-responsive" alt="...">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Serious Mass Gainer ON Nutrition</h5>
                             <p class="card-text">Aumentador de masa con proteina</p>
@@ -263,7 +263,7 @@
                 </article>
                 <article class=" mx-auto col-xl-2   ">
                     <div class="card" style="width: 18rem;">
-                        <img src="Media/vegun-nutrition-veganmass-300x361.png" class="card-img-top img-responsive"
+                        <img src="Media/producto8.png" class="card-img-top img-responsive"
                             alt="..." height="287px">
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Vegan Mass Gainer</h5>
