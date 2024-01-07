@@ -1,7 +1,14 @@
 <?php
-    require ("./funciones/funciones.php");
-    //verificar si existe la bdd
+    // require ("./funciones/funcionesBD.php");
     // verificarBDD();
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Puedes realizar algún procesamiento adicional aquí si es necesario
+    
+        // Redirigir a la página producto.php
+        header("Location: ./paginas/producto.php");
+        exit(); // Asegúrate de salir después de la redirección
+    }
 ?>
 
 <!DOCTYPE html>
@@ -61,8 +68,8 @@
                             </ul>
                             <nav class="navbar ">
                                 <div class="container-fluid">
-                                    <form class="d-flex" role="search">
-                                        <input class="form-control me-2" type="search" placeholder="Search"
+                                    <form method="POST" class="d-flex" role="search">
+                                        <input class="form method="POST"-control me-2" type="search" placeholder="Search"
                                             aria-label="Search">
                                         <button class="btn btn-outline-primary " type="submit">Search</button>
                                     </form>
@@ -186,7 +193,7 @@
                         <div class="card-body">
                             <h5 class="card-title fw-bold ">Proteina whey sabor fresa</h5>
                             <p class="card-text">Proteina whey con intenso sabor a fresa</p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                             </form>
                         </div>
@@ -200,7 +207,7 @@
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Proteina Whey Cacaolat </h5>
                             <p class="card-text">Proteina Whey con sabor de batido de chocolate cacaolat</p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                              </form>
                         </div>
@@ -214,7 +221,7 @@
                             <p class="card-text">Caseina sabor Vainilla
                                 100% caseína micelar de liberación sostenida.
                             </p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                             </form>
                         </div>
@@ -225,7 +232,7 @@
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Proteina Whey Sabor Chocolate</h5>
                             <p class="card-text">Proteina  100% sabor chocolate</p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                             </form>
                         </div>
@@ -238,7 +245,7 @@
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Whey iso</h5>
                             <p class="card-text">Proteina de suero de leche whey iso baja en grasas y carbohidratos</p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                             </form>
                         </div>
@@ -249,7 +256,7 @@
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Proteina Whey Iso zero</h5>
                             <p class="card-text">Proteina iso con cero azucares añadidos.</p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                             </form>
                         </div>
@@ -261,7 +268,7 @@
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Serious Mass Gainer ON Nutrition</h5>
                             <p class="card-text">Aumentador de masa con proteina</p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                             </form>
                         </div>
@@ -273,7 +280,7 @@
                         <div class="card-body">
                             <h5 class="card-title fw-bold">Vegan Mass Gainer</h5>
                             <p class="card-text">Aumentador de masa sin ingredintes de origen animal</p>
-                            <form class="d-flex justify-content-end">
+                            <form method="POST" class="d-flex justify-content-end" name="comprar">
                                 <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
                             </form>
                         </div>

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS Producto (
 INSERT INTO Producto (Nombre, CantidadStock, Imagen) VALUES
     ('Producto1', 50, 'producto1.webp'),
     ('Producto2', 30, 'producto2.webp'),
-    ('Producto3', 20, 'producto3.webp');
+    ('Producto3', 20, 'producto3.jpg');
 
 
 CREATE TABLE IF NOT EXISTS PedidoCompra (
