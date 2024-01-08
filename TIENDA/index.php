@@ -1,12 +1,12 @@
 <?php
-    // require ("./funciones/funcionesBD.php");
-    // verificarBDD();
+    require ("./funciones/funcionesBD.php");
+    verificarBDD();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Puedes realizar algún procesamiento adicional aquí si es necesario
-    
-        // Redirigir a la página producto.php
-        header("Location: ./paginas/producto.php");
+
+        $producto_id = obtenerIdDelProducto($_POST['producto_id']);
+
+        header("Location: ./paginas/producto.php?producto_id=$producto_id");
         exit(); // Asegúrate de salir después de la redirección
     }
 ?>
@@ -68,10 +68,10 @@
                             </ul>
                             <nav class="navbar ">
                                 <div class="container-fluid">
-                                    <form method="POST" class="d-flex" role="search">
-                                        <input class="form method="POST"-control me-2" type="search" placeholder="Search"
+                                    <form method="POST" class="d-flex" role="search" >
+                                        <input class="control me-2" type="search" placeholder="Search"
                                             aria-label="Search">
-                                        <button class="btn btn-outline-primary " type="submit">Search</button>
+                                        <button class="btn btn-outline-primary " type="button">Search</button>
                                     </form>
                                 </div>
                             </nav>
@@ -181,146 +181,17 @@
                 </button>
             </div>
 
-
-
-         <section class="row d-flex justify-content-start mt-5">
-        <legend class="fw-bold">Productos más populares</legend>
-
-                <article class=" mx-auto col-xl-2   ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="Media/producto1.webp" class="card-img-top img-responsive"
-                            alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold ">Proteina whey sabor fresa</h5>
-                            <p class="card-text">Proteina whey con intenso sabor a fresa</p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                            </form>
-                        </div>
-                    </div>
-                </article>
-                
-                <article class=" mx-auto col-xl-2   ">
-                    <div class="card  " style="width: 18rem;">
-                        <img src="Media/producto2.webp"
-                            class="card-img-top img-responsive" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Proteina Whey Cacaolat </h5>
-                            <p class="card-text">Proteina Whey con sabor de batido de chocolate cacaolat</p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                             </form>
-                        </div>
-                </article>
-
-                <article class=" mx-auto col-xl-2   ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="Media/producto3.jpg"class="card-img-top img-responsive" alt="..." height="287px">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Caseina Gold Standard</h5>
-                            <p class="card-text">Caseina sabor Vainilla
-                                100% caseína micelar de liberación sostenida.
-                            </p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                            </form>
-                        </div>
-                </article>
-                <article class=" mx-auto col-xl-2   ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="Media/producto4.jpg" class="card-img-top img-responsive" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Proteina Whey Sabor Chocolate</h5>
-                            <p class="card-text">Proteina  100% sabor chocolate</p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                            </form>
-                        </div>
-                </article>
-            </section>
-            <section class="row mt-4">
-                <article class=" mx-auto col-xl-2   ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="Media/producto5.jpg" class="card-img-top img-responsive" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Whey iso</h5>
-                            <p class="card-text">Proteina de suero de leche whey iso baja en grasas y carbohidratos</p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                            </form>
-                        </div>
-                </article>
-                <article class=" mx-auto col-xl-2   ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="Media/producto6.jpg" class="card-img-top img-responsive" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Proteina Whey Iso zero</h5>
-                            <p class="card-text">Proteina iso con cero azucares añadidos.</p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                            </form>
-                        </div>
-                </article>
-
-                <article class=" se mx-auto col-xl-2   ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="Media/producto7.webp" class="card-img-top img-responsive" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Serious Mass Gainer ON Nutrition</h5>
-                            <p class="card-text">Aumentador de masa con proteina</p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                            </form>
-                        </div>
-                </article>
-                <article class=" mx-auto col-xl-2   ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="Media/producto8.png" class="card-img-top img-responsive"
-                            alt="..." height="287px">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Vegan Mass Gainer</h5>
-                            <p class="card-text">Aumentador de masa sin ingredintes de origen animal</p>
-                            <form method="POST" class="d-flex justify-content-end" name="comprar">
-                                <button class="btn btn-outline-primary pull-right" type="submit">Comprar</button>
-                            </form>
-                        </div>
-                </article>
-            </section>
-
-
-            <section class=" mx-auto mt-4">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-                    <div class="carousel-indicators">
-                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                      <div class="carousel-item active">
-                        <img src="Media/carrusel-3-1.webp" class="d-block w-100" alt="...">
-                      </div>
-                      <div class="carousel-item">
-                        <img src="Media/carrusel3-2.webp" class="d-block w-100" alt="...">
-                      </div>
-                      <div class="carousel-item">
-                        <img src="Media/carrusel-3-3.webp" class="d-block w-100" alt="...">
-                      </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Next</span>
-                    </button>
-                  </div>
-            </section>
+          
+            <section class="row d-flex justify-content-start mt-5 mb-4"> <!-- Agregué la clase mb-4 para el margen inferior -->
+    <?php
+        PintarProductos();
+    ?>
+</section>
 
         </main>
         <!-- FOTER -->
     </div>
-
+    <footer>
     <div class="container-fluid">
         <footer class="row bg-primary text-muted mt-5">
             <div class="d-flex flex-row-reverse ml-4 mb-1 ">
@@ -482,10 +353,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
         </footer>
     </div>
 

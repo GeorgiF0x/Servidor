@@ -1,20 +1,28 @@
-                        <?php
-                        // Verifica si se han enviado datos del formulario
-                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                            // Aquí puedes agregar la lógica para verificar las credenciales y redirigir al usuario si es válido.
-                            // En un entorno de producción, también deberías implementar medidas de seguridad adecuadas.
-                            $username = $_POST["username"];
-                            $password = $_POST["password"];
 
-                            // Ejemplo simple: verifica si el nombre de usuario y la contraseña coinciden
-                            if ($username === "usuario" && $password === "contraseña") {
-                                header("Location: bienvenido.php");
-                                exit();
-                            } else {
-                                echo '<div class="alert alert-danger" role="alert">Credenciales incorrectas. Por favor, inténtalo de nuevo.</div>';
-                            }
-                        }
-                        ?>
+<?php
+require("../funciones/funcionesBD.php");
+require("../funciones/funcionesSesion.php");
+
+
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+
+    $resultado = verificarUser($username, $password);
+
+    if ($resultado === true) {
+        // Redirigir al usuario después de iniciar sesión (puedes cambiar la URL)
+        header("Location: ../index2.php");
+        exit();
+    } else {
+        echo "DATOS INCORRECTOS";
+        exit();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
