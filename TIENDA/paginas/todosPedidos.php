@@ -1,5 +1,3 @@
-
-
 <?php
 require("../funciones/funcionesBD.php");
 require("../funciones/funcionesSesion.php");
@@ -10,35 +8,24 @@ if (!estaAutenticado()) {
     header("Location: ./login.php");
     exit();
 }
+
+// Obtener todos los pedidos del usuario
+$pedidos = verTodosPedidos($_SESSION['usuario_id']);
+
 ?>
 
-<?php
-
-$usuarioId = $_SESSION['usuario_id'];
-
-if (isset($_REQUEST['producto_id'])) {
-    $producto_id = $_REQUEST['producto_id'];
-    $producto = getInfoProducto($producto_id);
-
-    if ($producto) {
-        if (isset($_REQUEST['comprar'])) {
-            $cantidadComprada = $_REQUEST['cantidad'];
-            restarStock($usuarioId, $producto_id, $cantidadComprada);
-            // Puedes agregar más lógica aquí, como registrar la compra en la base de datos, enviar correos, etc.
-        }
-        ?>
-        <!DOCTYPE html>
-        <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title><?php echo $producto['Nombre']; ?></title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-            <!-- Agrega cualquier otra referencia a estilos que necesites -->
-        </head>
-        <body>
-            <div class="container mt-5">
-            <header class="row">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Pedidos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Agrega cualquier otra referencia a estilos que necesites -->
+</head>
+<body>
+    <div class="container mt-5">
+    <header class="row">
             <div class="col-10 nav">
                 <nav class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
@@ -99,97 +86,48 @@ if (isset($_REQUEST['producto_id'])) {
                     </svg>
                 </button>
                 <button type="button" class="btn" id="Login">
-                    <a href="paginas/login.php">
+                    <a href="login.php">
                         <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
                             class="bi mx-2 bi-person-circle" viewBox="0 0 16 16">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                             <path fill-rule="evenodd"
                                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                         </svg>
-                    </a>
                 </button>
+                </a>
             </div>
         </header>
+
         <main>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <!-- Contenido de la imagen -->
-                <img src="<?php echo $producto['Imagen']; ?>" class="img-fluid" alt="<?php echo $producto['Nombre']; ?>">
-            </div>
-            <div class="col-md-6">
-                <!-- Contenido del producto -->
-                <h2><?php echo $producto['Nombre']; ?></h2>
-                <p><?php echo $producto['Descripcion']; ?></p>
-                <p>Precio: $<?php echo $producto['Precio']; ?></p>
-                <p>Estado de Stock: <?php echo ($producto['CantidadStock'] > 0) ? 'En Stock' : 'Sin Stock'; ?></p>
-                <?php if ($producto['CantidadStock'] > 0): ?>
-                    <p>Unidades disponibles: <?php echo $producto['CantidadStock']; ?></p>
-                <?php endif; ?>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2>Historial de Pedidos</h2>
 
-               
-                <form action="producto.php?producto_id=<?php echo $producto_id; ?>" method="post">
-                    <div class="mb-3">
-                        <label for="cantidad" class="form-label">Cantidad:</label>
-                        <input type="number" class="form-control" id="cantidad" name="cantidad" value="1" min="1" max="<?php echo $producto['CantidadStock']; ?>">
-                    </div>
-                    <input type="hidden" name="producto_id" value="<?php echo $producto_id; ?>">
-                    <input type="hidden" name="producto_nombre" value="<?php echo $producto['Nombre']; ?>">
-                    <input type="hidden" name="producto_precio" value="<?php echo $producto['Precio']; ?>">
-                    <button type="submit" name="comprar" class="btn btn-primary">Comprar</button>
-                </form>
-            </div>
-        </div>
+            <?php
+            // Ver si hay pedidos para mostrar
+            if ($pedidos) {
+                //si hay pedidos se dibuja el menu para seleccionar el pedido que se va a ver
+                echo '<form method="GET" action="pedido.php">';
+                echo '<label for="pedido_id">Selecciona un pedido:</label>';
+                echo '<select name="pedido_id" id="pedido_id" class="form-select">';
+                
+                foreach ($pedidos as $pedido) {
+                    echo '<option value="' . $pedido['Id'] . '">' . $pedido['FechaCompra'] . '</option>';
+                }
 
-        <!-- Apartado de comentarios estáticos -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <hr>
-                <h3>Comentarios:</h3>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario1" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario1</h5>
-                                <p>¡Excelente producto! Lo recomiendo.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario2" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario2</h5>
-                                <p>Buena calidad, pero el precio es un poco alto.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario3" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario3</h5>
-                                <p>Me encanta, lo volvería a comprar.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario4" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario4</h5>
-                                <p>No estoy seguro de la calidad, pero tiene buen aspecto.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario5" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario5</h5>
-                                <p>Excelente servicio al cliente.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                echo '</select>';
+                echo '<button type="submit" class="btn btn-primary mt-3">Ver Detalles</button>';
+                echo '</form>';
+            } else {
+                echo '<p>No hay pedidos disponibles.</p>';
+            }
+            ?>
         </div>
     </div>
 </main>
-    <footer>
+</div>                
+
+             
     <div class="container-fluid">
         <footer class="row bg-primary text-muted mt-5">
             <div class="d-flex flex-row-reverse ml-4 mb-1 ">
@@ -218,33 +156,33 @@ if (isset($_REQUEST['producto_id'])) {
 
             <div class="col-3 d-flex flex-column linkFooter ">
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white  mb-4">
+                    <h6 class="text-uppercase text-white  mx-4 mb-4">
                         TARJETAS DE REGALO
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white  mb-4">
+                    <h6 class="text-uppercase text-white mx-4  mb-4">
                         BUSCAR UNA TIENDA
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white  mb-4">
+                    <h6 class="text-uppercase text-white  mx-4 mb-4">
                         NIKE JOURNAL
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white  mb-4">
+                    <h6 class="text-uppercase text-white mx-4 mb-4">
                         DESCUENTO PARA ESTUDIANTES
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white mb-4">
+                    <h6 class="text-uppercase text-white mx-4 mb-4">
                         COMENTARIOS
 
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white  mb-4">
+                    <h6 class="text-uppercase text-white mx-4 mb-4">
                         CÓDIGOS PROMOCIONALES
                     </h6>
                 </a>
@@ -351,20 +289,8 @@ if (isset($_REQUEST['producto_id'])) {
                         </div>
                     </div>
                 </div>
-        </footer>
-            
-
-        </body>
-        </html>
-    <?php
-    } else {
-        echo "Producto no encontrado";
-        exit();
-    }
-}
-?>
-
-
-
-
-
+                </footer>
+            </div>
+    </div>
+</body>
+</html>

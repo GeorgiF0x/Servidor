@@ -1,5 +1,3 @@
-
-
 <?php
 require("../funciones/funcionesBD.php");
 require("../funciones/funcionesSesion.php");
@@ -10,29 +8,30 @@ if (!estaAutenticado()) {
     header("Location: ./login.php");
     exit();
 }
-?>
 
-<?php
+// Verifica si se proporciona un pedido_id en la URL
+if (isset($_GET['pedido_id'])) {
+    $pedido_id = $_GET['pedido_id'];
 
-$usuarioId = $_SESSION['usuario_id'];
+    // Obtener información del pedido
+    $pedido = getInfoPedido($pedido_id);
 
-if (isset($_REQUEST['producto_id'])) {
-    $producto_id = $_REQUEST['producto_id'];
-    $producto = getInfoProducto($producto_id);
+    if ($pedido) {
+        // Puedes personalizar esta sección según los datos que deseas mostrar del pedido
+        $productoNombre = $pedido['NombreProducto'];
+        $cantidadComprada = $pedido['Cantidad'];
+        $precioTotal = $pedido['PrecioTotal'];
+        $fechaCompra = $pedido['FechaCompra'];
 
-    if ($producto) {
-        if (isset($_REQUEST['comprar'])) {
-            $cantidadComprada = $_REQUEST['cantidad'];
-            restarStock($usuarioId, $producto_id, $cantidadComprada);
-            // Puedes agregar más lógica aquí, como registrar la compra en la base de datos, enviar correos, etc.
-        }
+        // A continuación, puedes utilizar estas variables en tu diseño
         ?>
+
         <!DOCTYPE html>
         <html lang="es">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title><?php echo $producto['Nombre']; ?></title>
+            <title>Detalle del Pedido</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
             <!-- Agrega cualquier otra referencia a estilos que necesites -->
         </head>
@@ -106,90 +105,32 @@ if (isset($_REQUEST['producto_id'])) {
                             <path fill-rule="evenodd"
                                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                         </svg>
-                    </a>
                 </button>
+                </a>
             </div>
         </header>
-        <main>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <!-- Contenido de la imagen -->
-                <img src="<?php echo $producto['Imagen']; ?>" class="img-fluid" alt="<?php echo $producto['Nombre']; ?>">
-            </div>
-            <div class="col-md-6">
-                <!-- Contenido del producto -->
-                <h2><?php echo $producto['Nombre']; ?></h2>
-                <p><?php echo $producto['Descripcion']; ?></p>
-                <p>Precio: $<?php echo $producto['Precio']; ?></p>
-                <p>Estado de Stock: <?php echo ($producto['CantidadStock'] > 0) ? 'En Stock' : 'Sin Stock'; ?></p>
-                <?php if ($producto['CantidadStock'] > 0): ?>
-                    <p>Unidades disponibles: <?php echo $producto['CantidadStock']; ?></p>
-                <?php endif; ?>
+                </header>
+                <main>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <!-- Contenido del pedido -->
+            <h2>Detalle del Pedido</h2>
+            <p>Producto: <?php echo $productoNombre; ?></p>
+            <p>Cantidad Comprada: <?php echo $cantidadComprada; ?></p>
+            <p>Precio Total: €<?php echo $precioTotal; ?></p>
+            <p>Fecha de Compra: <?php echo $fechaCompra; ?></p>
+            <!-- Puedes agregar más detalles según tus necesidades -->
 
-               
-                <form action="producto.php?producto_id=<?php echo $producto_id; ?>" method="post">
-                    <div class="mb-3">
-                        <label for="cantidad" class="form-label">Cantidad:</label>
-                        <input type="number" class="form-control" id="cantidad" name="cantidad" value="1" min="1" max="<?php echo $producto['CantidadStock']; ?>">
-                    </div>
-                    <input type="hidden" name="producto_id" value="<?php echo $producto_id; ?>">
-                    <input type="hidden" name="producto_nombre" value="<?php echo $producto['Nombre']; ?>">
-                    <input type="hidden" name="producto_precio" value="<?php echo $producto['Precio']; ?>">
-                    <button type="submit" name="comprar" class="btn btn-primary">Comprar</button>
-                </form>
-            </div>
-        </div>
+            <!-- Puedes mostrar la información adicional aquí -->
 
-        <!-- Apartado de comentarios estáticos -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <hr>
-                <h3>Comentarios:</h3>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario1" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario1</h5>
-                                <p>¡Excelente producto! Lo recomiendo.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario2" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario2</h5>
-                                <p>Buena calidad, pero el precio es un poco alto.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario3" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario3</h5>
-                                <p>Me encanta, lo volvería a comprar.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario4" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario4</h5>
-                                <p>No estoy seguro de la calidad, pero tiene buen aspecto.</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <img src="../Media/usuario.jpg" class="mr-3" alt="Usuario5" style="width:60px;">
-                            <div class="media-body">
-                                <h5 class="mt-0">Usuario5</h5>
-                                <p>Excelente servicio al cliente.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Botón para ir a todosPedidos.php -->
+            <a href="todosPedidos.php" class="btn btn-primary mt-3">Ver Todos los Pedidos</a>
         </div>
     </div>
-</main>
-    <footer>
+    </main>
+    </div>                
+<footer class="row bg-primary text-muted mt-5">
+             
     <div class="container-fluid">
         <footer class="row bg-primary text-muted mt-5">
             <div class="d-flex flex-row-reverse ml-4 mb-1 ">
@@ -351,20 +292,18 @@ if (isset($_REQUEST['producto_id'])) {
                         </div>
                     </div>
                 </div>
-        </footer>
-            
-
+                </footer>
+            </div>
         </body>
         </html>
-    <?php
+
+        <?php
     } else {
-        echo "Producto no encontrado";
+        echo "Pedido no encontrado";
         exit();
     }
+} else {
+    echo "Pedido ID no proporcionado";
+    exit();
 }
 ?>
-
-
-
-
-

@@ -77,7 +77,7 @@ function PintarProductos() {
                     echo '<h5 class="card-title fw-bold">' . $row['Nombre'] . '</h5>';
                     echo '<p class="card-text">' . $row['Descripcion'] . '</p>';
                     echo '<form method="POST" action="paginas/producto.php" class="d-flex justify-content-between align-items-center" name="comprar">';
-                    echo '<p class="fw-bold mb-0">Precio: $' . number_format($row['Precio'], 2) . '</p>';
+                    echo '<p class="fw-bold mb-0">Precio: €' . number_format($row['Precio'], 2) . '</p>';
                     echo '<input type="hidden" name="producto_id" value="' . $row['Codigo'] . '">';
                     echo '<button class="btn btn-outline-primary" type="submit">Comprar</button>';
                     echo '</form>';
@@ -182,19 +182,73 @@ function verificarUser($username, $password){
     }
 }
 
-function restarStock($producto_id, $cantidadComprada)
+function actualizarPerfil($usuario_id, $password, $email, $fecha_nacimiento) {
+ 
+    $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+    if ($conexion) {
+        // Actualización de datos
+        $sql = "UPDATE Usuario SET Contraseña=?, Email=?, FechaNacimiento=? WHERE Id=?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("sssi", $password, $email, $fecha_nacimiento, $usuario_id);
+
+        // Ejecutar la actualización
+        $resultado = $stmt->execute();
+
+        // Cerrar la conexión y el statement
+        $stmt->close();
+        $conexion->close();
+
+        // Retornar el resultado de la actualización
+        return $resultado;
+    } else {
+        // En caso de error de conexión
+        return false;
+    }
+}
+
+function getInfoUser($usuario_id) {
+    $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+    if ($conexion) {
+        $sql = "SELECT * FROM Usuario WHERE Id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $usuario_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $usuario = $result->fetch_assoc();
+            $stmt->close();
+            $conexion->close();
+            return $usuario;
+        } else {
+            // Manejar el caso en que no se encuentra al usuario
+            $stmt->close();
+            $conexion->close();
+            return null;
+        }
+    } else {
+        // Manejar el caso de error de conexión MySQL
+        return null;
+    }
+}
+
+
+function restarStock($usuarioId, $producto_id, $cantidadComprada)
 {
     try {
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
         if ($conexion) {
             // Obtener la cantidad actual de stock del producto
-            $query = "SELECT CantidadStock FROM Producto WHERE Codigo = $producto_id";
+            $query = "SELECT CantidadStock, Precio FROM Producto WHERE Codigo = $producto_id";
             $result = mysqli_query($conexion, $query);
 
             if ($result) {
                 $producto = mysqli_fetch_assoc($result);
                 $stockActual = $producto['CantidadStock'];
+                $precioUnitario = $producto['Precio'];
 
                 // Verificar si hay suficiente stock para la compra
                 if ($stockActual >= $cantidadComprada) {
@@ -206,12 +260,22 @@ function restarStock($producto_id, $cantidadComprada)
                     $updateResult = mysqli_query($conexion, $updateQuery);
 
                     if ($updateResult) {
-                        // Éxito al restar el stock
-                        echo "Stock actualizado correctamente.";
-                        $paginaActual = $_SERVER['PHP_SELF'];
+                        // Calcular el precio total de la compra
+                        $precioTotal = $precioUnitario * $cantidadComprada;
 
-                        // Redirigir a la página del producto con el ID actualizado
-                        header("Location: $paginaActual?producto_id=$producto_id");
+                        // Insertar la compra en la tabla PedidoCompra
+                        $insertQuery = "INSERT INTO PedidoCompra (UsuarioId, CodProducto, Cantidad, PrecioTotal) VALUES ($usuarioId, $producto_id, $cantidadComprada, $precioTotal)";
+                        $insertResult = mysqli_query($conexion, $insertQuery);
+
+                        if ($insertResult) {
+                            // Éxito al restar el stock y registrar la compra
+                            echo "Stock actualizado y compra registrada correctamente.";
+
+                            // Redirigir a la página de pedidos con el ID del nuevo pedido
+                            header("Location: pedido.php?pedido_id=" . mysqli_insert_id($conexion));
+                        } else {
+                            echo "Error al registrar la compra en la base de datos.";
+                        }
                     } else {
                         echo "Error al actualizar el stock en la base de datos.";
                     }
@@ -228,7 +292,65 @@ function restarStock($producto_id, $cantidadComprada)
         echo "Error desconocido: " . $th->getMessage();
     }
 }
+function getInfoPedido($pedido_id){
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+        
+        if ($conexion) {
+            // Consulta para obtener la información básica del pedido y el nombre del producto
+            $consulta = "SELECT pc.*, p.Nombre AS NombreProducto 
+                         FROM PedidoCompra pc
+                         JOIN Producto p ON pc.CodProducto = p.Codigo
+                         WHERE pc.Id = $pedido_id";
+            $resultado = mysqli_query($conexion, $consulta);
 
+            if ($resultado) {
+                // Verificar si se obtuvo al menos una fila
+                if (mysqli_num_rows($resultado) > 0) {
+                    // Obtener los datos del pedido y el nombre del producto
+                    $pedido = mysqli_fetch_assoc($resultado);
+                    return $pedido;
+                } else {
+                    // No se encontró ningún pedido con ese ID
+                    return null;
+                }
+            } else {
+                // Error en la consulta
+                echo "Error en la consulta: " . mysqli_error($conexion);
+                return null;
+            }
+        } else {
+            // Error de conexión MySQL
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+            return null;
+        }
+    } catch (\Throwable $th) {
+        // Manejo de errores
+        echo "Error desconocido: " . $th->getMessage();
+        return null;
+    }
+}
+
+function verTodosPedidos($usuario_id) {
+    // Asegúrate de establecer la conexión y realizar la consulta adecuada
+    $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+    
+    if ($conexion) {
+        $consulta = "SELECT * FROM PedidoCompra WHERE UsuarioId = $usuario_id";
+        $resultado = mysqli_query($conexion, $consulta);
+        
+        if ($resultado) {
+            $pedidos = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+            return $pedidos;
+        } else {
+            echo "Error en la consulta: " . mysqli_error($conexion);
+            return [];
+        }
+    } else {
+        echo "Error de conexión MySQL: " . mysqli_connect_error();
+        return [];
+    }
+}
 
 
 ?>
