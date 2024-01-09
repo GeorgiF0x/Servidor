@@ -371,11 +371,10 @@ function obtenerUltimoIdAlbaran($conexion) {
         $stmt = $conexion->prepare($consulta);
         $stmt->bind_param("i", $usuarioId);
         $stmt->execute();
-        $stmt->bind_result($idAlbaran);
+
 
         if ($stmt->fetch()) {
             $stmt->close();
-            return $idAlbaran;
         }
     }
 
