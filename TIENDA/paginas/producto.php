@@ -2,8 +2,22 @@
     require("../funciones/funcionesBD.php");
     require("../funciones/funcionesSesion.php");
     session_start();
+    var_dump($_SESSION);
+    if (esModerador()) {
+        echo "\nEl usuario es moderador.";
+    } elseif (esAdministrador()) {
+        echo "El usuario es administrador.";
+    } else {
+        echo "El usuario no es moderador ni administrador.";
+    }
+    // Verificar si el usuario está autenticado
+    if (!estaAutenticado()) {
+        header("Location: ./login.php");
+        exit();
+    }
+    $usuarioId = $_SESSION['usuario_id'];
 
-    // Verificar si hay una sesión activa
+    // logout
     if (isset($_SESSION['usuario_id'])) {
         $cerrarSesionLink = './funciones/cerrarSesion.php';
         $perfilLink = './perfil.php';
@@ -19,12 +33,6 @@
         exit();
     }
 
-    // Verificar si el usuario está autenticado
-    if (!estaAutenticado()) {
-        header("Location: ./login.php");
-        exit();
-    }
-    $usuarioId = $_SESSION['usuario_id'];
     
     // Obtener información del producto si se proporciona un ID
     if (isset($_REQUEST['producto_id'])) {
@@ -44,6 +52,29 @@
                     header("Location: ./pedido.php");
                     exit();
                 }
+            }
+            if (isset($_POST['agregarStock'])) {
+               
+                $cantidadRecibida = $_POST['cantidad'];
+                $usuarioId = $_SESSION['usuario_id'];
+                $producto_id = $_POST['producto_id'];
+                
+                agregarStock($usuarioId, $producto_id, $cantidadRecibida);
+                $idDelAlbaran = obtenerIdAlbaran();
+                header("Location: ./albaranes.php");
+                exit();
+            }
+
+            if (isset($_POST['quitarStock'])) {
+                $cantidadQuitar = $_POST['cantidad'];
+                $usuarioId = $_SESSION['usuario_id'];
+                $producto_id = $_POST['producto_id'];
+            
+                restarStock($producto_id, $cantidadQuitar, $usuarioId);
+                $idDelAlbaran = obtenerIdAlbaran();
+                header("Location: ./albaranes.php");
+                exit();
+                } 
             }
             if ($producto['CantidadStock'] > 0) {
     ?>
@@ -138,11 +169,10 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-6">
-                    <!-- Contenido de la imagen -->
                     <img src="<?php echo $producto['Imagen']; ?>" class="img-fluid" alt="<?php echo $producto['Nombre']; ?>">
                 </div>
                 <div class="col-md-6">
-                    <!-- Contenido del producto -->
+                    <!-- Contenido de producto -->
                     <h2><?php echo $producto['Nombre']; ?></h2>
                     <p><?php echo $producto['Descripcion']; ?></p>
                     <p>Precio: $<?php echo $producto['Precio']; ?></p>
@@ -162,24 +192,24 @@
                         <input type="hidden" name="producto_precio" value="<?php echo $producto['Precio']; ?>">
 
                         <?php
-                        // Verificar si el usuario es un moderador o administrador
-                        if (isset($_SESSION['rol']) && ($_SESSION['rol'] === 'administrador' || $_SESSION['rol'] === 'moderador')) {
-                            // Mostrar los botones de agregar y quitar solo si es un moderador o administrador
-                            echo '
-                                <input type="hidden" name="albaran_id" value="' . $idDelAlbaran . '">
-                                <input type="submit" name="quitarStock" value="Quitar Stock">
-                                <input type="submit" name="agregarStock" value="Agregar Stock">
-                            ';
-                        }
+                            // Verificar si el usuario es un moderador o administrador
+                            if (esModerador() || esAdministrador()) {
+                                echo '
+                                    <input type="hidden" name="albaran_id" value="' . $idDelAlbaran . '">
+                                    <input type="submit" name="quitarStock" value="Quitar Stock">
+                                    <input type="submit" name="agregarStock" value="Agregar Stock">
+                                ';
+                            }
                         ?>
+
                         <input type="hidden" name="pedido_id" value="<?php echo $pedido_id; ?>">
                         <button type="submit" name="comprar" class="btn btn-primary">Comprar</button>
                     </form>
-            </form>
+
                 </div>
             </div>
 
-            <!-- Apartado de comentarios estáticos -->
+           
             <div class="row mt-4">
                 <div class="col-md-12">
                     <hr>
@@ -401,7 +431,7 @@
             echo "Producto no encontrado";
             exit();
         }
-    }
+    
     ?>
 
 

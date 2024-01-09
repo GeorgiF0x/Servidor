@@ -7,8 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST["contrasena"];
     $email = $_POST["email"];
     $fechaNacimiento = $_POST["fecha_nacimiento"];
-
-    // Establece el perfil predeterminado para los nuevos usuarios Cliente
+    //  perfil predterminado para los nuevos usuarios Cliente
     $perfil = 'Cliente';
 
     // Inserta el nuevo usuario en la base de datos

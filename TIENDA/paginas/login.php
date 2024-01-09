@@ -4,7 +4,7 @@ require("../funciones/funcionesSesion.php");
 
 session_start();
 
-$error_message = ""; // Inicializar la variable de mensaje de error
+$error_message = ""; //para indicar el error
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
@@ -13,8 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $resultado = verificarUser($username, $password);
 
     if ($resultado === true) {
-        // Redirigir al usuario después de iniciar sesión (puedes cambiar la URL)
-        header("Location: ../index2.php");
+        // Redirigir al usuario después de iniciar sesión
+        header("Location: ../index.php");
         exit();
     } else {
         $error_message = "Datos incorrectos. introduce un usuario y contraseña correctos";

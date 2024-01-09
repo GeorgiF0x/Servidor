@@ -58,7 +58,7 @@
                     <nav class="navbar navbar-expand-lg ">
                         <div class="container-fluid">
                             <a class="navbar-brand" href="../index.php">
-                                <img class="logo img-responsive" src="./Media/tiburonpng.png" alt="" width="270px">
+                                <img class="logo img-responsive" src="../Media/tiburonpng.png" alt="" width="270px">
                             </a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -106,7 +106,7 @@
                 <a href="<?php echo $perfilLink; ?>" class="btn btn-primary btn-sm my-2">Perfil</a>
             </div>
         <?php else : ?>
-            <!-- Mostrar botones para iniciar sesión -->
+            
             <div class="d-flex mt-3">
                 <a href="./paginas/todosPedidos.php" class="btn btn-primary  bg-white border-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
@@ -136,11 +136,7 @@
                 <p>Cantidad Comprada: <?php echo $cantidadComprada; ?></p>
                 <p>Precio Total: €<?php echo $precioTotal; ?></p>
                 <p>Fecha de Compra: <?php echo $fechaCompra; ?></p>
-                <!-- Puedes agregar más detalles según tus necesidades -->
-
-                <!-- Puedes mostrar la información adicional aquí -->
-
-                <!-- Botón para ir a todosPedidos.php -->
+           
                 <a href="todosPedidos.php" class="btn btn-primary mt-3">Ver Todos los Pedidos</a>
             </div>
         </div>

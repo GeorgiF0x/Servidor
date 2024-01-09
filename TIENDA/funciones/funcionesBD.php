@@ -203,6 +203,7 @@ function verificarUser($username, $password){
             if ($password == $usuario['Contraseña']) {
                 $_SESSION['usuario_id'] = $usuario['Id'];
                 $_SESSION['usuario_nombre'] = $usuario['Nombre'];
+                $_SESSION['perfil'] = $usuario['Perfil'];
                 header("Location: ../index.php");
                 exit();
             } else {
@@ -224,19 +225,16 @@ function actualizarPerfil($usuario_id, $password, $email, $fecha_nacimiento) {
     $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
     if ($conexion) {
-        // Actualización de datos
+       
         $sql = "UPDATE Usuario SET Contraseña=?, Email=?, FechaNacimiento=? WHERE Id=?";
         $stmt = $conexion->prepare($sql);
         $stmt->bind_param("sssi", $password, $email, $fecha_nacimiento, $usuario_id);
 
-        // Ejecutar la actualización
         $resultado = $stmt->execute();
 
-        // Cerrar la conexión y el statement
         $stmt->close();
         $conexion->close();
 
-        // Retornar el resultado de la actualización
         return $resultado;
     } else {
         // En caso de error de conexión
@@ -260,7 +258,7 @@ function getInfoUser($usuario_id) {
             $conexion->close();
             return $usuario;
         } else {
-            // Manejar el caso en que no se encuentra al usuario
+            // si  no se encuentra al usuario
             $stmt->close();
             $conexion->close();
             return null;
@@ -309,7 +307,7 @@ function quitarStock($usuarioId, $producto_id, $cantidadComprada){
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
         if ($conexion) {
-            // Obtener la cantidad actual de stock del producto
+            // cantidad actual de stock 
             $query = "SELECT CantidadStock, Precio FROM Producto WHERE Codigo = $producto_id";
             $result = mysqli_query($conexion, $query);
 
@@ -320,7 +318,6 @@ function quitarStock($usuarioId, $producto_id, $cantidadComprada){
 
                 // Verificar si hay suficiente stock para la compra
                 if ($stockActual >= $cantidadComprada) {
-                    // Restar la cantidad comprada del stock
                     $nuevoStock = $stockActual - $cantidadComprada;
 
                     // Actualizar el stock en la base de datos
@@ -336,9 +333,8 @@ function quitarStock($usuarioId, $producto_id, $cantidadComprada){
                         $insertResult = mysqli_query($conexion, $insertQuery);
 
                         if ($insertResult) {
-                            // Éxito al restar el stock y registrar la compra
+                            // Éxito 
                             echo "Stock actualizado y compra registrada correctamente.";
-
                             // Redirigir a la página de pedidos con el ID del nuevo pedido
                             header("Location: pedido.php?pedido_id=" . mysqli_insert_id($conexion));
                         } else {
@@ -361,35 +357,54 @@ function quitarStock($usuarioId, $producto_id, $cantidadComprada){
     }
 }
 
+function obtenerUltimoIdAlbaran($conexion) {
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (estaAutenticado()) {
+        $usuarioId = $_SESSION['usuario_id'];
+
+        //obtener el último ID de albarán 
+        $consulta = "SELECT Id FROM Albaran WHERE UsuarioId = ? ORDER BY FechaAlbaran DESC LIMIT 1";
+
+        $stmt = $conexion->prepare($consulta);
+        $stmt->bind_param("i", $usuarioId);
+        $stmt->execute();
+        $stmt->bind_result($idAlbaran);
+
+        if ($stmt->fetch()) {
+            $stmt->close();
+            return $idAlbaran;
+        }
+    }
+
+    return null;
+}
 function agregarStock($usuarioId, $producto_id, $cantidadRecibida){
     try {
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
         if ($conexion) {
-            // Obtener la cantidad actual de stock del producto
+            // Obtener la cantidad actual de stock 
             $query = "SELECT CantidadStock FROM Producto WHERE Codigo = $producto_id";
             $result = mysqli_query($conexion, $query);
 
             if ($result) {
                 $producto = mysqli_fetch_assoc($result);
                 $stockActual = $producto['CantidadStock'];
-
-                // Sumar la cantidad recibida al stock
+                // Sumar 
                 $nuevoStock = $stockActual + $cantidadRecibida;
-
-                // Actualizar el stock en la base de datos
+                // Actualizar el stock 
                 $updateQuery = "UPDATE Producto SET CantidadStock = $nuevoStock WHERE Codigo = $producto_id";
                 $updateResult = mysqli_query($conexion, $updateQuery);
-
                 if ($updateResult) {
-                    // Insertar la entrada en la tabla Albaran
+                    // linea Albaran
                     $insertQuery = "INSERT INTO Albaran (CodProducto, Cantidad, UsuarioId) VALUES ($producto_id, $cantidadRecibida, $usuarioId)";
                     $insertResult = mysqli_query($conexion, $insertQuery);
 
                     if ($insertResult) {
-                        // Éxito al agregar el stock y registrar la entrada en Albaran
                         echo "Stock actualizado y entrada en Albaran registrada correctamente.";
-
                         // Redirigir a la página de Albaranes con el ID del nuevo Albaran
                         header("Location: albaran.php?albaran_id=" . mysqli_insert_id($conexion));
                     } else {
@@ -408,6 +423,7 @@ function agregarStock($usuarioId, $producto_id, $cantidadRecibida){
         echo "Error desconocido: " . $th->getMessage();
     }
 }
+
 function getInfoPedido($pedido_id){
     try {
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
@@ -421,13 +437,10 @@ function getInfoPedido($pedido_id){
             $resultado = mysqli_query($conexion, $consulta);
 
             if ($resultado) {
-                // Verificar si se obtuvo al menos una fila
                 if (mysqli_num_rows($resultado) > 0) {
-                    // Obtener los datos del pedido y el nombre del producto
                     $pedido = mysqli_fetch_assoc($resultado);
                     return $pedido;
                 } else {
-                    // No se encontró ningún pedido con ese ID
                     return null;
                 }
             } else {
@@ -448,9 +461,7 @@ function getInfoPedido($pedido_id){
 }
 
 function verTodosPedidos($usuario_id) {
-    // Asegúrate de establecer la conexión y realizar la consulta adecuada
     $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
-    
     if ($conexion) {
         $consulta = "SELECT * FROM PedidoCompra WHERE UsuarioId = $usuario_id";
         $resultado = mysqli_query($conexion, $consulta);

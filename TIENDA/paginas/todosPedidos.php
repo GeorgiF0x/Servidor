@@ -4,7 +4,7 @@ require("../funciones/funcionesSesion.php");
 session_start();
 
 if (!estaAutenticado()) {
-    // El usuario no está autenticado, redirígelo al inicio de sesión
+    // si el usuario no está autenticado se redirige al inicio de sesión
     header("Location: ./login.php");
     exit();
 }
@@ -129,7 +129,6 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
             <h2>Historial de Pedidos</h2>
 
             <?php
-            // Ver si hay pedidos para mostrar
             if ($pedidos) {
                 //si hay pedidos se dibuja el menu para seleccionar el pedido que se va a ver
                 echo '<form method="GET" action="pedido.php">';
