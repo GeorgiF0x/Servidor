@@ -22,15 +22,15 @@ INSERT INTO Usuario (Nombre, Contraseña, Email, FechaNacimiento, Perfil) VALUES
     ('georgi', 'userpass', 'user@example.com', '2000-10-10', 'Cliente');
 
 
-    CREATE TABLE IF NOT EXISTS Producto (
-        Codigo INT AUTO_INCREMENT PRIMARY KEY,
-        Nombre VARCHAR(255),
-        Descripcion TEXT,
-        CantidadStock INT,
-        Precio DECIMAL(10, 2),
-        Imagen VARCHAR(255),
-        Borrado BOOLEAN NOT NULL DEFAULT FALSE
-    );
+        CREATE TABLE IF NOT EXISTS Producto (
+            Codigo INT AUTO_INCREMENT PRIMARY KEY,
+            Nombre VARCHAR(255),
+            Descripcion TEXT,
+            CantidadStock INT,
+            Precio DECIMAL(10, 2),
+            Imagen VARCHAR(255),
+            Borrado BOOLEAN NOT NULL DEFAULT FALSE
+        );
 
 INSERT INTO Producto (Nombre, Descripcion, CantidadStock, Precio, Imagen) VALUES
     ('Proteína Whey - Fresa', 'Proteína whey con sabor a batido de fresa', 50, 19.99, '../Media/producto1.webp'),

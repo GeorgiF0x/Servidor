@@ -1,3 +1,30 @@
+<?php
+require("../funciones/funcionesBD.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtén los datos del formulario
+    $nombre = $_POST["nombre"];
+    $contrasena = $_POST["contrasena"];
+    $email = $_POST["email"];
+    $fechaNacimiento = $_POST["fecha_nacimiento"];
+
+    // Establece el perfil predeterminado para los nuevos usuarios Cliente
+    $perfil = 'Cliente';
+
+    // Inserta el nuevo usuario en la base de datos
+    $insertarUsuario = insertarUsuario($nombre, $contrasena, $email, $fechaNacimiento, $perfil);
+
+    if ($insertarUsuario) {
+        // Usuario registrado con éxito, redirige a la página de inicio de sesión
+        header("Location: login.php");
+        exit();
+    } else {
+        // Error al registrar el usuario
+        echo "Error al registrar el usuario. Por favor, inténtalo de nuevo.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +39,7 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <h2 class="card-title text-center">Registrarse</h2>
-            <form action="procesar_registro.php" method="post">
+            <form  method="post">
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre:</label>
                     <input type="text" class="form-control" id="nombre" name="nombre" required>

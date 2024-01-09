@@ -148,6 +148,43 @@ function getInfoProducto($codigoProducto){
     }
 }
 
+function restarStock($codigoProducto, $cantidad , $usuarioId ) {
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+        
+        if ($conexion) {
+        
+            $sqlProducto = "SELECT * FROM Producto WHERE Codigo = $codigoProducto";
+            $resultProducto = $conexion->query($sqlProducto);
+
+            if ($resultProducto) {
+                $producto = $resultProducto->fetch_assoc();
+
+                // Ver si se ha dado mas de 0 para restar 
+                if ($cantidad > 0) {
+                    $nuevoStock = max(0, $producto['CantidadStock'] - $cantidad); // max 0 para que no sea -1,-2etc
+                    $sqlStock = "UPDATE Producto SET CantidadStock = $nuevoStock WHERE Codigo = $codigoProducto";
+                    $conexion->query($sqlStock);
+
+                    // Insertar en la tabla Albaran
+                    $sqlAlbaran = "INSERT INTO Albaran (CodProducto, Cantidad, UsuarioId) VALUES ($codigoProducto, $cantidad, $usuarioId)";
+                    $conexion->query($sqlAlbaran);
+                }
+
+                $conexion->close();
+                return $producto;
+            } else {
+                echo "Error en la consulta del producto: " . $conexion->error;
+            }
+        } else {
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+        }
+    } catch (\Throwable $th) {
+        // Manejo de errores
+        echo "Error desconocido: " . $th->getMessage();
+    }
+}
+
 function verificarUser($username, $password){
     $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
@@ -234,9 +271,40 @@ function getInfoUser($usuario_id) {
     }
 }
 
+function insertarUsuario($nombre, $contrasena, $email, $fechaNacimiento, $perfil) {
+    $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
-function restarStock($usuarioId, $producto_id, $cantidadComprada)
-{
+    if ($conexion) {
+        // Verificar si el email ya está registrado
+        $sqlVerificar = "SELECT Id FROM Usuario WHERE Email = ?";
+        $stmtVerificar = $conexion->prepare($sqlVerificar);
+        $stmtVerificar->bind_param("s", $email);
+        $stmtVerificar->execute();
+        $resultVerificar = $stmtVerificar->get_result();
+
+        if ($resultVerificar->num_rows > 0) {
+            // El email ya está registrado
+            $stmtVerificar->close();
+            $conexion->close();
+            return false;
+        } else {
+            // Insertar el nuevo usuario
+            $sqlInsertar = "INSERT INTO Usuario (Nombre, Contraseña, Email, FechaNacimiento, Perfil) VALUES (?, ?, ?, ?, ?)";
+            $stmtInsertar = $conexion->prepare($sqlInsertar);
+            $stmtInsertar->bind_param("sssss", $nombre, $contrasena, $email, $fechaNacimiento, $perfil);
+            $stmtInsertar->execute();
+            $stmtInsertar->close();
+            $conexion->close();
+            return true;
+        }
+    } else {
+        // Manejar el caso de error de conexión MySQL
+        return false;
+    }
+}
+
+
+function quitarStock($usuarioId, $producto_id, $cantidadComprada){
     try {
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
@@ -281,6 +349,54 @@ function restarStock($usuarioId, $producto_id, $cantidadComprada)
                     }
                 } else {
                     echo "No hay suficiente stock para la compra.";
+                }
+            } else {
+                echo "Error al obtener la información del producto.";
+            }
+        } else {
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+        }
+    } catch (\Throwable $th) {
+        echo "Error desconocido: " . $th->getMessage();
+    }
+}
+
+function agregarStock($usuarioId, $producto_id, $cantidadRecibida){
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+        if ($conexion) {
+            // Obtener la cantidad actual de stock del producto
+            $query = "SELECT CantidadStock FROM Producto WHERE Codigo = $producto_id";
+            $result = mysqli_query($conexion, $query);
+
+            if ($result) {
+                $producto = mysqli_fetch_assoc($result);
+                $stockActual = $producto['CantidadStock'];
+
+                // Sumar la cantidad recibida al stock
+                $nuevoStock = $stockActual + $cantidadRecibida;
+
+                // Actualizar el stock en la base de datos
+                $updateQuery = "UPDATE Producto SET CantidadStock = $nuevoStock WHERE Codigo = $producto_id";
+                $updateResult = mysqli_query($conexion, $updateQuery);
+
+                if ($updateResult) {
+                    // Insertar la entrada en la tabla Albaran
+                    $insertQuery = "INSERT INTO Albaran (CodProducto, Cantidad, UsuarioId) VALUES ($producto_id, $cantidadRecibida, $usuarioId)";
+                    $insertResult = mysqli_query($conexion, $insertQuery);
+
+                    if ($insertResult) {
+                        // Éxito al agregar el stock y registrar la entrada en Albaran
+                        echo "Stock actualizado y entrada en Albaran registrada correctamente.";
+
+                        // Redirigir a la página de Albaranes con el ID del nuevo Albaran
+                        header("Location: albaran.php?albaran_id=" . mysqli_insert_id($conexion));
+                    } else {
+                        echo "Error al registrar la entrada en Albaran en la base de datos.";
+                    }
+                } else {
+                    echo "Error al actualizar el stock en la base de datos.";
                 }
             } else {
                 echo "Error al obtener la información del producto.";

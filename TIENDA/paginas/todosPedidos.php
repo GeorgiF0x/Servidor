@@ -8,6 +8,25 @@ if (!estaAutenticado()) {
     header("Location: ./login.php");
     exit();
 }
+//log out
+if (isset($_REQUEST['logout'])) {
+    // cierra la sesion
+    session_destroy();
+
+    //dirige al login despues de cerrar sesion
+    header("Location: login.php");
+    exit();
+}
+
+if (isset($_SESSION['usuario_id'])) {
+// si  hay mostrar botones para cerrar sesión y perfil
+$cerrarSesionLink = './funciones/cerrarSesion.php'; 
+$perfilLink = './perfil.php'; 
+} else {
+// No hay una sesión activa, no mostrar botones
+$cerrarSesionLink = '';
+$perfilLink = '';
+}
 
 // Obtener todos los pedidos del usuario
 $pedidos = verTodosPedidos($_SESSION['usuario_id']);
@@ -21,16 +40,16 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Pedidos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Agrega cualquier otra referencia a estilos que necesites -->
+  
 </head>
 <body>
     <div class="container mt-5">
-    <header class="row">
-            <div class="col-10 nav">
+            <header class="row">
+            <div class="col-8 nav">
                 <nav class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="../index.php">
-                            <img class="logo img-responsive " src="../Media/tiburonpng.png" alt="" width="270px">
+                            <img class="logo img-responsive" src="../Media/tiburonpng.png" alt="" width="270px">
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -40,63 +59,69 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link  active text-primary" aria-current="page" href="../index.php">Inicio</a>
+                                    <a class="nav-link active text-primary" href="../index.php">Inicio</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link  text-primary" aria-current="page" href="#">Nutricion</a>
+                                    <a class="nav-link text-primary" href="#">Nutrición</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link  text-primary" aria-current="page" href="#">Ropa</a>
+                                    <a class="nav-link text-primary" href="#">Ropa</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link  text-primary" aria-current="page" href="#">Barritas</a>
+                                    <a class="nav-link text-primary" href="#">Barritas</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link  text-primary" aria-current="page" href="#">Snaks</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link  text-primary" aria-current="page" href="#">Vitaminas</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link  text-primary" aria-current="page" href="#">Vegano</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link  text-primary" aria-current="page" href="#">Oferta</a>
+                                    <a class="nav-link text-primary" href="#">Snacks</a>
                                 </li>
                             </ul>
-                            <nav class="navbar ">
-                                <div class="container-fluid">
-                                    <form method="POST" class="d-flex" role="search" >
-                                        <input class="control me-2" type="search" placeholder="Search"
-                                            aria-label="Search">
-                                        <button class="btn btn-outline-primary " type="button">Search</button>
-                                    </form>
-                                </div>
-                            </nav>
+                            <form method="POST" class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-primary" type="button">Search</button>
+                            </form>
                         </div>
                     </div>
                 </nav>
             </div>
-            <div class="col-2 .bg-secondary d-flex   justify-content-center login">
-                <button type="button" class="btn ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
-                        class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.304a.5.5 0 0 0-.708-.708L7.5 10.793 6.304 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
-                    </svg>
-                </button>
-                <button type="button" class="btn" id="Login">
-                    <a href="login.php">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
-                            class="bi mx-2 bi-person-circle" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                            <path fill-rule="evenodd"
-                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                        </svg>
-                </button>
-                </a>
-            </div>
-        </header>
+            <div class="col-3 bg-white  d-flex justify-content-around align-items-center">
+    <?php 
+    if (isset($_SESSION['usuario_id'])) : 
+    ?>
+   
+        <div class="d-flex justify-content-around">
+            <a href="./todosPedidos.php" class="btn btn-primary btn-sm  me-2 text-decoration-none bg-white border-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
+                    class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.304a.5.5 0 0 0-.708-.708L7.5 10.793 6.304 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                </svg>
+            </a>
+            <a href="?logout" class="btn btn-danger btn-sm my-2">Log Out</a>
+            <a href="<?php echo $perfilLink; ?>" class="btn btn-primary btn-sm my-2">Perfil</a>
+        </div>
+    <?php
+     else: 
+     ?>
+     
+        <div class="d-flex mt-3">
+            <a href="./paginas/todosPedidos.php" class="btn btn-primary  bg-white border-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
+                    class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.304a.5.5 0 0 0-.708-.708L7.5 10.793 6.304 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                </svg>
+            </a>
+            <a href="paginas/login.php" class="btn btn-primary  bg-white border-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
+                    class="bi mx-2 bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    <path fill-rule="evenodd"
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                </svg>
+            </a>
+        </div>
+    <?php endif; ?> // endif para no liar con las llaves 
+</div>
+</header>
 
         <main>
     <div class="row mt-5">

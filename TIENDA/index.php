@@ -62,7 +62,7 @@
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link active text-primary" href="../index.php">Inicio</a>
+                                    <a class="nav-link active text-primary" href="./index.php">Inicio</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-primary" href="#">Nutrición</a>
@@ -87,7 +87,7 @@
             </div>
             <div class="col-3 bg-white  d-flex justify-content-around align-items-center">
     <?php if (isset($_SESSION['usuario_id'])) : ?>
-        <!-- Mostrar botones para cerrar sesión y ver perfil -->
+        <!--  botones para cerrar sesión y ver perfil -->
         <div class="d-flex justify-content-around">
             <a href="./paginas/todosPedidos.php" class="btn btn-primary btn-sm  me-2 text-decoration-none bg-white border-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
