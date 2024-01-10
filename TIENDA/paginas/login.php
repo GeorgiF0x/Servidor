@@ -9,11 +9,11 @@ $errores = array(); // Array para almacenar mensajes de error
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") { //si se ha mandado 
     // Validar campos
-    if (textoVacio('username')) {
+    if (textVacio('username')) {
         $errores['username'] = 'Por favor, introduce un nombre de usuario.';
     }
 
-    if (textoVacio('password')) {
+    if (textVacio('password')) {
         $errores['password'] = 'Por favor, introduce una contraseña.';
     }
 
