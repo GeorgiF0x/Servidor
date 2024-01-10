@@ -1,23 +1,36 @@
 <?php
 require("../funciones/funcionesBD.php");
 require("../funciones/funcionesSesion.php");
+require("../funciones/validarFormulario.php");
 
 session_start();
 
-$error_message = ""; //para indicar el error
+$errores = array(); // Array para almacenar mensajes de error
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") { //si se ha mandado 
+    // Validar campos
+    if (textoVacio('username')) {
+        $errores['username'] = 'Por favor, introduce un nombre de usuario.';
+    }
 
-    $resultado = verificarUser($username, $password);
+    if (textoVacio('password')) {
+        $errores['password'] = 'Por favor, introduce una contraseña.';
+    }
 
-    if ($resultado === true) {
-        // Redirigir al usuario después de iniciar sesión
-        header("Location: ../index.php");
-        exit();
-    } else {
-        $error_message = "Datos incorrectos. introduce un usuario y contraseña correctos";
+    // Si no hay errores, intentar iniciar sesión
+    if (count($errores) == 0) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $resultado = verificarUser($username, $password);
+
+        if ($resultado === true) {
+            // Redirigir al usuario después de iniciar sesión
+            header("Location: ../index.php");
+            exit();
+        } else {
+            $errores['login'] = 'Datos incorrectos. Introduce un usuario y contraseña correctos.';
+        }
     }
 }
 ?>
@@ -40,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
-                                <a class="navbar-brand" href="#">
+                                <a class="navbar-brand" href="../index.php">
                                     <img class="logo img-responsive" src="../Media/tiburonpng.png" alt="" width="270px">
                                 </a>
                             </div>
@@ -52,18 +65,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <form method="post">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Nombre de usuario:</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <input type="text" class="form-control" id="username" name="username" value="<?php recuerda('username'); ?>" >
+                                <?php printerror($errores, 'username'); ?>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña:</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control" id="password" name="password" >
+                                <?php printerror($errores, 'password'); ?>
                             </div>
                             <button type="submit" class="btn btn-primary">Iniciar sesión</button>
                         </form>
 
                         <?php
-                        if (!empty($error_message)) {
-                            echo '<p class="text-danger mt-3">' . $error_message . '</p>';
+                        if (!empty($errores['login'])) {
+                            echo '<p class="text-danger mt-3">' . $errores['login'] . '</p>';
                         }
                         ?>
 
@@ -78,3 +93,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
+

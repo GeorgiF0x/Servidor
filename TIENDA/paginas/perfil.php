@@ -1,6 +1,7 @@
 <?php
 
 require("../funciones/funcionesBD.php");
+require("../funciones/validarFormulario.php");
 
 // Iniciar sesión si no está iniciada
 if (session_status() == PHP_SESSION_NONE) {
@@ -17,27 +18,7 @@ if (!isset($_SESSION['usuario_id'])) {
 $usuario_id = $_SESSION['usuario_id'];
 $usuario = getInfoUser($usuario_id);
 
-if (isset($_POST['actualizar_perfil'])) {
-    $usuario_id = $_SESSION['usuario_id'];
-    $password = $_POST['contrasena'];
-    $email = $_POST['email'];
-    $fecha_nacimiento = $_POST['fecha_nacimiento'];
 
-    //  campos requeridos no  vacíos
-    if (!empty($password) && !empty($email) && !empty($fecha_nacimiento)) {
-   
-        $actualizacionExitosa = actualizarPerfil($usuario_id, $password, $email, $fecha_nacimiento);
-
-        if ($actualizacionExitosa) {
-            echo '<meta http-equiv="refresh" content="0">';
-            exit();
-        } else {
-            echo "Error al actualizar el perfil.";
-        }
-    } else {
-        echo " <p class='text-danger'>completa todos los campos.</p>";
-    }
-}
 
 //para el logout
 if (isset($_REQUEST['logout'])) {
@@ -48,7 +29,44 @@ if (isset($_REQUEST['logout'])) {
     header("Location: login.php");
     exit();
 }
+$errores = array();
+if (enviado() && validaFormularioPerfil($errores)) {
+    if (isset($_POST['actualizar_perfil'])) {
+        $usuario_id = $_SESSION['usuario_id'];
+        $password = $_POST['contrasena'];
+        $email = $_POST['email'];
+        $fecha_nacimiento = $_POST['fecha_nacimiento'];
+    
+      
+        if (empty($password)) {
+            $errores['contrasena'] = "La contraseña no puede estar vacía";
+        }
+        if (empty($email)) {
+            $errores['email'] = "El email no puede estar vacío";
+        }
+        if (empty($fecha_nacimiento)) {
+            $errores['fecha_nacimiento'] = "La fecha de nacimiento no puede estar vacía";
+        }
+    
+        if (empty($password) || empty($email) || empty($fecha_nacimiento)) {
+           
+            $errores['general'] = "Completa todos los campos.";
+        }
+    
+        if (empty($errores['general'])) {
+            $actualizacionExitosa = actualizarPerfil($usuario_id, $password, $email, $fecha_nacimiento);
+    
+            if ($actualizacionExitosa) {
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            } else {
+                echo "Error al actualizar el perfil.";
+            }
+        }
+    }
+} else {
 ?>
+
 
 
 <!DOCTYPE html>
@@ -155,22 +173,25 @@ if (isset($_REQUEST['logout'])) {
                 
               
     
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                <form action="" method="post">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre de Usuario:</label>
                         <span class="form-control" id="nombre"><?php echo $usuario['Nombre']; ?></span>
                     </div>
                     <div class="mb-3">
                         <label for="contrasena" class="form-label">Contraseña:</label>
-                        <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                        <input type="password" class="form-control" id="contrasena" name="contrasena">
+                        <?php printerror($errores, 'contrasena'); ?>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" value="<?php echo $usuario['Email']; ?>" required>
+                        <input type="email" class="form-control" id="email" name="email" value="<?php echo $usuario['Email']; ?>">
+                        <?php if (isset($errores['email'])) echo '<p class="text-danger">' . $errores['email'] . '</p>'; ?>
                     </div>
                     <div class="mb-3">
                         <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
                         <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo $usuario['FechaNacimiento']; ?>" required>
+                        <?php if (isset($errores['fecha_nacimiento'])) echo '<p class="text-danger">' . $errores['fecha_nacimiento'] . '</p>'; ?>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
@@ -178,7 +199,9 @@ if (isset($_REQUEST['logout'])) {
         </div>
     </div>
 </main>
-
+<?php
+    } // Cerramos el else
+    ?>
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

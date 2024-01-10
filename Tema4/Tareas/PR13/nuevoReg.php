@@ -51,7 +51,6 @@
                     <input type="submit" value="Enviar" name="Enviar" class="btn btn-primary">
                     <input type="submit" value="Borrar Formulario" name="Borrar" class="btn btn-secondary">
                 </div>
-
             </form>
         </main>
     <?php

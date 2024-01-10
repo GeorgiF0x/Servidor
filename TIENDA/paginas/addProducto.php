@@ -174,6 +174,7 @@ if ($esAdministrador) {
 </header>
 
             <div class="row">
+            <h1 class="text-center ">Restablecer productos en baja</h1>
                 <?php
                 // Mostrar productos existentes
                 $productos = obtenerProductosBorrados();
@@ -199,7 +200,7 @@ if ($esAdministrador) {
             </div>
 
             <div class="row">
-            <h1>Añadir Nuevo Producto</h1>
+            <h1 class="text-center">Añadir Nuevo Producto</h1>
             <form method="POST" action="">
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre del Producto</label>
