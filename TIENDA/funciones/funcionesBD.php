@@ -151,26 +151,25 @@ function getInfoProducto($codigoProducto){
     }
 }
 
-function restarStock($codigoProducto, $cantidad , $usuarioId ) {
+function restarStock($codigoProducto, $cantidad, $usuarioId) {
     try {
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
         
         if ($conexion) {
-        
             $sqlProducto = "SELECT * FROM Producto WHERE Codigo = $codigoProducto";
             $resultProducto = $conexion->query($sqlProducto);
 
             if ($resultProducto) {
                 $producto = $resultProducto->fetch_assoc();
 
-                // Ver si se ha dado mas de 0 para restar 
+                // Ver si se ha dado más de 0 para restar
                 if ($cantidad > 0) {
-                    $nuevoStock = max(0, $producto['CantidadStock'] - $cantidad); // max 0 para que no sea -1,-2etc
+                    $nuevoStock = max(0, $producto['CantidadStock'] - $cantidad); // max 0 para que no sea -1, -2, etc.
                     $sqlStock = "UPDATE Producto SET CantidadStock = $nuevoStock WHERE Codigo = $codigoProducto";
                     $conexion->query($sqlStock);
 
-                    // Insertar en la tabla Albaran
-                    $sqlAlbaran = "INSERT INTO Albaran (CodProducto, Cantidad, UsuarioId) VALUES ($codigoProducto, $cantidad, $usuarioId)";
+                    // Insertar en la tabla Albaran con la acción "retirar"
+                    $sqlAlbaran = "INSERT INTO Albaran (CodProducto, Cantidad, UsuarioId, Accion) VALUES ($codigoProducto, $cantidad, $usuarioId, 'retirar')";
                     $conexion->query($sqlAlbaran);
                 }
 
@@ -400,9 +399,10 @@ function agregarStock($usuarioId, $producto_id, $cantidadRecibida){
                 // Actualizar el stock 
                 $updateQuery = "UPDATE Producto SET CantidadStock = $nuevoStock WHERE Codigo = $producto_id";
                 $updateResult = mysqli_query($conexion, $updateQuery);
+                
                 if ($updateResult) {
-                    // linea Albaran
-                    $insertQuery = "INSERT INTO Albaran (CodProducto, Cantidad, UsuarioId) VALUES ($producto_id, $cantidadRecibida, $usuarioId)";
+                    // Línea Albaran con la acción "añadir"
+                    $insertQuery = "INSERT INTO Albaran (CodProducto, Cantidad, UsuarioId, Accion) VALUES ($producto_id, $cantidadRecibida, $usuarioId, 'añadir')";
                     $insertResult = mysqli_query($conexion, $insertQuery);
 
                     if ($insertResult) {
@@ -581,6 +581,7 @@ function verDetalleAlbaran($albaran_id) {
                 echo '<th scope="col">Código de Producto</th>';
                 echo '<th scope="col">Cantidad</th>';
                 echo '<th scope="col">ID de Usuario</th>';
+                echo '<th scope="col">Acción</th>'; // Agregamos la columna de Acción
                 echo '</tr>';
                 echo '</thead>';
                 echo '<tbody>';
@@ -590,6 +591,7 @@ function verDetalleAlbaran($albaran_id) {
                 echo '<td>' . $albaran['CodProducto'] . '</td>';
                 echo '<td>' . $albaran['Cantidad'] . '</td>';
                 echo '<td>' . $albaran['UsuarioId'] . '</td>';
+                echo '<td>' . $albaran['Accion'] . '</td>'; // Imprimimos el valor de Acción
                 echo '</tr>';
                 echo '</tbody>';
                 echo '</table>';
@@ -610,15 +612,16 @@ function verDetalleAlbaran($albaran_id) {
     mysqli_close($conexion);
 }
 
+
 function insertarProducto($nombre, $descripcion, $cantidad, $precio) {
     try {
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
         if ($conexion) {
-            // Valor por defecto para la imagen
+           
             $imagen = "../Media/productoDefault.jpg";
 
-            // Prevenir inyección SQL usando consultas preparadas
+           
             $stmt = $conexion->prepare("INSERT INTO Producto (Nombre, Descripcion, CantidadStock, Precio, Imagen) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("ssids", $nombre, $descripcion, $cantidad, $precio, $imagen);
 
@@ -644,7 +647,7 @@ function darBajaProducto() {
     $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
     if ($conexion) {
-        // Obtener valores del formulario
+      
         $producto_id = $_POST['producto_id'];
         $productoBorrado = ($_POST['producto_borrado'] == '1') ? 0 : 1; // Cambia el valor de 0 a 1 o viceversa
 
@@ -684,7 +687,7 @@ function obtenerListaProductosBorrados() {
         echo "Error desconocido: " . $th->getMessage();
     }
 
-    return array(); // Devolver un array vacío en caso de error
+    return array(); 
 }
 function obtenerProductosBorrados() {
     try {
@@ -733,9 +736,10 @@ function cambiarDesc($producto_id, $nueva_descripcion, $nuevo_precio) {
         $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
 
         if ($conexion) {
-            // preparada para que no me cambie el precio algun golfo
-            $sql = "UPDATE Producto SET Descripcion = ?, Precio = ? WHERE Codigo = ?";
+            // Preparada para que no me cambie el precio algun golfo
+            $sql = "UPDATE Producto SET Descripcion = ?, Precio = CAST(? AS DECIMAL(10,2)) WHERE Codigo = ?";
             $stmt = mysqli_prepare($conexion, $sql);
+
             if ($stmt) {
                 mysqli_stmt_bind_param($stmt, "ssd", $nueva_descripcion, $nuevo_precio, $producto_id);
                 mysqli_stmt_execute($stmt);
@@ -755,6 +759,7 @@ function cambiarDesc($producto_id, $nueva_descripcion, $nuevo_precio) {
 
     return false;
 }
+
 ?>
 
 

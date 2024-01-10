@@ -146,12 +146,12 @@ $albaranes = verTodosAlbaranes($_SESSION['usuario_id']);
                     <h1 class="fw-bold text-center"> Albaranes</h1>
                     <?php
                 if ($albaranes) {
-                    // Si hay albaranes, mostrar la tabla de Bootstrap y el menú para seleccionar el albarán
+                    
                     echo '<form method="GET" action="albaranes.php">';
                     echo '<label for="albaran_id">Selecciona un albarán:</label>';
                     echo '<select name="albaran_id" id="albaran_id" class="form-select">';
                     
-                    foreach ($albaranes as $albaran) {
+                    foreach (array_reverse($albaranes) as $albaran) {
                         echo '<option value="' . $albaran['Id'] . '">' . $albaran['FechaAlbaran'] . '</option>';
                     }
 
@@ -159,10 +159,10 @@ $albaranes = verTodosAlbaranes($_SESSION['usuario_id']);
                     echo '<button type="submit" class="btn btn-primary mt-3">Ver Detalles</button>';
                     echo '</form>';
 
-                    // Mostrar la tabla de detalles si se ha seleccionado un albarán
+                    
                     if (isset($_GET['albaran_id'])) {
                         $albaran_id = $_GET['albaran_id'];
-                        verDetalleAlbaran($albaran_id); // Asegúrate de que esta función esté definida
+                        verDetalleAlbaran($albaran_id); 
                     }
                 } else {
                     echo '<p>No hay albaranes disponibles.</p>';
@@ -338,6 +338,5 @@ $albaranes = verTodosAlbaranes($_SESSION['usuario_id']);
 </div>
 </body>
 </html>
-
 
 

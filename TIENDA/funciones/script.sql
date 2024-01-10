@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS Albaran (
     CodProducto INT,
     Cantidad INT,
     UsuarioId INT,
+    Accion VARCHAR(10), -- Agrega el campo Accion de tipo VARCHAR con una longitud adecuada
     FOREIGN KEY (UsuarioId) REFERENCES Usuario(Id),
     FOREIGN KEY (CodProducto) REFERENCES Producto(Codigo)
 );

@@ -84,11 +84,11 @@
                     $usuarioId = $_SESSION['usuario_id'];
                     $producto_id = $_POST['producto_id'];
 
-                    // Verificar si la cantidad es mayor al stock disponible
+                   
                     if ($cantidadQuitar > $producto['CantidadStock']) {
                         echo '<h2 class="error" style="color: red; text-align: center; font-weight: bold;">La cantidad ingresada para quitar del stock es mayor al stock disponible.</h2>';
                     } else {
-                        // Ejecutar la función restarStock solo si la cantidad es válida
+                       
                         restarStock($producto_id, $cantidadQuitar, $usuarioId);
 
                         $idDelAlbaran = obtenerIdAlbaran();
