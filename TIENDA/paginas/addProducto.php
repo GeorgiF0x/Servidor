@@ -1,50 +1,92 @@
 <?php
-require("../funciones/funcionesBD.php");
+require("../funciones/funcionesBD.php"); // Asegúrate de cambiar esto según la ubicación de tu archivo de funciones
 require("../funciones/funcionesSesion.php");
 session_start();
 
 if (!estaAutenticado()) {
-    // si el usuario no está autenticado se redirige al inicio de sesión
     header("Location: ./login.php");
     exit();
 }
-//log out
+
+if (isset($_SESSION['usuario_id'])) {
+// Hay una sesión activa, mostrar botones para cerrar sesión y perfil
+$cerrarSesionLink = './funciones/cerrarSesion.php'; // Ajusta la URL según tus necesidades
+$perfilLink = './paginas/perfil.php'; // Ajusta la URL según tus necesidades
+} else {
+// No hay una sesión activa, no es necesario mostrar botones
+$cerrarSesionLink = '';
+$perfilLink = '';
+}
 if (isset($_REQUEST['logout'])) {
     // cierra la sesion
     session_destroy();
 
     //dirige al login despues de cerrar sesion
-    header("Location: login.php");
+    header("Location: paginas/login.php");
     exit();
 }
+$esAdministrador = esAdministrador();
 
-if (isset($_SESSION['usuario_id'])) {
-// si  hay mostrar botones para cerrar sesión y perfil
-$cerrarSesionLink = './funciones/cerrarSesion.php'; 
-$perfilLink = './perfil.php'; 
-} else {
-// No hay una sesión activa, no mostrar botones
-$cerrarSesionLink = '';
-$perfilLink = '';
-}
+if (isset($_POST['nombre'], $_POST['descripcion'], $_POST['cantidad'], $_POST['precio'])) {
+    $nombre = $_POST['nombre'];
+    $descripcion = $_POST['descripcion'];
+    $cantidad = $_POST['cantidad'];
+    $precio = $_POST['precio'];
 
-// Obtener todos los pedidos del usuario
-$pedidos = verTodosPedidos($_SESSION['usuario_id']);
+   
+    if (insertarProducto($nombre, $descripcion, $cantidad, $precio)) {
+        header("Location: ./login.php");
+    } else {
+        echo "Error al añadir el producto.";
+    }
+    }
 
-?>
+if ($esAdministrador) {
+    
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de Pedidos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
-</head>
-<body>
-    <div class="container mt-5">
-            <header class="row">
+        if (isset($_POST['codigoProducto'])) {
+            $codigoProducto = $_POST['codigoProducto'];
+            $producto = getInfoProducto($codigoProducto);
+
+            // Verificar si el producto existe
+            if ($producto) {
+                // Restaurar el producto cambiando el valor de Borrado a FALSE
+                $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+                
+                if ($conexion) {
+                    $sql = "UPDATE Producto SET Borrado = FALSE WHERE Codigo = $codigoProducto";
+                    $result = $conexion->query($sql);
+                    
+                    if ($result) {
+                        
+                    } else {
+                        echo "Error al restaurar el producto: " . $conexion->error;
+                    }
+                    
+                    $conexion->close();
+                } else {
+                    echo "Error de conexión MySQL: " . mysqli_connect_error();
+                }
+            } else {
+                echo "El producto con el código $codigoProducto no existe.";
+            }
+        
+    }
+    ?>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Restaurar y Añadir Producto</title>
+        
+        <!-- Agrega el enlace a Bootstrap 5 CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+        <header class="row">
             <div class="col-8 nav">
                 <nav class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
@@ -59,7 +101,7 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link active text-primary" href="../index.php">Inicio</a>
+                                    <a class="nav-link active text-primary" href="./index.php">Inicio</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-primary" href="#">Nutrición</a>
@@ -83,12 +125,10 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
                 </nav>
             </div>
             <div class="col-3 bg-white  d-flex justify-content-around align-items-center">
-    <?php 
-    if (isset($_SESSION['usuario_id'])) : 
-    ?>
-   
+    <?php if (isset($_SESSION['usuario_id'])) : ?>
+        <!--  botones para cerrar sesión y ver perfil -->
         <div class="d-flex justify-content-around">
-            <a href="./todosPedidos.php" class="btn btn-primary btn-sm  me-2 text-decoration-none bg-white border-white">
+            <a href="./paginas/todosPedidos.php" class="btn btn-primary btn-sm  me-2 text-decoration-none bg-white border-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
                     class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -110,10 +150,8 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
             </svg>
             </a>
         </div>
-    <?php
-     else: 
-     ?>
-     
+    <?php else : ?>
+        <!-- Mostrar botones para iniciar sesión -->
         <div class="d-flex mt-3">
             <a href="./paginas/todosPedidos.php" class="btn btn-primary  bg-white border-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
@@ -131,40 +169,60 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
                 </svg>
             </a>
         </div>
-    <?php endif; ?> 
+    <?php endif; ?>
 </div>
 </header>
 
-        <main>
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <h2>Historial de Pedidos</h2>
-
-            <?php
-            if ($pedidos) {
-                //si hay pedidos se dibuja el menu para seleccionar el pedido que se va a ver
-                echo '<form method="GET" action="pedido.php">';
-                echo '<label for="pedido_id">Selecciona un pedido:</label>';
-                echo '<select name="pedido_id" id="pedido_id" class="form-select">';
-                
-                foreach ($pedidos as $pedido) {
-                    echo '<option value="' . $pedido['Id'] . '">' . $pedido['FechaCompra'] . '</option>';
+            <div class="row">
+                <?php
+                // Mostrar productos existentes
+                $productos = obtenerProductosBorrados();
+                foreach ($productos as $row) {
+                    if ($row['Borrado']) {
+                        echo '<article class="col-md-4 mb-4">';
+                        echo '<div class="card" style="width: 18rem;">';
+                        echo '<img src="../Media/' . $row['Imagen'] . '" class="card-img-top img-fluid" alt="' . $row['Nombre'] . '">';
+                        echo '<div class="card-body">';
+                        echo '<h5 class="card-title fw-bold">' . $row['Nombre'] . '</h5>';
+                        echo '<p class="card-text">' . $row['Descripcion'] . '</p>';
+                        echo '<p class="fw-bold mb-0">Precio: €' . number_format($row['Precio'], 2) . '</p>';
+                        echo '<form method="POST" action="">';
+                        echo '<input type="hidden" name="codigoProducto" value="' . $row['Codigo'] . '">';
+                        echo '<button class="btn btn-outline-primary" type="submit">Dar de Alta</button>';
+                        echo '</form>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</article>';
+                    }
                 }
+                ?>
+            </div>
 
-                echo '</select>';
-                echo '<button type="submit" class="btn btn-primary mt-3">Ver Detalles</button>';
-                echo '</form>';
-            } else {
-                echo '<p>No hay pedidos disponibles.</p>';
-            }
-            ?>
-        </div>
-    </div>
-</main>
-</div>                
-
-             
-    <div class="container-fluid">
+            <div class="row">
+            <h1>Añadir Nuevo Producto</h1>
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre del Producto</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción del Producto</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="cantidad" class="form-label">Cantidad en Stock</label>
+                    <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                </div>
+                <div class="mb-3">
+                    <label for="precio" class="form-label">Precio del Producto</label>
+                    <input type="text" class="form-control" id="precio" name="precio" required>
+                </div>
+                <!-- Eliminado el campo de imagen -->
+                <button type="submit" class="btn btn-primary">Añadir Producto</button>
+            </form>
+            </div>
+            </div>
+   
         <footer class="row bg-primary text-muted mt-5">
             <div class="d-flex flex-row-reverse ml-4 mb-1 ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"
@@ -192,33 +250,33 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
 
             <div class="col-3 d-flex flex-column linkFooter ">
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white  mx-4 mb-4">
+                    <h6 class="text-uppercase text-white  mb-4">
                         TARJETAS DE REGALO
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white mx-4  mb-4">
+                    <h6 class="text-uppercase text-white  mb-4">
                         BUSCAR UNA TIENDA
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white  mx-4 mb-4">
+                    <h6 class="text-uppercase text-white  mb-4">
                         NIKE JOURNAL
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white mx-4 mb-4">
+                    <h6 class="text-uppercase text-white  mb-4">
                         DESCUENTO PARA ESTUDIANTES
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white mx-4 mb-4">
+                    <h6 class="text-uppercase text-white mb-4">
                         COMENTARIOS
 
                     </h6>
                 </a>
                 <a href="#" class="text-decoration-none">
-                    <h6 class="text-uppercase text-white mx-4 mb-4">
+                    <h6 class="text-uppercase text-white  mb-4">
                         CÓDIGOS PROMOCIONALES
                     </h6>
                 </a>
@@ -325,8 +383,14 @@ $pedidos = verTodosPedidos($_SESSION['usuario_id']);
                         </div>
                     </div>
                 </div>
-                </footer>
-            </div>
-    </div>
-</body>
-</html>
+        </footer>
+    </body>
+    </html>
+
+<?php
+} else {
+    header("Location: ./login.php");
+    exit();
+}
+?>
+

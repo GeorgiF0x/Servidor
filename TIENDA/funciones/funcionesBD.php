@@ -70,20 +70,23 @@ function PintarProductos() {
             if ($result->num_rows > 0) {
                 // Mostrar tarjetas para cada producto
                 while ($row = $result->fetch_assoc()) {
-                    echo '<article class="col-md-4 mb-4">';
-                    echo '<div class="card" style="width: 18rem;">';
-                    echo '<img src="Media/' . $row['Imagen'] . '" class="card-img-top img-fluid" alt="' . $row['Nombre'] . '">';
-                    echo '<div class="card-body">';
-                    echo '<h5 class="card-title fw-bold">' . $row['Nombre'] . '</h5>';
-                    echo '<p class="card-text">' . $row['Descripcion'] . '</p>';
-                    echo '<form method="POST" action="paginas/producto.php" class="d-flex justify-content-between align-items-center" name="comprar">';
-                    echo '<p class="fw-bold mb-0">Precio: €' . number_format($row['Precio'], 2) . '</p>';
-                    echo '<input type="hidden" name="producto_id" value="' . $row['Codigo'] . '">';
-                    echo '<button class="btn btn-outline-primary" type="submit">Comprar</button>';
-                    echo '</form>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</article>';
+                    // Verificar si el producto está marcado como borrado
+                    if (!$row['Borrado']) {
+                        echo '<article class="col-md-4 mb-4">';
+                        echo '<div class="card" style="width: 18rem;">';
+                        echo '<img src="Media/' . $row['Imagen'] . '" class="card-img-top img-fluid" alt="' . $row['Nombre'] . '">';
+                        echo '<div class="card-body">';
+                        echo '<h5 class="card-title fw-bold">' . $row['Nombre'] . '</h5>';
+                        echo '<p class="card-text">' . $row['Descripcion'] . '</p>';
+                        echo '<form method="POST" action="paginas/producto.php" class="d-flex justify-content-between align-items-center" name="comprar">';
+                        echo '<p class="fw-bold mb-0">Precio: €' . number_format($row['Precio'], 2) . '</p>';
+                        echo '<input type="hidden" name="producto_id" value="' . $row['Codigo'] . '">';
+                        echo '<button class="btn btn-outline-primary" type="submit">Comprar</button>';
+                        echo '</form>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</article>';
+                    }
                 }
             } else {
                 echo "No hay productos disponibles.";
@@ -458,6 +461,68 @@ function getInfoPedido($pedido_id){
         return null;
     }
 }
+function obtenerIdAlbaran() {
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+        
+        if ($conexion) {
+            // Consulta para obtener el último ID de albarán
+            $consulta = "SELECT Id FROM Albaran ORDER BY Id DESC LIMIT 1";
+            $resultado = mysqli_query($conexion, $consulta);
+
+            if ($resultado) {
+                if (mysqli_num_rows($resultado) > 0) {
+                    $row = mysqli_fetch_assoc($resultado);
+                    return $row['Id'];
+                } else {
+                   
+                    return null; 
+                }
+            } else {
+                // Error en la consulta
+                echo "Error en la consulta: " . mysqli_error($conexion);
+        
+            }
+        } else {
+            // Error de conexión MySQL
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+
+        }
+    } catch (\Throwable $th) {
+    
+        echo "Error desconocido: " . $th->getMessage();
+    }
+}
+
+function getInfoAlbaran() {
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+        if ($conexion) {
+            // Consulta para obtener la información del último albarán
+            $consulta = "SELECT * FROM Albaran ORDER BY Id DESC LIMIT 1";
+            $resultado = mysqli_query($conexion, $consulta);
+
+            if ($resultado) {
+                if (mysqli_num_rows($resultado) > 0) {
+                    $row = mysqli_fetch_assoc($resultado);
+                    return $row;
+                } else {
+                    // No hay registros en la tabla de albaranes
+                    return null;
+                }
+            } else {
+                // Error en la consulta
+                echo "Error en la consulta: " . mysqli_error($conexion);
+            }
+        } else {
+            // Error de conexión MySQL
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+        }
+    } catch (\Throwable $th) {
+        echo "Error desconocido: " . $th->getMessage();
+    }
+}
 
 function verTodosPedidos($usuario_id) {
     $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
@@ -477,9 +542,222 @@ function verTodosPedidos($usuario_id) {
         return [];
     }
 }
+function verTodosAlbaranes($usuario_id) {
+    $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+    if ($conexion) {
+        $consulta = "SELECT * FROM Albaran WHERE UsuarioId = $usuario_id";
+        $resultado = mysqli_query($conexion, $consulta);
+        
+        if ($resultado) {
+            $albaranes = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+            return $albaranes;
+        } else {
+            echo "Error en la consulta: " . mysqli_error($conexion);
+            return [];
+        }
+    } else {
+        echo "Error de conexión MySQL: " . mysqli_connect_error();
+        return [];
+    }
+}
 
+function verDetalleAlbaran($albaran_id) {
+    $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+    
+    if ($conexion) {
+        // Consulta para obtener los detalles del albarán por su ID
+        $consulta = "SELECT * FROM Albaran WHERE Id = $albaran_id";
+        $resultado = mysqli_query($conexion, $consulta);
 
+        if ($resultado) {
+            if (mysqli_num_rows($resultado) > 0) {
+                $albaran = mysqli_fetch_assoc($resultado);
+                // Dibujar la tabla con la información del albarán
+                echo '<table class="table">';
+                echo '<thead>';
+                echo '<tr>';
+                echo '<th scope="col">ID</th>';
+                echo '<th scope="col">Fecha de Albarán</th>';
+                echo '<th scope="col">Código de Producto</th>';
+                echo '<th scope="col">Cantidad</th>';
+                echo '<th scope="col">ID de Usuario</th>';
+                echo '</tr>';
+                echo '</thead>';
+                echo '<tbody>';
+                echo '<tr>';
+                echo '<td>' . $albaran['Id'] . '</td>';
+                echo '<td>' . $albaran['FechaAlbaran'] . '</td>';
+                echo '<td>' . $albaran['CodProducto'] . '</td>';
+                echo '<td>' . $albaran['Cantidad'] . '</td>';
+                echo '<td>' . $albaran['UsuarioId'] . '</td>';
+                echo '</tr>';
+                echo '</tbody>';
+                echo '</table>';
+            } else {
+                // No se encontraron registros para el albarán específico
+                echo '<p>No se encontraron detalles para el albarán seleccionado.</p>';
+            }
+        } else {
+            // Error en la consulta
+            echo "Error en la consulta: " . mysqli_error($conexion);
+        }
+    } else {
+        // Error de conexión MySQL
+        echo "Error de conexión MySQL: " . mysqli_connect_error();
+    }
+    
+    // Cerrar la conexión
+    mysqli_close($conexion);
+}
+
+function insertarProducto($nombre, $descripcion, $cantidad, $precio) {
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+        if ($conexion) {
+            // Valor por defecto para la imagen
+            $imagen = "../Media/productoDefault.jpg";
+
+            // Prevenir inyección SQL usando consultas preparadas
+            $stmt = $conexion->prepare("INSERT INTO Producto (Nombre, Descripcion, CantidadStock, Precio, Imagen) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssids", $nombre, $descripcion, $cantidad, $precio, $imagen);
+
+            // Ejecutar la consulta
+            if ($stmt->execute()) {
+                $stmt->close();
+                $conexion->close();
+                return true;
+            } else {
+                echo "Error al insertar el producto: " . $stmt->error;
+            }
+        } else {
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+        }
+    } catch (\Throwable $th) {
+        // Manejo de errores
+        echo "Error desconocido: " . $th->getMessage();
+    }
+
+    return false;
+}
+function darBajaProducto() {
+    $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+    if ($conexion) {
+        // Obtener valores del formulario
+        $producto_id = $_POST['producto_id'];
+        $productoBorrado = ($_POST['producto_borrado'] == '1') ? 0 : 1; // Cambia el valor de 0 a 1 o viceversa
+
+        
+        $query = "UPDATE Producto SET Borrado = '$productoBorrado' WHERE Codigo = '$producto_id'";
+        mysqli_query($conexion, $query);
+
+  
+        header("Location: ../index.php");
+        exit();
+    } else {
+        echo "Error de conexión MySQL: " . mysqli_connect_error();
+        return [];
+    }
+}
+
+function obtenerListaProductosBorrados() {
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+        if ($conexion) {
+            $sql = "SELECT Codigo, Nombre FROM Producto WHERE Borrado = TRUE";
+            $result = $conexion->query($sql);
+
+            if ($result) {
+                $productos = $result->fetch_all(MYSQLI_ASSOC);
+                $conexion->close();
+                return $productos;
+            } else {
+                echo "Error en la consulta: " . $conexion->error;
+            }
+        } else {
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+        }
+    } catch (\Throwable $th) {
+        // Manejo de errores
+        echo "Error desconocido: " . $th->getMessage();
+    }
+
+    return array(); // Devolver un array vacío en caso de error
+}
+function obtenerProductosBorrados() {
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+        if ($conexion) {
+            $sql = "SELECT * FROM Producto WHERE Borrado = TRUE";
+            $result = $conexion->query($sql);
+
+            if ($result) {
+                $productosBorrados = $result->fetch_all(MYSQLI_ASSOC);
+                $conexion->close();
+                return $productosBorrados;
+            } else {
+                echo "Error en la consulta: " . $conexion->error;
+            }
+        } else {
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+        }
+    } catch (\Throwable $th) {
+        // Manejo de errores
+        echo "Error desconocido: " . $th->getMessage();
+    }
+
+    return array();
+}
+
+function mostrarInfoProducto($producto) {
+    echo '<article class="col-md-4 mb-4">';
+    echo '<div class="card" style="width: 18rem;">';
+    echo '<img src="Media/' . $producto['Imagen'] . '" class="card-img-top img-fluid" alt="' . $producto['Nombre'] . '">';
+    echo '<div class="card-body">';
+    echo '<h5 class="card-title fw-bold">' . $producto['Nombre'] . '</h5>';
+    echo '<p class="card-text">' . $producto['Descripcion'] . '</p>';
+    echo '<form method="POST" action="paginas/producto.php" class="d-flex justify-content-between align-items-center" name="comprar">';
+    echo '<p class="fw-bold mb-0">Precio: €' . number_format($producto['Precio'], 2) . '</p>';
+    echo '<input type="hidden" name="producto_id" value="' . $producto['Codigo'] . '">';
+    echo '<button class="btn btn-outline-primary" type="submit">Dar Alta</button>';
+    echo '</form>';
+    echo '</div>';
+    echo '</div>';
+    echo '</article>';
+}
+function cambiarDesc($producto_id, $nueva_descripcion, $nuevo_precio) {
+    try {
+        $conexion = mysqli_connect(IP, USER, PASS, 'Tienda');
+
+        if ($conexion) {
+            // preparada para que no me cambie el precio algun golfo
+            $sql = "UPDATE Producto SET Descripcion = ?, Precio = ? WHERE Codigo = ?";
+            $stmt = mysqli_prepare($conexion, $sql);
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, "ssd", $nueva_descripcion, $nuevo_precio, $producto_id);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+                mysqli_close($conexion);
+                echo "Cambios aplicados en la base de datos.";
+                return true;
+            } else {
+                echo "Error en la preparación de la consulta: " . mysqli_error($conexion);
+            }
+        } else {
+            echo "Error de conexión MySQL: " . mysqli_connect_error();
+        }
+    } catch (\Throwable $th) {
+        echo "Error desconocido: " . $th->getMessage();
+    }
+
+    return false;
+}
 ?>
+
+
 
 
 

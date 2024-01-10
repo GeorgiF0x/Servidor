@@ -1,158 +1,169 @@
-    <?php
-    require("../funciones/funcionesBD.php");
-    require("../funciones/funcionesSesion.php");
-    session_start();
-    var_dump($_SESSION);
-    if (esModerador()) {
-        echo "\nEl usuario es moderador.";
-    } elseif (esAdministrador()) {
-        echo "El usuario es administrador.";
-    } else {
-        echo "El usuario no es moderador ni administrador.";
-    }
-    // Verificar si el usuario está autenticado
-    if (!estaAutenticado()) {
-        header("Location: ./login.php");
-        exit();
-    }
-    $usuarioId = $_SESSION['usuario_id'];
-
-    // logout
-    if (isset($_SESSION['usuario_id'])) {
-        $cerrarSesionLink = './funciones/cerrarSesion.php';
-        $perfilLink = './perfil.php';
-    } else {
-        $cerrarSesionLink = '';
-        $perfilLink = '';
-    }
-
-    // Procesar cerrar sesión
-    if (isset($_REQUEST['logout'])) {
-        session_destroy();
-        header("Location: ./login.php");
-        exit();
-    }
-
+        <?php
+        require("../funciones/funcionesBD.php");
+        require("../funciones/funcionesSesion.php");
+        session_start();
+        // if (esModerador()) {
+        //     echo "\nEl usuario es moderador.";
+        // } elseif (esAdministrador()) {
+        //     echo "El usuario es administrador.";
+        // } else {
+        //     echo "El usuario no es moderador ni administrador.";
+        // }
     
-    // Obtener información del producto si se proporciona un ID
-    if (isset($_REQUEST['producto_id'])) {
-        $producto_id = $_REQUEST['producto_id'];
-        $producto = getInfoProducto($producto_id);
+        if (!estaAutenticado()) {
+            header("Location: ./login.php");
+            exit();
+        }
+        $usuarioId = $_SESSION['usuario_id'];
+    
+        // logout
+        if (isset($_SESSION['usuario_id'])) {
+            $cerrarSesionLink = './funciones/cerrarSesion.php';
+            $perfilLink = './perfil.php';
+        } else {
+            $cerrarSesionLink = '';
+            $perfilLink = '';
+        }
 
-        // Verificar si se encontró el producto
-        if ($producto) {
-            if (isset($_POST['comprar'])) {
-                // Procesar la acción de comprar
-                $cantidadComprar = $_POST['cantidad'];
-                $usuarioId = $_SESSION['usuario_id'];
-                $pedido_id = $_POST['pedido_id'];
-                $pedidoRealizado = quitarStock($usuarioId, $producto_id, $cantidadComprar);
+        // Procesar cerrar sesión
+        if (isset($_REQUEST['logout'])) {
+            session_destroy();
+            header("Location: ./login.php");
+            exit();
+        }
+
+        
+       
+        // Obtener información del producto si se proporciona un ID
+        if (isset($_REQUEST['producto_id'])) {
+            $producto_id = $_REQUEST['producto_id'];
+            $producto = getInfoProducto($producto_id);
+            
+            // Verificar si se encontró el producto
+            if ($producto) {
+                $idDelAlbaran = obtenerIdAlbaran();
+                $esAdministrador = esAdministrador();
+                if (isset($_POST['comprar'])) {
+                    // Procesar la acción de comprar
+                    $cantidadComprar = $_POST['cantidad'];
+                    $usuarioId = $_SESSION['usuario_id'];
+                    $pedido_id = $_POST['pedido_id'];
+                    $pedidoRealizado = quitarStock($usuarioId, $producto_id, $cantidadComprar);
+                    
+                    if ($pedidoRealizado) {
+                        header("Location: ./pedido.php");
+                        exit();
+                    }
+                }
+                if (isset($_REQUEST['guardarCambios'])) {
+                    $nueva_descripcion = $_POST['descripcion'];
+                    $nuevo_precio = $_POST['precio'];
                 
-                if ($pedidoRealizado) {
-                    header("Location: ./pedido.php");
+                   $prodCambiado= cambiarDesc($producto_id, $nueva_descripcion, $nuevo_precio);
+                    if($prodCambiado){
+                        header("Location: ../index.php");
+                        exit();
+                    }else{
+                        echo "error al llamar la funcion";
+                    }
+                }
+                if (isset($_POST['agregarStock'])) {
+                
+                    $cantidadRecibida = $_POST['cantidad'];
+                    $usuarioId = $_SESSION['usuario_id'];
+                    $producto_id = $_POST['producto_id'];
+                    
+                    agregarStock($usuarioId, $producto_id, $cantidadRecibida);
+                    $idDelAlbaran = obtenerIdAlbaran();
+                    header("Location: ./albaranes.php");
                     exit();
                 }
-            }
-            if (isset($_POST['agregarStock'])) {
-               
-                $cantidadRecibida = $_POST['cantidad'];
-                $usuarioId = $_SESSION['usuario_id'];
-                $producto_id = $_POST['producto_id'];
-                
-                agregarStock($usuarioId, $producto_id, $cantidadRecibida);
-                $idDelAlbaran = obtenerIdAlbaran();
-                header("Location: ./albaranes.php");
-                exit();
-            }
 
-            if (isset($_POST['quitarStock'])) {
-                $cantidadQuitar = $_POST['cantidad'];
-                $usuarioId = $_SESSION['usuario_id'];
-                $producto_id = $_POST['producto_id'];
-            
-                restarStock($producto_id, $cantidadQuitar, $usuarioId);
-                $idDelAlbaran = obtenerIdAlbaran();
-                header("Location: ./albaranes.php");
-                exit();
-                } 
-            }
-            if ($producto['CantidadStock'] > 0) {
-    ?>
-                <!DOCTYPE html>
-                <html lang="es">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title><?php echo $producto['Nombre']; ?></title>
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                if (isset($_POST['quitarStock'])) {
+                    $cantidadQuitar = $_POST['cantidad'];
+                    $usuarioId = $_SESSION['usuario_id'];
+                    $producto_id = $_POST['producto_id'];
+
+                    // Verificar si la cantidad es mayor al stock disponible
+                    if ($cantidadQuitar > $producto['CantidadStock']) {
+                        echo '<h2 class="error" style="color: red; text-align: center; font-weight: bold;">La cantidad ingresada para quitar del stock es mayor al stock disponible.</h2>';
+                    } else {
+                        // Ejecutar la función restarStock solo si la cantidad es válida
+                        restarStock($producto_id, $cantidadQuitar, $usuarioId);
+
+                        $idDelAlbaran = obtenerIdAlbaran();
+                        header("Location: ./albaranes.php");
+                        exit();
+                    }
+                }
+                if (isset($_REQUEST['darDeBaja'])) {
+                    darBajaProducto();
+                    header("Location: ../index.php");
+                }
+                if ($producto['CantidadStock'] > 0) {
+        ?>
+                    <!DOCTYPE html>
+                    <html lang="es">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title><?php echo $producto['Nombre']; ?></title>
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    
+                    </head>
+                    <body>
                 
-                </head>
-                <body>
-            
-                <div class="container principal">
-            <header class="row">
-                <div class="col-8 nav">
-                    <nav class="navbar navbar-expand-lg ">
-                        <div class="container-fluid">
-                            <a class="navbar-brand" href="../index.php">
-                                <img class="logo img-responsive" src="../Media/tiburonpng.png" alt="" width="270px">
-                            </a>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link active text-primary" href="./index.php">Inicio</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-primary" href="#">Nutrición</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-primary" href="#">Ropa</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-primary" href="#">Barritas</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-primary" href="#">Snacks</a>
-                                    </li>
-                                </ul>
-                                <form method="POST" class="d-flex">
-                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-outline-primary" type="button">Search</button>
-                                </form>
+                    <div class="container principal">
+                <header class="row">
+                    <div class="col-8 nav">
+                        <nav class="navbar navbar-expand-lg ">
+                            <div class="container-fluid">
+                                <a class="navbar-brand" href="../index.php">
+                                    <img class="logo img-responsive" src="../Media/tiburonpng.png" alt="" width="270px">
+                                </a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                                    aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarNav">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link active text-primary" href="./index.php">Inicio</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary" href="#">Nutrición</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary" href="#">Ropa</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary" href="#">Barritas</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary" href="#">Snacks</a>
+                                        </li>
+                                    </ul>
+                                    <form method="POST" class="d-flex">
+                                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                        <button class="btn btn-outline-primary" type="button">Search</button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    </nav>
-                </div>
-                <div class="col-3 bg-white  d-flex justify-content-around align-items-center">
-        <?php if (isset($_SESSION['usuario_id'])) : ?>
-            <!--  botones para cerrar sesión y ver perfil -->
-            <div class="d-flex justify-content-around">
-                <a href="./todosPedidos.php" class="btn btn-primary btn-sm  me-2 text-decoration-none bg-white border-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
-                        class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.304a.5.5 0 0 0-.708-.708L7.5 10.793 6.304 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
-                    </svg>
-                </a>
-                <a href="?logout" class="btn btn-danger btn-sm my-2">Log Out</a>
-                <a href="<?php echo $perfilLink; ?>" class="btn btn-primary btn-sm my-2">Perfil</a>
-            </div>
-        <?php else : ?>
-            <!-- Mostrar botones para iniciar sesión -->
-            <div class="d-flex mt-3">
-                <a href="./paginas/todosPedidos.php" class="btn btn-primary  bg-white border-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
-                        class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.304a.5.5 0 0 0-.708-.708L7.5 10.793 6.304 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
-                    </svg>
-                </a>
-                <a href="paginas/login.php" class="btn btn-primary  bg-white border-white">
+                        </nav>
+                    </div>
+                    <div class="col-3 bg-white  d-flex justify-content-around align-items-center">
+            <?php if (isset($_SESSION['usuario_id'])) : ?>
+                <!--  botones para cerrar sesión y ver perfil -->
+                <div class="d-flex justify-content-around">
+                    <a href="./todosPedidos.php" class="btn btn-primary btn-sm  me-2 text-decoration-none bg-white border-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45%" height="45%" fill="#0275d8"
+                            class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.304a.5.5 0 0 0-.708-.708L7.5 10.793 6.304 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                        </svg>
+                    </a>
+                    <a href="<?php echo $perfilLink; ?>" class=" btn-sm my-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
                         class="bi mx-2 bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
@@ -160,51 +171,100 @@
                             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                     </svg>
                 </a>
-            </div>
-        <?php endif; ?>
-    </div>
-    </header>
-        </div>
-        <main>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="<?php echo $producto['Imagen']; ?>" class="img-fluid" alt="<?php echo $producto['Nombre']; ?>">
+                <a href="?logout" class=" btn-sm my-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="red" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                </svg>
+                </a>    
                 </div>
-                <div class="col-md-6">
-                    <!-- Contenido de producto -->
-                    <h2><?php echo $producto['Nombre']; ?></h2>
-                    <p><?php echo $producto['Descripcion']; ?></p>
-                    <p>Precio: $<?php echo $producto['Precio']; ?></p>
-                    <p>Estado de Stock: <?php echo ($producto['CantidadStock'] > 0) ? 'En Stock' : 'Sin Stock'; ?></p>
-                    <?php if ($producto['CantidadStock'] > 0): ?>
-                        <p>Unidades disponibles: <?php echo $producto['CantidadStock']; ?></p>
-                    <?php endif; ?>
-
-                
-                    <form action="producto.php?producto_id=<?php echo $producto_id; ?>" method="post">
-                        <div class="mb-3">
-                            <label for="cantidad" class="form-label">Cantidad:</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad" value="1" min="1" max="<?php echo $producto['CantidadStock']; ?>">
-                        </div>
-                        <input type="hidden" name="producto_id" value="<?php echo $producto_id; ?>">
-                        <input type="hidden" name="producto_nombre" value="<?php echo $producto['Nombre']; ?>">
-                        <input type="hidden" name="producto_precio" value="<?php echo $producto['Precio']; ?>">
-
+            <?php else : ?>
+                <!-- Mostrar botones para iniciar sesión -->
+                <div class="d-flex mt-3">
+                    <a href="./paginas/todosPedidos.php" class="btn btn-primary  bg-white border-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
+                            class="bi mx-2 bi-bag-check-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.304a.5.5 0 0 0-.708-.708L7.5 10.793 6.304 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                        </svg>
+                    </a>
+                    <a href="paginas/login.php" class="btn btn-primary  bg-white border-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="55%" height="55%" fill="#0275d8"
+                            class="bi mx-2 bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path fill-rule="evenodd"
+                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                        </svg>
+                    </a>
+                </div>
+            <?php endif; ?>
+        </div>
+        </header>
+            </div>
+            <main>
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="<?php echo $producto['Imagen']; ?>" class="img-fluid" alt="<?php echo $producto['Nombre']; ?>">
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Contenido de producto -->
+                        <h2><?php echo $producto['Nombre']; ?></h2>
+                        <p><?php echo $producto['Descripcion']; ?></p>
+                        <p>Precio: $<?php echo $producto['Precio']; ?></p>
+                        <p>Estado de Stock: <?php echo ($producto['CantidadStock'] > 0) ? 'En Stock' : 'Sin Stock'; ?></p>
+                        <?php if ($producto['CantidadStock'] > 0): ?>
+                            <p>Unidades disponibles: <?php echo $producto['CantidadStock']; ?></p>
+                        <?php endif; ?>
                         <?php
+                            // Verificar si el usuario es administrador
+                            if ($esAdministrador) {
+                                echo '
+                                    <form action="producto.php?producto_id=' . $producto_id . '" method="post">
+                                        <div class="mb-3">
+                                            <label for="descripcion" class="form-label">Descripción:</label>
+                                            <input type="text" class="form-control" id="descripcion" name="descripcion" value="' . $producto['Descripcion'] . '">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="precio" class="form-label">Precio:</label>
+                                            <input type="number" class="form-control" id="precio" name="precio" value="' . $producto['Precio'] . '">
+                                        </div>
+                                        <input type="hidden" name="producto_id" value="' . $producto_id . '">
+                                        <input type="hidden" name="producto_borrado" value="' . ($producto['Borrado'] ? '1' : '0') . '">
+                                        <input type="submit" name="guardarCambios" class="btn btn-dark" value="Guardar Cambios">
+                                        <input type="submit" name="darDeBaja" class="btn btn-warning" value="Dar de Baja">
+                                    </form>
+                                ';
+                            } else {
+                                // No es administrador, mostrar descripción y precio normales
+                                echo '<p>' . $producto['Descripcion'] . '</p>';
+                                echo '<p>Precio: $' . $producto['Precio'] . '</p>';
+                            }
+                            ?>
+                    
+                        <form action="producto.php?producto_id=<?php echo $producto_id; ?>" method="post">
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label">Cantidad:</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" value="1" min="1" max="9999">
+                            </div>
+                            <input type="hidden" name="producto_id" value="<?php echo $producto_id; ?>">
+                            <input type="hidden" name="producto_nombre" value="<?php echo $producto['Nombre']; ?>">
+                            <input type="hidden" name="producto_precio" value="<?php echo $producto['Precio']; ?>">
+
+                                        <?php
                             // Verificar si el usuario es un moderador o administrador
                             if (esModerador() || esAdministrador()) {
                                 echo '
                                     <input type="hidden" name="albaran_id" value="' . $idDelAlbaran . '">
-                                    <input type="submit" name="quitarStock" value="Quitar Stock">
-                                    <input type="submit" name="agregarStock" value="Agregar Stock">
+                                    <button type="submit" name="quitarStock" class="btn btn-danger">Quitar Stock</button>
+                                    <button type="submit" name="agregarStock" class="btn btn-success">Agregar Stock</button>
                                 ';
                             }
                         ?>
 
-                        <input type="hidden" name="pedido_id" value="<?php echo $pedido_id; ?>">
-                        <button type="submit" name="comprar" class="btn btn-primary">Comprar</button>
-                    </form>
+                <input type="hidden" name="pedido_id" value="<?php echo $pedido_id; ?>">
+                <button type="submit" name="comprar" class="btn btn-primary">Comprar</button>
+                </form>
 
                 </div>
             </div>
@@ -431,7 +491,7 @@
             echo "Producto no encontrado";
             exit();
         }
-    
+    }
     ?>
 
 
