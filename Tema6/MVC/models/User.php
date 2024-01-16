@@ -1,19 +1,21 @@
 <?php
 
     class User {
-        private $codigoUsuario;
+        private $codUsuario;
         private $password;
         private $descUsuario;
-        private $numAccesos;        private $fechaUltimaConexion;
+        private $fechaUltimaConexion;
         private $perfil;
+        private $activo;
 
-        function __construct($codigoUsuario,$password,$descUsuario,$fechaUltimaConexion,$perfil)
+        function __construct($codUsuario,$password,$descUsuario,$fechaUltimaConexion,$perfil="usuario",$activo=true)
         {
-            $this-> codigoUsuario=$codigoUsuario;
+            $this-> codUsuario=$codUsuario;
             $this-> password=$password;
             $this-> descUsuario=$descUsuario;
             $this-> fechaUltimaConexion=$fechaUltimaConexion;
             $this-> perfil=$perfil;
+            $this->activo=$activo;
         }
 
         public function __get($att){

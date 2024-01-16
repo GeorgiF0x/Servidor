@@ -6,6 +6,7 @@
     define ("CSS", "./webroot/css/");
     //para js
     define ("JS", "./webroot/js/");
+    define ("VIEW", "./views/");
 
     require("./config/configBD.php");
     require("./dao/FactoryBD.php");
