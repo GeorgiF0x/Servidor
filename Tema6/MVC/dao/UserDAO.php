@@ -116,6 +116,7 @@
         public static function validarUser($codUsuario, $password) {
             $sql = "SELECT * FROM Usuario WHERE codUsuario = ? AND password = ? AND activo = true";
             $parametros = array($codUsuario, $password);
+            $password=sha1($password);
             $result = FactoryBD::realizaConsulta($sql, $parametros);
             if ($result->rowCount() == 1) {
                 $usuario = $result->fetchObject();

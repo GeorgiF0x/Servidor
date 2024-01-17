@@ -7,8 +7,10 @@
     //para js
     define ("JS", "./webroot/js/");
     define ("VIEW", "./views/");
+    define ("CON", "./controllers/");
 
     require("./config/configBD.php");
     require("./dao/FactoryBD.php");
     require("./models/User.php");
     require("./dao/UserDAO.php");
+    require("./core/funciones.php");
