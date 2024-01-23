@@ -22,7 +22,7 @@ class UserDAO{
     }
 
     public static function findById($id){
-        $sql = "select * from Usuario where codUsuario = ?";
+        $sql = "select * from Usuario where Id = ?";
         $parametros = array($id);
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount()==1){
@@ -41,31 +41,32 @@ class UserDAO{
     }
 
     public static function insert($usuario){
-        $sql = "insert into Usuario (codUsuario,password,descUsuario,
-         fechaUltimaConexion,activo) values (?,?,?,?,?)";
+        $sql = "insert into Usuario (Id,Nombre,Contraseña,Email,
+         FechaNacimiento,Borrado) values (?,?,?,?,?,?)";
         //insertar todos los atributos
-        $parametros = array($usuario->codUsuario,
-        sha1($usuario->password),
-        $usuario->descUsuario, 
-        $usuario->fechaUltimaConxion,
-        $usuario->activo    );
-        
+        $parametros = array($usuario->Id,
+        sha1($usuario->Contraseña),
+        $usuario->Email, 
+        $usuario->FechaNacimiento,
+        $usuario->Borrado);
+    
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         return true;
     }
 
     public static function update($usuario){
         $sql = "update Usuario set
-        descUsuario = ?, fechaUltimaConexion = ? , 
-        perfil = ? , activo = ?
-        where codUsuario = ?";
+        Nombre= ?, Email = ? , 
+        FechaNacimiento = ? , Perfil = ?,
+        Borrado = ?
+        where Id = ?";
         //insertar todos los atributos
         $parametros = array(
-        $usuario->descUsuario, 
-        $usuario->fechaUltimaConexion,
-        $usuario->perfil,
-        $usuario->activo,
-        $usuario->codUsuario);
+        $usuario->Nombre, 
+        $usuario->Contraseña,
+        $usuario->Email,
+        $usuario->FechaNacimiento,
+        $usuario->Id);
         
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount() > 0)
@@ -73,17 +74,17 @@ class UserDAO{
         return false;
     }
     public static function cambioContraseña($usuario){
-        $sql = "update Usuario set password = ?,
-        descUsuario = ?, fechaUltimaConexion = ? , perfil = ? , activo = ?
-        where codUsuario = ?";
+        $sql = "update Usuario set Contraseña = ?,
+        Nombre = ?, Email = ? , FechaNacimiento = ? , Borrado = ?
+        where Id = ?";
         //insertar todos los atributos
         $parametros = array(
-        sha1($usuario->password),
-        $usuario->descUsuario, 
-        $usuario->fechaUltimaConexion,
-        $usuario->perfil,
-        $usuario->activo,
-        $usuario->codUsuario);
+        sha1($usuario->Contraseña),
+        $usuario->Nombre, 
+        $usuario->Email,
+        $usuario->FechaNacimiento,
+        $usuario->Perfil,
+        $usuario->Borado);
         
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount() > 0)
@@ -91,8 +92,8 @@ class UserDAO{
     }
 
     public static function delete($usuario){
-        $sql = "update Usuario set activo = false
-        where codUsuario = ?";
+        $sql = "update Usuario set Borrado = true
+        where Id = ?";
         //insertar todos los atributos
         $parametros = array($usuario->codUsuario);        
         $result = FactoryBD::realizaConsulta($sql,$parametros);
@@ -101,8 +102,8 @@ class UserDAO{
     }
 
     public static function activar($usuario){
-        $sql = "update Usuario set activo = true
-        where codUsuario = ?";
+        $sql = "update Usuario set Borrado = false
+        where Id = ?";
         //insertar todos los atributos
         $parametros = array($usuario->codUsuario);        
         $result = FactoryBD::realizaConsulta($sql,$parametros);
@@ -111,18 +112,18 @@ class UserDAO{
     }
     //findByDescUsuario
     public static function buscarPorNombre($nombre){
-        $sql = "select * from Usuario where descUsuario like ?";
+        $sql = "select * from Usuario where Nombre like ?";
         $nombre = '%'.$nombre.'%';
         $parametros = array($nombre);
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount()==1){
             $usuarioStd  = $result->fetchObject();
-            $usuario = new User($usuarioStd->codUsuario,
-                            $usuarioStd->password,
-                            $usuarioStd->descUsuario,
-                            $usuarioStd->fechaUltimaConexion,
-                            $usuarioStd->perfil,
-                            $usuarioStd->activo);
+            $usuario = new User($usuarioStd->Id,
+                            $usuarioStd->Contraseña,
+                            $usuarioStd->Email,
+                            $usuarioStd->FechaNacimiento,
+                            $usuarioStd->Perfil,
+                            $usuarioStd->Borrado);
             return $usuario;
         }
         //return 1 objeto usuario
@@ -132,28 +133,22 @@ class UserDAO{
 
     public static function validarUser($nombre,$pass){
         $sql = "select * from Usuario where 
-        descUsuario = ? and password = ? and activo = true";
+        Nombre = ? and Contraseña = ? and Borrado = false ";
         $pass = sha1($pass);
         $parametros = array($nombre,$pass);
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount()==1){
             $usuarioStd  = $result->fetchObject();
-            $usuario = new User($usuarioStd->codUsuario,
-                            $usuarioStd->password,
-                            $usuarioStd->descUsuario,
-                            $usuarioStd->fechaUltimaConexion,
-                            $usuarioStd->perfil,
-                            $usuarioStd->activo);
+            $usuario = new User($usuarioStd->Id,
+                            $usuarioStd->Contraseña,
+                            $usuarioStd->Email,
+                            $usuarioStd->FechaNacimiento,
+                            $usuarioStd->Perfil,
+                            $usuarioStd->Borrado);
             return $usuario;
         }
         //return 1 objeto usuario
         else    
             return null;
     }
-
-
-
-
-
-
 }

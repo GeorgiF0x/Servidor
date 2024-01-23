@@ -1,39 +1,44 @@
-<?
-    //si se ha logeado
-    //si esta validado llamando si esta validado o no
-    if(!validado()){
-        $_SESSION['vista']=VIEW.'login.php';
-        $_SESSION['controller']=CON.'LoginController.php';
-    }else{
-        if(isset($_REQUEST['editarUser'])){
-            $_SESSION['vista']=VIEW.'editarUser.php';
-        }
-
-        if(isset($_REQUEST['User_editar'])){
-            $usuario=$_SESSION['usuario'];
-            if(!textVacio('desc')){
-                $usuario->descUsuario=$_REQUEST['desc'];
-                if( UserDAO::update($usuario)){
-                    $sms="se ha cambiado correctamente";
-                    $_SESSION['vista']=VIEW.'viewUsuario.php';
-                }else{
-                    $errores['update']="no se ha producido el cambio";
+<?php
+//Login
+//funcionara llamanda a una funcion validado
+if(!validado()){
+    $_SESSION['vista'] = VIEW.'login.php';
+    $_SESSION['controller'] = CON.'LoginController.php';
+}else{
+    if(isset($_REQUEST['User_editar'])){
+        $_SESSION['vista'] = VIEW.'editarUser.php';
+    }
+    else if(isset($_REQUEST['User_CambiaContraseña'])){
+        $_SESSION['vista'] = VIEW.'editarPassUser.php';
+    }else if(isset($_REQUEST['User_Editar'])){        
+        $usuario = $_SESSION['usuario'];
+        if(!textVacio('nombre')){
+            $usuario->descUsuario = $_REQUEST['nombre'];
+            if(UserDAO::update($usuario))
+                {
+                    $sms = "Se ha cambiado el nombre correctamente";
+                    $_SESSION['usuario'] = $usuario;
+                    $_SESSION['vista'] = VIEW.'verUsuario.php';
                 }
-            }else{
-                $errores['nombre']='no puede estar vacio';
+                else{
+                    $errores['update'] = "No se ha podido modificar el usuario";
+                }
+        }else{
+            $errores['nombre'] = "No puede estar vacio";
+        }
+    }else if(isset($_REQUEST['User_GuardaContraseña'])){
+        $usuario = $_SESSION['usuario'];
+        if(!textVacio('pass') && !textVacio('pass1') &&
+        passIgual($_REQUEST['pass'],$_REQUEST['pass1'])){
+            $usuario->password = $_REQUEST['pass'];
+            if(UserDAO::cambioContraseña($usuario)) {
+                $sms = "Se ha cambiado la contraseña correctamente";
+                $_SESSION['usuario'] = $usuario;
+                $_SESSION['vista'] = VIEW.'verUsuario.php';
             }
-        }
-
-        if(isset($_REQUEST['Pass_editar'])){
-            $usuario=$_SESSION['usuario'];
-            if(!textVacio('pass') && !textVacio('Rep_pass') && passIgual($_REQUEST['pass'],$_REQUEST['Rep_pass'])){
-                $usuario->password=$_REQUEST['pass'];
-                if(UserDAO::UpdatePass($usuario)){
-                    $sms="se ha cambiado correctamente la contraseña";
-                    $_SESSION['vista']=VIEW.'viewUsuario.php';
-                }else{
-                    $errores['update']="no se ha producido el cambio en la contraseña";
-                }
+            else{
+                $errores['update'] = "No se ha podido modificar la contraseña";
             }
         }
     }
+}

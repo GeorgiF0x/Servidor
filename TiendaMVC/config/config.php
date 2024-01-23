@@ -12,9 +12,9 @@ require('./core/funciones.php');
 
 require ('./config/confBD.php');
 
-require ('./dao/FactoryBD.php');
-require ('./models/User.php');
-require ('./dao/UserDAO.php');
-require ('./models/Cita.php');
-require ('./dao/CitaDAO.php');
+// require ('./dao/FactoryBD.php');
+// require ('./models/User.php');
+// require ('./dao/UserDAO.php');
+// require ('./models/Cita.php');
+// require ('./dao/CitaDAO.php');
 
