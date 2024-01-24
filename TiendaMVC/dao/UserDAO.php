@@ -8,12 +8,13 @@ class UserDAO{
         
         $array_usuarios = array();
         while($usuarioStd  = $result->fetchObject()){
-            $usuario = new User($usuarioStd->codUsuario,
-                        $usuarioStd->password,
-                        $usuarioStd->descUsuario,
-                        $usuarioStd->fechaUltimaConexion,
-                        $usuarioStd->perfil,
-                        $usuarioStd->activo);
+            $usuario = new User($usuarioStd->Id,
+                        $usuarioStd->Nombre,
+                        $usuarioStd->Contraseña,
+                        $usuarioStd->Email,
+                        $usuarioStd->FechaNacimiento,
+                        $usuarioStd->Perfil,
+                        $usuarioStd->Borrado);
             array_push($array_usuarios,$usuario);
         }
 
@@ -27,12 +28,13 @@ class UserDAO{
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount()==1){
             $usuarioStd  = $result->fetchObject();
-            $usuario = new User($usuarioStd->codUsuario,
-                            $usuarioStd->password,
-                            $usuarioStd->descUsuario,
-                            $usuarioStd->fechaUltimaConexion,
-                            $usuarioStd->perfil,
-                            $usuarioStd->activo);
+            $usuario = new User($usuarioStd->Id,
+                            $usuarioStd->Nombre,
+                            $usuarioStd->Contraseña,
+                            $usuarioStd->Email,
+                            $usuarioStd->FechaNacimiento,
+                            $usuarioStd->Perfil,
+                            $usuarioStd->Borrado);
             return $usuario;
         }
         //return 1 objeto usuario
@@ -42,70 +44,81 @@ class UserDAO{
 
     public static function insert($usuario){
         $sql = "insert into Usuario (Id,Nombre,Contraseña,Email,
-         FechaNacimiento,Borrado) values (?,?,?,?,?,?)";
+         FechaNacimiento,Perfil,Borrado) values (?,?,?,?,?,?,?)";
         //insertar todos los atributos
         $parametros = array($usuario->Id,
-        sha1($usuario->Contraseña),
+        $usuario->Nombre,
+        $usuario->Contraseña,
         $usuario->Email, 
         $usuario->FechaNacimiento,
+        $usuario->Perfil,
         $usuario->Borrado);
-    
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         return true;
     }
+    
 
     public static function update($usuario){
-        $sql = "update Usuario set
-        Nombre= ?, Email = ? , 
-        FechaNacimiento = ? , Perfil = ?,
-        Borrado = ?
-        where Id = ?";
-        //insertar todos los atributos
+        $sql = "UPDATE Usuario SET
+                Nombre = ?, 
+                Email = ?, 
+                FechaNacimiento = ?, 
+                Perfil = ?, 
+                Borrado = ?
+                WHERE Id = ?";
         $parametros = array(
-        $usuario->Nombre, 
-        $usuario->Contraseña,
-        $usuario->Email,
-        $usuario->FechaNacimiento,
-        $usuario->Id);
-        
-        $result = FactoryBD::realizaConsulta($sql,$parametros);
-        if($result->rowCount() > 0)
+            $usuario->Nombre, 
+            $usuario->Email,
+            $usuario->FechaNacimient,
+            $usuario->Perfil,
+            $usuario->Borrado,
+            $usuario->Id
+        );
+        $result = FactoryBD::realizaConsulta($sql, $parametros);
+        if ($result->rowCount() > 0) {
             return true;
+        }
         return false;
-    }
-    public static function cambioContraseña($usuario){
-        $sql = "update Usuario set Contraseña = ?,
-        Nombre = ?, Email = ? , FechaNacimiento = ? , Borrado = ?
-        where Id = ?";
-        //insertar todos los atributos
+    } 
+    
+
+    public static function cambioContraseña($usuario) {
+        $sql = "UPDATE Usuario SET Contraseña = ?, Nombre = ?, Email = ?, FechaNacimiento = ?, Perfil = ?, Borrado = ? WHERE Id = ?";
+    
+        // Insertar todos los atributos
         $parametros = array(
-        sha1($usuario->Contraseña),
-        $usuario->Nombre, 
-        $usuario->Email,
-        $usuario->FechaNacimiento,
-        $usuario->Perfil,
-        $usuario->Borado);
+            $usuario->Contraseña,
+            $usuario->Nombre, 
+            $usuario->Email,
+            $usuario->FechaNacimiento,
+            $usuario->Perfil,
+            $usuario->Borrado,
+            $usuario->Id 
+        );
         
-        $result = FactoryBD::realizaConsulta($sql,$parametros);
-        if($result->rowCount() > 0)
+        $result = FactoryBD::realizaConsulta($sql, $parametros);
+    
+        if ($result->rowCount() > 0) {
             return true;
+        }
     }
+    
 
     public static function delete($usuario){
-        $sql = "update Usuario set Borrado = true
+        $sql = "update Usuario set Borrado = 1
         where Id = ?";
         //insertar todos los atributos
-        $parametros = array($usuario->codUsuario);        
+        $parametros = array($usuario->Id);        
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount() > 0)
             return true;
     }
 
     public static function activar($usuario){
-        $sql = "update Usuario set Borrado = false
+        $sql = "update Usuario set Borrado = 0
         where Id = ?";
         //insertar todos los atributos
-        $parametros = array($usuario->codUsuario);        
+        $parametros = array($usuario->Id);        
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount() > 0)
             return true;

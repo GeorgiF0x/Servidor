@@ -13,7 +13,7 @@ class ProductoDAO{
                         $productoStd->CantidadStock,
                         $productoStd->Precio,
                         $productoStd->Borrado);
-            array_push($array_productos,$usuario);
+            array_push($array_productos,$producto );
         }
         //return array con todos los User
         return $array_productos;
@@ -25,128 +25,91 @@ class ProductoDAO{
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount()==1){
             $productoStd  = $result->fetchObject();
-            $usuario = new User($productoStd->Codigo,
+            $producto = new User($productoStd->Codigo,
                             $productoStd->Nombre,
                             $productoStd->Descripcion,
                             $productoStd->CantidadStock,
                             $productoStd->Precio,
                             $productoStd->Borrado);
-            return $usuario;
+            return $producto;
         }
-        //return 1 objeto usuario
+        //return 1 objeto producto
         else    
             return null;
     }
 
-    public static function insert($usuario){
-        $sql = "insert into Usuario (Id,Nombre,Contraseña,Email,
-         FechaNacimiento,Borrado) values (?,?,?,?,?,?)";
+    public static function insert($producto){
+        $sql = "insert into producto (Codigo,Nombre,Descripcion,CantidadStock,
+         Precio,Imagen,Borrado) values (?,?,?,?,?,?,?)";
         //insertar todos los atributos
-        $parametros = array($usuario->Id,
-        sha1($usuario->Contraseña),
-        $usuario->Email, 
-        $usuario->FechaNacimiento,
-        $usuario->Borrado);
-    
+        $parametros = array($producto->Codigo,
+        $producto->Nombre,
+        $producto->Descripcion,
+        $producto->CantidadStock,
+        $producto->Precio,
+        $producto->Borrado);
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         return true;
     }
 
-    public static function update($usuario){
-        $sql = "update Usuario set
-        Nombre= ?, Email = ? , 
-        FechaNacimiento = ? , Perfil = ?,
-        Borrado = ?
+    public static function update($producto){
+        $sql = "update Producto set
+        Nombre= ?, Descripcion = ? , 
+        cantidadStock = ? , Precio = ?,
+        Imagen = ? ,Borrado = ?,
         where Id = ?";
         //insertar todos los atributos
         $parametros = array(
-        $usuario->Nombre, 
-        $usuario->Contraseña,
-        $usuario->Email,
-        $usuario->FechaNacimiento,
-        $usuario->Id);
-        
+        $producto->Nombre,
+        $producto->Descripcion,
+        $producto->CantidadStock,
+        $producto->Precio,
+        $producto->Borrado);
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount() > 0)
             return true;
         return false;
     }
-    public static function cambioContraseña($usuario){
-        $sql = "update Usuario set Contraseña = ?,
-        Nombre = ?, Email = ? , FechaNacimiento = ? , Borrado = ?
-        where Id = ?";
+
+
+    public static function delete($producto){
+        $sql = "update Producto set Borrado = true
+        where Codigo = ?";
         //insertar todos los atributos
-        $parametros = array(
-        sha1($usuario->Contraseña),
-        $usuario->Nombre, 
-        $usuario->Email,
-        $usuario->FechaNacimiento,
-        $usuario->Perfil,
-        $usuario->Borado);
-        
+        $parametros = array($producto->codproducto);        
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount() > 0)
             return true;
     }
 
-    public static function delete($usuario){
-        $sql = "update Usuario set Borrado = true
-        where Id = ?";
+    public static function activar($producto){
+        $sql = "update Producto set Borrado = false
+        where Codigo = ?";
         //insertar todos los atributos
-        $parametros = array($usuario->codUsuario);        
+        $parametros = array($producto->codproducto);        
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount() > 0)
             return true;
     }
-
-    public static function activar($usuario){
-        $sql = "update Usuario set Borrado = false
-        where Id = ?";
-        //insertar todos los atributos
-        $parametros = array($usuario->codUsuario);        
-        $result = FactoryBD::realizaConsulta($sql,$parametros);
-        if($result->rowCount() > 0)
-            return true;
-    }
-    //findByDescUsuario
+    //findByDescproducto
     public static function buscarPorNombre($nombre){
-        $sql = "select * from Usuario where Nombre like ?";
+        $sql = "select * from Producto where Nombre like ?";
         $nombre = '%'.$nombre.'%';
         $parametros = array($nombre);
         $result = FactoryBD::realizaConsulta($sql,$parametros);
         if($result->rowCount()==1){
             $productoStd  = $result->fetchObject();
-            $usuario = new User($productoStd->Id,
-                            $productoStd->Contraseña,
-                            $productoStd->Email,
-                            $productoStd->FechaNacimiento,
-                            $productoStd->Perfil,
+            $producto = new User($productoStd->Codigo,
+                            $productoStd->Nombre,
+                            $productoStd->Descripcion,
+                            $productoStd->CantidadStock,
+                            $productoStd->Precio,
                             $productoStd->Borrado);
-            return $usuario;
+                     return $producto;
         }
-        //return 1 objeto usuario
+        //return 1 objeto producto
         else    
             return null;
     }
-
-    public static function validarUser($nombre,$pass){
-        $sql = "select * from Usuario where 
-        Nombre = ? and Contraseña = ? and Borrado = false ";
-        $pass = sha1($pass);
-        $parametros = array($nombre,$pass);
-        $result = FactoryBD::realizaConsulta($sql,$parametros);
-        if($result->rowCount()==1){
-            $productoStd  = $result->fetchObject();
-            $usuario = new User($productoStd->Id,
-                            $productoStd->Contraseña,
-                            $productoStd->Email,
-                            $productoStd->FechaNacimiento,
-                            $productoStd->Perfil,
-                            $productoStd->Borrado);
-            return $usuario;
-        }
-        //return 1 objeto usuario
-        else    
-            return null;
-    }
+    
 }

@@ -17,7 +17,7 @@
 
     // para mandar a la pagina del producto que se quiere comprar 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $producto_id = obtenerIdDelProducto($_POST['producto_id']);
+        $producto_id = obtenerIdProducto($_POST['producto_id']);
         header("Location: ./paginas/producto.php?producto_id=$producto_id");
         exit(); // Asegúrate de salir después de la redirección
     }
@@ -223,7 +223,6 @@
         <?php
             PintarProductos();
             if (esAdministrador()) {
-             
                 echo '<div class="col-md-12 mt-4 text-center">';
                 echo '<a href="./paginas/addProducto.php" class="btn btn-primary btn-lg">Añadir Producto</a>';
                 echo '</div>';

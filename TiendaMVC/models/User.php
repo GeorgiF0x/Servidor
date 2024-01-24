@@ -2,17 +2,19 @@
 
 class User {
     private $Id;
+    private $Nombre;
     private $Contraseña;
     private $Email;
-    private $FechaNaciemiento;
+    private $FechaNacimiento;
     private $Perfil;
     private $Borrado;
 
-    function __construct($Id,$Contraseña,$Email,$FechaNaciemiento, $Perfil = 'usuario',$Borrado=false){
+    function __construct($Id,$Nombre,$Contraseña,$Email,$FechaNacimiento, $Perfil = 'Cliente',$Borrado=0){
         $this->Id = $Id;
+        $this->Nombre=$Nombre;
         $this->Contraseña = $Contraseña;
         $this->Email = $Email;
-        $this->FechaNaciemiento = $FechaNaciemiento;
+        $this->FechaNacimiento = date('Y-m-d', strtotime($FechaNacimiento));
         $this->Perfil = $Perfil;
         $this->Borrado = $Borrado;
     }
