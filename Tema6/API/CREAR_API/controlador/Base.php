@@ -15,7 +15,7 @@ class Base{
     }
 
     public static function condiciones(){
-        return parse_str($_SERVER['QUERY_STRING'],$filtros);
+        parse_str($_SERVER['QUERY_STRING'],$filtros);
         return $filtros;
     }
     
