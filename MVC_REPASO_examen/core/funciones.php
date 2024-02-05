@@ -102,3 +102,10 @@ function admin()
     return false;
 
 }
+
+function validarCheks($errores) {
+    if (!isset($_POST['number']) || count($_POST['number']) < 5) {
+        $errores['number'] = "Debes seleccionar al menos 5 números.";
+    }
+    return $errores;
+}

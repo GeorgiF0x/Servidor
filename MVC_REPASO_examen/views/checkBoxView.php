@@ -17,26 +17,29 @@
 
 <body>
     <div class="container">
-    <form method="post" action="">
+
+        <form method="post">
             <div class="row row-cols-5 g-3">
-                <?php
-                for ($i = 1; $i <= 50; $i++) {
-                ?>
                 <div class="col">
-                    <div class='form-check'>
-                        <input class='form-check-input' type='checkbox' name='number[]' value='<?php echo $i; ?>' id='checkbox_<?php echo $i; ?>'>
-                        <label class='form-check-label' for='checkbox_<?php echo $i; ?>'><?php echo $i; ?></label>
-                    </div>
+                    <?php
+                    for ($i = 1; $i <= 50; $i++) {
+                        echo "<div class='form-check'>";
+                        echo "<input class='form-check-input' type='checkbox' name='number[]' value='$i' id='checkbox_$i'>";
+                        echo "<label class='form-check-label' for='checkbox_$i'>$i</label>";
+                        echo "</div>";
+                    }
+                    ?>
                 </div>
-                <?php
-                }
-                ?>
             </div>
             <button type="submit" class="btn btn-primary" name="Enviar_checks">Enviar</button>
+            <?php
+                if (isset($errores)) {
+                    escribirErrores($errores, "Enviar_checks");
+                }
+            ?>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
-

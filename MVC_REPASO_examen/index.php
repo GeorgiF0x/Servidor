@@ -25,6 +25,9 @@ if (isset($_REQUEST['loginLay'])) {
     $_SESSION['vista'] = VIEW . 'verCitas.php';
     $_SESSION['controller'] = CON . 'CitasController.php';
 
+}elseif (isset($_REQUEST['Enviar_checks'])) { // Nueva condición para enviar_checks
+    $_SESSION['vista'] = VIEW . 'verResultado.php'; // Cambia 'verResultado.php' por el nombre correcto de tu vista
+    $_SESSION['controller'] = CON . 'checkController.php'; // Cambia 'checkController.php' por el nombre correcto de tu controlador
 }
 if (isset($_SESSION['controller'])) {
     require($_SESSION['controller']);
