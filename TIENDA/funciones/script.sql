@@ -33,14 +33,14 @@ INSERT INTO Usuario (Nombre, Contraseña, Email, FechaNacimiento, Perfil) VALUES
         );
 
 INSERT INTO Producto (Nombre, Descripcion, CantidadStock, Precio, Imagen) VALUES
-    ('Proteína Whey - Fresa', 'Proteína whey con sabor a batido de fresa', 50, 19.99, '../Media/producto1.webp'),
-    ('Proteína Whey - Chocolate Cacaolat', 'Proteína whey con sabor a chocolate cacaolat', 30, 29.99, '../Media/producto2.webp'),
-    ('Caseína', 'Suplemento de caseína para liberación lenta', 20, 39.99, '../Media/producto3.jpg'),
-    ('Proteína Whey - Chocolate Negro', 'Proteína whey con sabor a chocolate negro', 40, 24.99, '../Media/producto4.jpg'),
-    ('Proteína Iso Whey Zero', 'Proteína iso whey zero sin lactosa', 25, 34.99, '../Media/producto5.jpg'),
-    ('Mass Gainer', 'Suplemento de aumento de peso', 15, 49.99, '../Media/producto6.jpg'),
-    ('Proteína Whey Neutra', 'Proteína whey sin sabor añadido', 35, 22.99, '../Media/producto7.webp'),
-    ('Mass Gainer Vegano', 'Suplemento de aumento de peso vegano', 10, 54.99, '../Media/producto8.png');
+    ('Proteína Whey - Fresa', 'Proteína whey con sabor a batido de fresa', 50, 19.99, './webroot/Media/producto1.webp'),
+    ('Proteína Whey - Chocolate Cacaolat', 'Proteína whey con sabor a chocolate cacaolat', 30, 29.99, './webroot/Media/producto2.webp '),
+    ('Caseína', 'Suplemento de caseína para liberación lenta', 20, 39.99, './webroot/Media/producto3.jpg'),
+    ('Proteína Whey - Chocolate Negro', 'Proteína whey con sabor a chocolate negro', 40, 24.99, './webroot/Media/producto4.jpg '),
+    ('Proteína Iso Whey Zero', 'Proteína iso whey zero sin lactosa', 25, 34.99, './webroot/Media/producto5.jpg'),
+    ('Mass Gainer', 'Suplemento de aumento de peso', 15, 49.99, './webroot/Media/producto6.jpg'),
+    ('Proteína Whey Neutra', 'Proteína whey sin sabor añadido', 35, 22.99, './webroot/Media/producto7.webp'),
+    ('Mass Gainer Vegano', 'Suplemento de aumento de peso vegano', 10, 54.99, './webroot/Media/producto8.png');
 
 
 CREATE TABLE IF NOT EXISTS PedidoCompra (
