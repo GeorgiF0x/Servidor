@@ -103,6 +103,23 @@ function admin()
 
 }
 
+function generarNumerosAleatorios() {
+    // Generar y devolver un array con números aleatorios entre 1 y 50
+    $numerosAleatorios = [];
+    for ($i = 0; $i < 5; $i++) {
+        $numerosAleatorios[] = rand(1, 50);
+    }
+    sort($numerosAleatorios); // Ordenar los números aleatorios
+    return $numerosAleatorios;
+}
+
+
+function verificarCoincidencia($numerosAleatorios, $numerosSeleccionados) {
+    // Verificar si los números seleccionados coinciden con los números aleatorios
+    sort($numerosSeleccionados); // Ordenar los números seleccionados
+    return $numerosAleatorios === $numerosSeleccionados;
+}
+
 function validarCheks($errores) {
     if (!isset($_POST['number']) || count($_POST['number']) < 5) {
         $errores['number'] = "Debes seleccionar al menos 5 números.";

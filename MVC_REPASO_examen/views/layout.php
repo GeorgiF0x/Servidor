@@ -20,7 +20,7 @@
         <input type="submit" value="home" name="home">
     </form>
     <header>
-        <h1>pagina web</h1>
+        <!-- <h1>pagina web</h1> -->
     </header>
     <nav>
         <div>

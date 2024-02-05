@@ -1,7 +1,10 @@
 <?php
-
 require_once('./config/config.php');
 session_start();
+
+// // Limpiar variables de sesión antes de asignar nuevos valores
+// unset($_SESSION['vista']);
+// unset($_SESSION['controller']);
 
 if(isset($_REQUEST['login']))
 {
@@ -32,4 +35,6 @@ elseif(isset($_REQUEST['Pedidos_ver'])){
 
 if(isset($_SESSION['controller']))
     require($_SESSION['controller']);
+
 require('./views/layout.php');
+

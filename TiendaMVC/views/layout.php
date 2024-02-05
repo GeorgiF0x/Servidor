@@ -137,15 +137,14 @@ if (isset($_REQUEST['logout'])) {
         </header>
     </div>
         <div class="container contenido-vista">
-            
-    <?php
-        // Incluir la vista según el valor de $_SESSION['vista']
-        if (isset($_SESSION['vista'])) {
-            require_once(VIEW. $_SESSION['vista']);
-        } else {
-            // Si no hay vista definida en la sesión, se carga la vista 'home.php'
-            require_once(VIEW. 'main.php');
-        }
+        <?php
+    // Incluir la vista según el valor de $_SESSION['vista']
+    if (isset($_SESSION['vista'])) {
+        require_once(VIEW. $_SESSION['vista']);
+    } else {
+        // Si no hay vista definida en la sesión, se carga la vista 'home.php'
+        require_once(VIEW. 'main.php');
+    }
     ?>
 
 </div>

@@ -28,14 +28,15 @@
                         echo "<label class='form-check-label' for='checkbox_$i'>$i</label>";
                         echo "</div>";
                     }
+                    if (isset($errores)) {
+                        escribirErrores($errores, "validado");
+                    }
                     ?>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" name="Enviar_checks">Enviar</button>
             <?php
-                if (isset($errores)) {
-                    escribirErrores($errores, "Enviar_checks");
-                }
+              
             ?>
         </form>
     </div>
