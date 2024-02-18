@@ -90,7 +90,7 @@ class UserDao
         }
     }
     public static function validarUsuario($username, $password)
-    {
+    {   
         $sql = "select * from usuarios where username = ? and password = ?";
         $parametros = array($username, $password);
         $result = FactoryBd::realizarConsulta($sql, $parametros);
