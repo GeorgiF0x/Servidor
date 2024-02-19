@@ -19,7 +19,8 @@ if(isset($_REQUEST['login'])){
             $_SESSION['vista'] = VIEW.'inicioPartida.php';
             $_SESSION['controlador'] = CON.'inicioPartidaController.php';
             require  $_SESSION['controlador'];
-            // unset($_SESSION['controller']);
+            header('Location: ./index.php');
+            // unset($_SESSION['controlador']);
         } else {
             $errores['validado'] = "No existe el usuario y contraseña";
         }

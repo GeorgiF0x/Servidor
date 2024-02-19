@@ -3,8 +3,8 @@
 // require("insertar.php");
 
 function get($recurso){
-    $ch = curl_init();
 
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, URI_API.$recurso);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
@@ -18,7 +18,9 @@ function post($recurso, $array){
 
     curl_setopt($ch, CURLOPT_URL, URI_API.$recurso);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //para imprimir los datos en el body
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json, Content-Length:'. strlen($array)));
+
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $array);
     $response = curl_exec($ch);

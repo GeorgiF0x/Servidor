@@ -54,6 +54,7 @@
         if (!isset($_SESSION['vista'])) {
             echo 'bienvenidos al login';
             require VIEW . 'home.php';
+           
         } else
             require $_SESSION['vista'];
         ?>

@@ -1,0 +1,18 @@
+apt-get isntall php-cli
+apt-get isntall php-mbstring
+apt-get isntall unzip
+
+
+sudo curl -s https://getcomposer.org/installer | php
+
+instalarlo en bin o system , para que sea accesible desde cualquier usuario
+moverlo
+sudo mv composer.phar /usr/local/bin/composer
+
+isntalar node 
+sudo apt-get install nodejs npm
+
+sudo apt update 
+
+sudo apt-get install nodejs npm --fix-missing
+
