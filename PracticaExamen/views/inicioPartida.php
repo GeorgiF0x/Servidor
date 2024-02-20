@@ -20,6 +20,7 @@
         <th>Fecha</th>
     </thead>
     <tbody>
+        
         <?
         if ($_SESSION['estadisticas']) {
             foreach ($_SESSION['estadisticas'] as $key => $value) {

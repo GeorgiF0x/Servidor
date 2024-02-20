@@ -12,6 +12,8 @@ else if(isset($_REQUEST['Login_CerrarSesion'])){
     session_destroy();
     header('Location: ./index.php');
     exit;
+}else{
+    require $_SESSION['controlador'];
 }
 
 require VIEW . 'layout.php';

@@ -104,14 +104,13 @@ function admin()
 }
 
 
-function compararPalabras($palabra,$PalabraAleatoria){
+function compararPalabras($letra,$PalabraAleatoria){
     $arrayAleatoria=str_split($PalabraAleatoria);
-    $arrayPalabra=str_split($palabra);
     foreach ($arrayAleatoria as $key => $value) {
-        if($value===$arrayPalabra[$key]){
-            echo $value;
+        if($value===$letra){
+            return $value;
         }else{
-            echo "x";
+            return "x";
         }
     }
 }

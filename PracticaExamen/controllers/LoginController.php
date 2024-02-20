@@ -9,17 +9,14 @@ if(isset($_REQUEST['login'])){
         //iniciar sesion validada
         if(isset($_REQUEST['recordar'])){
             setcookie('username', $_REQUEST['nombre'], time() + 3600);
-            setcookie('password', $_REQUEST['pass'], time() + 3600);
         }else{
             setcookie('username', $_REQUEST['nombre'], time() - 3600);
-            setcookie('password', $_REQUEST['pass'], time() - 3600);
         }
         if($usuario != null){
             $_SESSION['usuario'] = $usuario;
             $_SESSION['vista'] = VIEW.'inicioPartida.php';
             $_SESSION['controlador'] = CON.'inicioPartidaController.php';
             require  $_SESSION['controlador'];
-            header('Location: ./index.php');
             // unset($_SESSION['controlador']);
         } else {
             $errores['validado'] = "No existe el usuario y contraseña";

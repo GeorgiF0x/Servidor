@@ -17,9 +17,11 @@
                             <?
                         echo "Bienvenido  ".$_SESSION['usuario']->username;
                         echo "<br>";
-                        echo $_COOKIE['username'];
+                        echo $_SESSION['vista'];
                         echo "<br>";
-                        echo $_COOKIE['password'];
+                        echo $_SESSION['controlador'];
+                        echo "<br>";
+                        echo $_COOKIE['username'];
                         ?>
                         </h1>
                         <form action="" method="post">
