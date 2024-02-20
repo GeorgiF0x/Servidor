@@ -1,5 +1,5 @@
 <?php
-class EstadiscicaDao
+class EstadisticaDao
 {
     public static function findAll(){
         $sql = "select * from estadisticas";
@@ -37,5 +37,18 @@ class EstadiscicaDao
             array_push($array_estadisticas, $estadistica);
         }
         return $array_estadisticas;
+    }
+
+    public static function insert($estadistica){
+        $sql = "insert into estadisticas (id_usuario, id_palabra, resultado, intentos, fecha) values (?, ?, ?, ?, ?,?)";
+        $parametros = array(
+            $estadistica->id_estadistica,
+            $estadistica->id_usuario,
+            $estadistica->id_palabra,
+            $estadistica->resultado,
+            $estadistica->intentos,
+            $estadistica->fecha
+        );
+        FactoryBd::realizarConsulta($sql, $parametros);
     }
 }

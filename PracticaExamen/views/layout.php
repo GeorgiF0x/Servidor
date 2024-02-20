@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        tr, td, th {
+            border: 1px solid black;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <header class="d-flex">
@@ -13,7 +19,7 @@
                 <?php
                     if(validado()){
                         ?>
-                        <h1>
+                        <h1 >
                             <?
                         echo "Bienvenido  ".$_SESSION['usuario']->username;
                         echo "<br>";

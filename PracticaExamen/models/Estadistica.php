@@ -11,11 +11,11 @@ class Estadistica
 
     
 
-    function __construct($id_estadistica, $id_usuario, $num_letras, $resultado, $intentos, $fecha)
+    function __construct($id_estadistica, $id_usuario, $id_palabra, $resultado, $intentos, $fecha)
     {
         $this->id_estadistica = $id_estadistica;
         $this->id_usuario = $id_usuario;
-        $this->num_letras = $num_letras;
+        $this->id_palabra = $id_palabra;
         $this->resultado = $resultado;
         $this->intentos = $intentos;
         $this->fecha = $fecha;

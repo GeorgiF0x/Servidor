@@ -25,6 +25,15 @@ function validarFormulario(&$errores)
         return false;
 
 }
+
+function validarLetra(&$errores)
+{
+    if (textovacio('letraJuego')) {
+        $errores['errorLetra'] = "El campo letraJuego está vacío.";
+        return false;
+    }
+    return true;
+}
 function comNombrer(&$errores)
 {
     if (textoVacio('descUsuarior')) {
@@ -104,16 +113,20 @@ function admin()
 }
 
 
-function compararPalabras($letra,$PalabraAleatoria){
-    $arrayAleatoria=str_split($PalabraAleatoria);
+function compararPalabras($letra, $PalabraAleatoria) {
+    $letra = strtoupper($letra); 
+    $PalabraAleatoria = strtoupper($PalabraAleatoria); 
+    
+    $arrayAleatoria = str_split($PalabraAleatoria);
     foreach ($arrayAleatoria as $key => $value) {
-        if($value===$letra){
-            return $value;
-        }else{
-            return "x";
+        if ($value === $letra) {
+            return $value; 
         }
     }
+    return "x"; 
 }
+
+
 
 
 
