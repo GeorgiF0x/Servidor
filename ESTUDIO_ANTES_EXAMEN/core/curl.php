@@ -52,12 +52,23 @@ function put($recurso, $id, $array){
     return $response;
 }
 
-function delete($recurso,$id){
+function deleteFromAPI($recurso, $id) {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, URI_API.$recurso.'/'.$id);
-    $response = curl_exec($ch);
-    return $response;
+    curl_setopt($ch, CURLOPT_URL, URI_API . $recurso . '/' . $id);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     
+    $response = curl_exec($ch);
+    
+    if ($response === false) {
+        // Si hay un error en la solicitud cURL, manejarlo aquí
+        echo 'Error: ' . curl_error($ch);
+    }
+    
+    curl_close($ch);
+    
+    return $response;
 }
+
 
 ?>

@@ -13,16 +13,30 @@ if (isset($_SESSION['Coche'])) {
 </h3>
 <p>
     <h3>Vincular Otra matricula a este coche</h3>
-<form method="post">
-    <input type="text" name="matricula" id="matricula" placeholder="Introduce la matricula">
-    <input type="submit" name="insertarMatricula" id="insertar" value="insertar Matricula">
-</form>
+    <form action="" method="post">
+    <input type="hidden" name="cocheId" value="<?php echo $_SESSION['Coche']->id; ?>">
+    <label for="matricula">Matricula: <input type="text" name="matricula" id="matricula"></label>
+    <input type="submit" name="insertar" value="Insertar">
+    <p>
+        <?php
+        if (isset($errores)&& isset ($_REQUEST['insertar'])) {
+            escribirErrores($errores, "matricula");
+        }
+        if(isset($errores['insertMatricula'])){
+            echo '<span style="color: red;">' . $errores['insertMatricula'] . '</span>';
+        }
+        ?>
+    </p>
+    </form>
+<p style="color:green">
+
 <?
     if(isset($_SESSION['avisos'])){
         echo $_SESSION['avisos'];
     }
 ?>
 </p>
+
 
 <table>
     <thead>
@@ -32,7 +46,7 @@ if (isset($_SESSION['Coche'])) {
             <th>Matricula</th>
         </tr>
         <?php
-        if (!empty($_SESSION['matriculas'])) { // Verificar si $matriculas no está vacío
+        if (!empty($_SESSION['matriculas'])) { 
             foreach ($_SESSION['matriculas'] as $matricula) {
                 echo "<tr>";
                 echo "<td>".$matricula['id']."</td>";
@@ -47,4 +61,9 @@ if (isset($_SESSION['Coche'])) {
         }
         ?>
     </thead>
+    <?
+     if(isset($errores['borrar']) && isset($_REQUEST['borrar'])){
+        echo '<span style="color: red;">' . $errores['borrar'] . '</span>';
+    }
+    ?>
 </table>

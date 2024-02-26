@@ -26,6 +26,15 @@ function validarFormulario(&$errores)
 
 }
 
+function validarFomInsertMatricula(&$errores){
+    comMatricula($errores);
+    if (count($errores) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function validarLetra(&$errores)
 {
     if (textovacio('letraJuego')) {
@@ -33,6 +42,12 @@ function validarLetra(&$errores)
         return false;
     }
     return true;
+}
+function comMatricula(&$errores)
+{
+    if (empty($_REQUEST['matricula'])) {
+        $errores['matricula'] = "Este campo está vacío";
+    }
 }
 function comNombrer(&$errores)
 {

@@ -12,6 +12,8 @@ if(isset($_REQUEST['login'])){
             // }
             if(isset($_REQUEST['recordar'])){
                 setcookie('username', $_REQUEST['nombre'], time() + 60*60*24*365); // 1 año
+            }else{
+                setcookie('username', $_REQUEST['nombre'], time() - 3600 );
             }
 
             if($usuario){
