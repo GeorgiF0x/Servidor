@@ -207,6 +207,22 @@ function compararPalabras($letra, $PalabraAleatoria) {
 }
 
 
+// para borrar 
+function eliminarMatricula($idMatricula,$idCoche) {
+    // Eliminar la matrícula usando la API
+    $result = deleteFromAPI("matricula", $idMatricula);
+
+    if ($result) {
+        // Actualizar la lista de matrículas después de eliminar
+        $matriculas = get("matricula/coche_id/".$idCoche);
+        $matriculas = json_decode($matriculas, true);
+        $_SESSION['matriculas'] = $matriculas;
+        $_SESSION['avisos'] = "Matrícula eliminada correctamente";
+    } else {
+        $_SESSION['errores']['eliminarMatricula'] = "No se ha podido eliminar la matrícula";
+    }
+}
+
 
 
 

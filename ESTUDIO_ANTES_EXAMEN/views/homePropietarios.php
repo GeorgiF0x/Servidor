@@ -19,6 +19,7 @@ if (isset($_SESSION['coches']) && !empty($_SESSION['coches'])) {
             <th>Color</th>
             <th>Precio</th>
             <th>Ver Matrículas</th> 
+            <th>Borrar coche</th> 
         </thead>
         <tbody>
         <?php

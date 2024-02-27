@@ -1,7 +1,8 @@
 <?php
 $errores = array();
 $_SESSION['vista'] = VIEW.'matriculasView.php';
-$idCoche= $_REQUEST['cocheId'];
+$_SESSION['idCoche'] = $_REQUEST['cocheId'];
+$idCoche= $_SESSION['idCoche'];
 $_SESSION['avisos'] = "";
 $_SESSION['Coche']=CochesDao::getById($idCoche);
 
@@ -33,16 +34,8 @@ if(validarFomInsertMatricula($errores)){
 }
 
 if (isset($_REQUEST['borrar'])) {
-
-        $id = $_REQUEST['id'];
-        // Eliminar la matrícula usando la API
-        deleteFromAPI("matricula", $id); 
-        // Actualizar la lista de matrículas después de eliminar
-        $matriculas = get("matricula/coche_id/".$idCoche);
-        $matriculas = json_decode($matriculas, true);
-        $_SESSION['matriculas'] = $matriculas;
-        $_SESSION['avisos'] = "Matrícula eliminada correctamente";
-
+    $idMatricula = $_REQUEST['id'];
+    eliminarMatricula($idMatricula,$idCoche);
 } else {
     $errores['borrar'] = "No se ha podido eliminar la matrícula";
 }
