@@ -2,6 +2,8 @@
 require('./config/confi.php');
 session_start();
 
+print_r($_SESSION['controlador']);
+
 if(isset($_REQUEST['login']))
 {
     require CON.'LoginController.php';
