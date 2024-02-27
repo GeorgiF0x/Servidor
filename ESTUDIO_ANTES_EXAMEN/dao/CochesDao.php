@@ -45,7 +45,7 @@ class CochesDao
     //IMPORTANTE RECORDAR  ORDEN DE LOS PARAMETROS DEBE SER EL MISMO QUE EL DE LA CONSULTA
     //EN LA SENTENCIA LOS NOMBRES IGUAL QUE LA TABLA NO EL OBJETO 
     public static function insert($coche){
-        $sql = "insert into coches (marca,modelo,año,color,precio,propietario_id,matricula) values (?,?,?,?,?,?,?)";
+        $sql = "insert into coches (marca,modelo,año,color,precio,propietario_id) values (?,?,?,?,?,?)";
         $parametros = array($coche->marca,
         $coche->modelo,
         $coche->anio,

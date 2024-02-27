@@ -33,6 +33,7 @@ if (isset($_SESSION['Coche'])) {
 <?
     if(isset($_SESSION['avisos'])){
         echo $_SESSION['avisos'];
+    
     }
 ?>
 </p>

@@ -29,6 +29,11 @@ require VIEW.'layout.php';
 
 
 //***************Pruebas de dao*******
+// $nuevoCoche= new Coche(null,'pruebaInsert','MODELOprueba',2020,'ROJO',1000000,2,1,'prueba');
+// CochesDao::insert($nuevoCoche);
+// echo "hoal";
+// $nuevoCoche= new Coche(null,'prueba','prueba',2020,'prueba',1000,1,'prueba',1);
+// CochesDao::insert($nuevoCoche);
 // $cochesJuan= CochesDao::getByPropietario(1);
 // echo '<pre>';
 // print_r($cochesJuan);

@@ -21,24 +21,32 @@ if (isset($_SESSION['coches']) && !empty($_SESSION['coches'])) {
             <th>Ver Matrículas</th> 
         </thead>
         <tbody>
-            <?php
-            foreach ($_SESSION['coches'] as $coche) {
-                echo "<tr>";
-                echo "<td>" . $coche->id . "</td>";
-                echo "<td>" . $coche->marca . "</td>";
-                echo "<td>" . $coche->modelo . "</td>";
-                echo "<td>" . $coche->anio . "</td>";
-                echo "<td>" . $coche->color . "</td>";
-                echo "<td>" . $coche->precio . "</td>";
-                echo "<td>
+        <?php
+        foreach ($_SESSION['coches'] as $coche) {
+            echo "<tr>";
+            echo "<td>" . $coche->id . "</td>";
+            echo "<td>" . $coche->marca . "</td>";
+            echo "<td>" . $coche->modelo . "</td>";
+            echo "<td>" . $coche->anio . "</td>";
+            echo "<td>" . $coche->color . "</td>";
+            echo "<td>" . $coche->precio . "</td>";
+            echo "<td>
                     <form action='' method='post'>
                         <input type='hidden' name='cocheId' value='" . $coche->id . "'>
                         <input type='submit' value='Ver Matrículas' name='verMatriculas'>
                     </form>
-                </td>"; 
-                echo "</tr>";
-            }
-            ?>
+                </td>";
+            // Botón para eliminar el coche
+            echo "<td>
+                    <form action='' method='post'>
+                        <input type='hidden' name='cocheId' value='" . $coche->id . "'>
+                        <input type='submit' value='Eliminar Coche' name='eliminarCoche'>
+                    </form>
+                </td>";
+            echo "</tr>";
+        }
+    ?>
+
         </tbody>
     </table>
 <?php
