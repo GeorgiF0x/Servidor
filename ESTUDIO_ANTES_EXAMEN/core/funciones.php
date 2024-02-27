@@ -60,6 +60,30 @@ function validarFomInsertCoche(&$errores){
 
 }
 
+function validarInsert(&$errores){
+    if(isset($_REQUEST['marca'])){
+        compMarca($errores);
+    }
+    if(isset($_REQUEST['modelo'])){
+        compModelo($errores);
+    }
+    if(isset($_REQUEST['anio'])){
+        compAnio($errores);
+    }
+    if(isset($_REQUEST['color'])){
+        compColor($errores);
+    }
+    if(isset($_REQUEST['precio'])){
+        compPrecio($errores);
+    }
+    if (count($errores) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+    
+}
+
 function compMarca(&$errores){
     if(textoVacio('marca')){
         $errores['marca'] = "  Marca esta vacio";

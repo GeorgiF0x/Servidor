@@ -29,6 +29,9 @@ require VIEW.'layout.php';
 
 
 //***************Pruebas de dao*******
+// $coche1= CochesDao::getById(1);
+// $coche1->marca="prueba";
+// CochesDao::update($coche1);
 // $nuevoCoche= new Coche(null,'pruebaInsert','MODELOprueba',2020,'ROJO',1000000,2,1,'prueba');
 // CochesDao::insert($nuevoCoche);
 // echo "hoal";

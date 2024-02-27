@@ -1,13 +1,13 @@
 <?php
 //para que se cree la tabla actualizada
-unset($_SESSION['coches']);
+// unset($_SESSION['coches']);
 
-
-// Comprobar si el usuario está autenticado antes de acceder a sus datos
 if(isset($_SESSION['usuario'])) {
     // Mostrar los datos de los coches solo si el usuario está autenticado
     $_SESSION['coches'] = CochesDao::getByPropietario($_SESSION['usuario']->id);
 }
+
+// Comprobar si el usuario está autenticado antes de acceder a sus datos
 
 if(isset($_REQUEST['eliminarCoche'])){
     CochesDao::delete($_REQUEST['cocheId']);
@@ -20,6 +20,10 @@ if(isset($_REQUEST['addCoche'])){
 }else if(isset($_REQUEST['verMatriculas'])){
     $_SESSION['controlador'] = CON.'matriculasController.php';
     $_SESSION['vista'] = VIEW.'matriculasView.php';
+    require $_SESSION['controlador'];
+}else if(isset($_REQUEST['actualizarCoche'])){
+    $_SESSION['controlador'] = CON.'actualizarCocheController.php';
+    $_SESSION['vista'] = VIEW.'cocheUpdate.php';
     require $_SESSION['controlador'];
 }
 ?>

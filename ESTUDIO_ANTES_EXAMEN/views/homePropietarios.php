@@ -20,6 +20,7 @@ if (isset($_SESSION['coches']) && !empty($_SESSION['coches'])) {
             <th>Precio</th>
             <th>Ver Matrículas</th> 
             <th>Borrar coche</th> 
+            <th>Actualizar</th> 
         </thead>
         <tbody>
         <?php
@@ -44,6 +45,12 @@ if (isset($_SESSION['coches']) && !empty($_SESSION['coches'])) {
                         <input type='submit' value='Eliminar Coche' name='eliminarCoche'>
                     </form>
                 </td>";
+                echo "<td>
+                <form action='' method='post'>
+                    <input type='hidden' name='cocheId' value='" . $coche->id . "'>
+                    <input type='submit' value='Actualizar Coche' name='actualizarCoche'>
+                </form>
+            </td>";
             echo "</tr>";
         }
     ?>
