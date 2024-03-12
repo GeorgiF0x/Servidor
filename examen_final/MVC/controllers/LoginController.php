@@ -20,7 +20,6 @@ if(isset($_REQUEST['iniciarSesion'])&& validarFormulario($errores)){
       $_SESSION['avisos']="No existe el usuario";
     }
     $matriculas = json_decode($matriculas, true);
-    $_SESSION['matriculas'] = $matriculas;
 }
 
 

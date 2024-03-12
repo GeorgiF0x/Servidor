@@ -12,7 +12,6 @@ require('./core/configurarAPI.php');
 require('./config/confiBD.php');
 require('./models/Coche.php');
 require('./models/User.php');
-require('./dao/factoryBD.php');
-require('./dao/UserDAO.php');
+
 
 

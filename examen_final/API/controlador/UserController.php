@@ -21,12 +21,12 @@ class UserController extends Base{
                 // Verificar si se han proporcionado los atributos necesarios para crear una matrícula
                 if(isset($datos['user'],$datos['token'],$datos['caduca'])){
                     // Crear un objeto Matricula con los datos proporcionados
-                    $usuario = new Matricula (null,
+                    $usuario = new User (null,
                         $datos['user'],
                         $datos['token'],
                         $datos['caduca']
                     );
-                    
+          
                     // Insertar la matrícula en la base de datos
                     if(matriculaDAO::insert($usuario)){
                         // Obtener la última matrícula insertada
@@ -45,7 +45,7 @@ class UserController extends Base{
                 case 'GET':
                    
                      if (count($recursos) == 2 && count($filtros) > 0) {
-                        // Buscar matrículas con filtros
+                     
                         $datos = self::buscaConFiltros();
                     }
            

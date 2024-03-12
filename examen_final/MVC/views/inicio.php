@@ -7,7 +7,8 @@ if(!validado()){
 </form>
 <?
 }
-    if(comprobarCaducado($_SESSION['usuario']->$caduca)&&isset($_SESSION['usuario'])){
+    // if(comprobarCaducado($_SESSION['usuario']->$caduca)&&isset($_SESSION['usuario'])){
+        if(isset($_SESSION['usuario'])){
         ?>
             <form action="" method='post'>
                 <input type="text" name="filtro" id="filtro">
@@ -42,10 +43,9 @@ if(!validado()){
                 </thead>
             </table>
         <?
-        }else{
-            echo "<p>Ha caducado su Token</p>";
         }
-        ?>
+        ?> 
+        
         <form action="" method="post">
         <input type="submit" value="Cerrar Sesión" name="Login_CerrarSesion">
         </form>

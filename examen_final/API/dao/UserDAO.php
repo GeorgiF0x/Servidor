@@ -5,19 +5,8 @@ require_once("./dao/factoryBD.php");
 
 class UserDAO{
 
-    public static function findAll(){
-        $sql = "SELECT * FROM Usuarios";
-        $parametros = array();
-        $result = FactoryBD::realizaConsulta($sql,$parametros);
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
 
-    public static function findById($id){
-        $sql = "SELECT * FROM Usuarios WHERE id = ?";
-        $parametros = array($id);
-        $result = FactoryBD::realizaConsulta($sql,$parametros);
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
+
 
     public static function findByEmail($id){
         $sql = "SELECT * FROM Usuarios WHERE user = ?";

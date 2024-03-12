@@ -34,7 +34,6 @@ class CocheController extends Base{
                 $datos = json_encode($datos);
                 self::response('HTTP/1.0 200 OK', $datos);
                 break;
-
         }
     }
 
@@ -50,9 +49,10 @@ class CocheController extends Base{
                 self::response("HTTP/1.0 400 No se permite la condicion utilizada: " .$key);
             }
         }
-
         return CochesDAO::findbyFiltros($filtros);
     }
+
+    
 
     
 

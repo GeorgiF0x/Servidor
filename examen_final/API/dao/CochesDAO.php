@@ -12,12 +12,6 @@ class CochesDAO{
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function findById($id){
-        $sql = "SELECT * FROM CochesDeSegundaMano WHERE id = ?";
-        $parametros = array($id);
-        $result = FactoryBD::realizaConsulta($sql,$parametros);
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
   
 
 
