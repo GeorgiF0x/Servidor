@@ -1,24 +1,14 @@
 <?php
 
-class Producto{
+class Categoria{
 private $Id;
 private $Nombre;
-private $Descripcion;
-private $Precio;
-private $Categoria;
-private $RutaImg;
-private $CantidadStock;
 private $Borrado;
 
 
-    public function __construct($Id,$Nombre,$Descripcion,$Precio,$Categoria,$RutaImg,$CantidadStock,$Borrado=0){
+    public function __construct($Id,$Nombre,$Borrado=0){
         $this->Id = $Id;
         $this->Nombre = $Nombre;
-        $this->Descripcion = $Descripcion;
-        $this->Precio = $Precio;
-        $this->Categoria = $Categoria;
-        $this->RutaImg = $RutaImg;
-        $this->CantidadStock = $CantidadStock;
         $this->Borrado = $Borrado;
     }
 

@@ -1,24 +1,22 @@
 <?php
 
-class Producto{
+class Usuario{
 private $Id;
 private $Nombre;
-private $Descripcion;
-private $Precio;
-private $Categoria;
-private $RutaImg;
-private $CantidadStock;
+private $Contraseña;
+private $Email;
+private $FechaNacimiento;
+private $IdRol;
 private $Borrado;
 
 
-    public function __construct($Id,$Nombre,$Descripcion,$Precio,$Categoria,$RutaImg,$CantidadStock,$Borrado=0){
+    public function __construct($Id,$Nombre,$Contraseña,$Email,$FechaNacimiento,$IdRol,$Borrado=0){
         $this->Id = $Id;
         $this->Nombre = $Nombre;
-        $this->Descripcion = $Descripcion;
-        $this->Precio = $Precio;
-        $this->Categoria = $Categoria;
-        $this->RutaImg = $RutaImg;
-        $this->CantidadStock = $CantidadStock;
+        $this->Contraseña = $Contraseña;
+        $this->Email = $Email;
+        $this->FechaNacimiento = $FechaNacimiento;
+        $this->IdRol = $IdRol;
         $this->Borrado = $Borrado;
     }
 
