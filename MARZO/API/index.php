@@ -1,8 +1,18 @@
 <?php
 // Se incluyen los archivos necesarios
 require("./controlador/Base.php");
-require('./controlador/CocheController.php');
 require('./controlador/UserController.php');
+
+// require_once('./dao/UserDAO.php');
+// echo "PRUEBA";
+// echo"<pre>";
+// $prueba=UserDAO::validarUser("georgi","userpass");
+// print_r($prueba);
+
+
+
+
+
 
 
 
@@ -11,12 +21,12 @@ if(isset($_SERVER['PATH_INFO'])){
     // Se obtiene la información de la ruta y se divide en segmentos
     $recurso = Base::divideURI();
    
-    if($recurso[1] === 'coches'){
-
-        CocheController::coches();
-    }elseif ($recurso[1]==="usuarios") {
+    if($recurso[1] === 'usuarios'){
         UserController::usuarios();
     }
+    // elseif ($recurso[1]==="usuarios") {
+    //     UserController::usuarios();
+    // }
 
     
 } else {

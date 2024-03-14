@@ -57,12 +57,12 @@ class ProductoDAO{
             $producto->Categoria,
             $producto->RutaImg,
             $producto->CantidadStock,
-            $producto->$Borrado
+            $producto->Borrado
         );
         return FactoryBd::realizarConsulta($sql, $parametros);
     }
 
-    public static function update($Producto){
+    public static function update($producto){
         $sql = "update Producto set Nombre = ?, Descripcion = ?, Precio = ?, Categoria = ?, RutaImg = ? ,CnatidadStock = ? , Borrado = ? where id = ?";
         $parametros = array(
             $producto->Nombre,
@@ -71,7 +71,7 @@ class ProductoDAO{
             $producto->Categoria,
             $producto->RutaImg,
             $producto->CantidadStock,
-            $producto->$Borrado
+            $producto->Borrado
         );
         return FactoryBd::realizarConsulta($sql, $parametros);
     }
