@@ -18,12 +18,11 @@
             <div>
                 <?php
                 
-                
                     if(validado()){
                         ?>
                         <h1 >
                             <?
-                        echo "Bienvenido  ".$_SESSION['usuario']->usuario;
+                        echo "Bienvenido  ".$_SESSION['usuario']['Nombre'];
                         echo "<br>";
                         echo $_SESSION['vista'];
                         echo "<br>";

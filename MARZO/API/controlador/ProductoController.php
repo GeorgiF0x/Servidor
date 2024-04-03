@@ -1,6 +1,6 @@
 <?php
 
-require("./dao/UserDAO.php");
+require("./dao/ProductoDAO.php");
 
 class UserController extends Base{
 
@@ -15,13 +15,21 @@ class UserController extends Base{
         // switch para manejar diferentes métodos HTTP
         switch ($metodo) {
             case 'GET':
-                if (count($recursos) == 2 && count($filtros)==2) {
-                   if(isset($filtros['Nombre'])&&isset($filtros['Contraseña'])){
-                       $datos = UserDAO::validarUser($filtros['Nombre'],$filtros['Contraseña']);
-                    //    echo " **PRUEBA**<pre>";
-                    //    echo"<br>*******************************************************<br>";
-                    }
+                //para todos los productos
+                if (count($recursos) == 2 && count($filtros)==0) {
+                       $datos = ProductoDAO::findAll();
+           
                 }
+
+                //para buscar productos por id
+                if (count($recursos) == 2 && count($filtros)==1) {
+                    if(isset($filtros['Id'])){
+                        $datos= ProductoDAO::findById($filtros['Id']);      
+                    }
+        
+                }
+
+                
                 // Si no se cumplen las condiciones anteriores, devolver un error
                 else {
                     self::response("HTTP/1.0 400 No está indicando los recursos necesarios");
@@ -38,15 +46,16 @@ class UserController extends Base{
                 $datos = file_get_contents('php://input');
                 $datos = json_decode($datos,true);
                 // Verificar si se han proporcionado los atributos necesarios 
-                if (isset($datos['Nombre'], $datos['Contraseña'], $datos['Email'], $datos['Fecha_nacimiento'], $datos['Id_rol'], $datos['Borrado'])) {
-                    // Crear un objeto Usuario con los datos proporcionados
-                    $usuario = new User(
+                if (isset($datos['Id'], $datos['Nombre'], $datos['Descripcion'], $datos['Precio'], $datos['Categoria'], $datos['RutaImg'],$datos['CantidadStock'],$datos['Borrado'])) {
+                    // Crear un objeto Producto con los datos proporcionados
+                    $usuario = new Producto(
                         null, 
-                        $datos['nombre'],
-                        sha1($datos['contraseña']),
-                        $datos['email'],
-                        $datos['fecha_nacimiento'],
-                        $datos['id_rol'],
+                        $datos['Nombre'],
+                        $datos['Descripcion'],
+                        $datos['Precio'],
+                        $datos['Categoria'],
+                        $datos['Ruta_img'],
+                        $datos['CantidadStock'],
                         $datos['borrado']
                     );
                     
@@ -163,4 +172,3 @@ static function put(){
 
     
 }
-

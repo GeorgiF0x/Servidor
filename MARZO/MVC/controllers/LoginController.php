@@ -6,8 +6,12 @@ if(isset($_REQUEST['login'])){
         if(validarFormulario($errores)){
             //validado el usuario en la base de datos
             //crear el usuario apartir de validar el usuario
-            $usuario = PropietariosDao::validarPropietario($_REQUEST['nombre'],$_REQUEST['pass']);
-            // if($usuario){
+            $nombreUser=$_REQUEST['nombre'];
+            $passUser=$_REQUEST['pass'];
+            $datosUser = get("usuarios?Nombre=".$nombreUser."&Contraseña=".$passUser);
+            $datosUser = json_decode($datosUser,true); //true para convertir en array
+            $usuario=$datosUser;
+            // if(!$usuario){
             //     echo "usuario validado";
             // }
             if(isset($_REQUEST['recordar'])){
@@ -18,9 +22,10 @@ if(isset($_REQUEST['login'])){
 
             if($usuario){
                 $_SESSION['usuario'] = $usuario;
-                $_SESSION['vista'] = VIEW.'homePropietarios.php';
-                $_SESSION['controlador'] = CON.'PropietariosController.php';
+                $_SESSION['vista'] = VIEW.'home.php';
+                $_SESSION['controlador'] = CON.'homeController.php';
             }
-        } 
+        }
+
 } 
 
