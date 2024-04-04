@@ -2,9 +2,9 @@
 
 require("./dao/ProductoDAO.php");
 
-class UserController extends Base{
+class ProductoController extends Base{
 
-    public static function usuarios(){
+    public static function productos(){
         // Obtener el método de la solicitud HTTP (GET, POST, PUT, DELETE)
         $metodo = $_SERVER['REQUEST_METHOD'];
         
@@ -18,18 +18,13 @@ class UserController extends Base{
                 //para todos los productos
                 if (count($recursos) == 2 && count($filtros)==0) {
                        $datos = ProductoDAO::findAll();
-           
                 }
-
                 //para buscar productos por id
-                if (count($recursos) == 2 && count($filtros)==1) {
+                elseif (count($recursos) == 2 && count($filtros)==1) {
                     if(isset($filtros['Id'])){
                         $datos= ProductoDAO::findById($filtros['Id']);      
                     }
-        
                 }
-
-                
                 // Si no se cumplen las condiciones anteriores, devolver un error
                 else {
                     self::response("HTTP/1.0 400 No está indicando los recursos necesarios");

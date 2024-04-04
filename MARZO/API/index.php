@@ -2,6 +2,9 @@
 // Se incluyen los archivos necesarios
 require("./controlador/Base.php");
 require('./controlador/UserController.php');
+require('./controlador/ProductoController.php');
+
+
 
 // require_once('./dao/UserDAO.php');
 // echo "PRUEBA";
@@ -24,9 +27,9 @@ if(isset($_SERVER['PATH_INFO'])){
     if($recurso[1] === 'usuarios'){
         UserController::usuarios();
     }
-    // elseif ($recurso[1]==="usuarios") {
-    //     UserController::usuarios();
-    // }
+    elseif ($recurso[1]==="productos") {
+        ProductoController::productos();
+    }
 
     
 } else {

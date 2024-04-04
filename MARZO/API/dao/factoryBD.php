@@ -5,7 +5,6 @@ class FactoryBD{
 
     public static function realizaConsulta($sql, $array_parametros)
     {
-
         try {
             $conn = new PDO('mysql:host=' . IP . ';dbname=' . BD, USER, PASS);
             $stmt = $conn->prepare($sql);

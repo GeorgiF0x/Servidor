@@ -24,6 +24,7 @@ if(isset($_REQUEST['login'])){
                 $_SESSION['usuario'] = $usuario;
                 $_SESSION['vista'] = VIEW.'home.php';
                 $_SESSION['controlador'] = CON.'homeController.php';
+                require $_SESSION['controlador'];
             }
         }
 
