@@ -20,10 +20,14 @@ class ProductoController extends Base{
                        $datos = ProductoDAO::findAll();
                 }
                 //para buscar productos por id
-                elseif (count($recursos) == 2 && count($filtros)==1) {
-                    if(isset($filtros['Id'])){
-                        $datos= ProductoDAO::findById($filtros['Id']);      
-                    }
+                // elseif (count($recursos) == 2 && count($filtros)==1) {
+                //     if(isset($filtros['/'])){
+                //         $datos= ProductoDAO::findById($filtros['Id']);  
+                //     }
+                // }
+                elseif (count($recursos) == 3 && count($filtros)==0) {
+                    
+                    $datos=ProductoDAO::findById($recursos[2]);
                 }
                 // Si no se cumplen las condiciones anteriores, devolver un error
                 else {

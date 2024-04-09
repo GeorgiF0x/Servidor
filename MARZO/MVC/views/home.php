@@ -18,6 +18,7 @@
 <body>
 <h1 class="text-center mt-3">ESTO ES EL HOME</h1>
 <?php
+
 $productos = $_SESSION['productos'];
 echo '<div class="row">';
 foreach ($productos as $producto) {
@@ -27,10 +28,10 @@ foreach ($productos as $producto) {
     echo '<div class="card-body">';
     echo '<h5 class="card-title fw-bold">' . $producto->Nombre . '</h5>';
     echo '<p class="card-text">' . $producto->Descripcion . '</p>';
-    echo '<form method="POST" action="paginas/producto.php" class="d-flex justify-content-between align-items-center" name="comprar">';
+    echo '<form method="POST" class="d-flex justify-content-between align-items-center" >';
     echo '<p class="fw-bold mb-0">Precio: €' . number_format($producto->Precio, 2) . '</p>';
     echo '<input type="hidden" name="producto_id" value="' . $producto->Id . '">';
-    echo '<button class="btn btn-outline-primary" type="submit">Comprar</button>';
+    echo '<input type="submit" name="ir_producto" value="Comprar" class="btn btn-outline-primary">';
     echo '</form>';
     echo '</div>';
     echo '</div>';

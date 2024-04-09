@@ -41,18 +41,8 @@ class ProductoDAO{
         $parametros = array($id);
         $result = FactoryBd::realizaConsulta($sql, $parametros);
         if ($result->rowCount() == 1) {
-            $productosStd = $result->fetchObject();
-            $producto = new Producto(
-                $productosStd->Id,
-                $productosStd->Nombre,
-                $productosStd->Descripcion,
-                $productosStd->Precio,
-                $productosStd->Categoria,
-                $productosStd->RutaImg,
-                $productosStd->CantidadStock,
-                $productosStd->Borrado
-            );
-            return $producto;
+            $productoStd = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $productoStd;
         } else
             return null;
     }
