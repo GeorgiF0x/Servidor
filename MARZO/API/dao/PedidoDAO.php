@@ -25,27 +25,50 @@ class PedidoDAO{
         }
         return $arrayPedidos;
     }
-
-    public static function insert($pedido,$detalle){
-        $sql = "insert into Pedido (Fecha,Direccion,PagoTotal,Borrado) values (?,?,?,?)";
-        $sql_2 = "insert into DetallePedido (IdPedido,IdProducto,Cantidad,PrecioUnidad,Total,Borrado) values (?,?,?,?,?,?)";
-        $parametrosPedido = array(
-            $pedido->Fecha,
-            $pedido->Direccion,
-            $pedido->PagoTotal,
-            $pedido->Borrado
-        );
-        $parametrosDetalle= array(
-            $pedido->Id,
-            $producto->Id,
-            $detalle->cantidad,
-
-        );
-        return FactoryBd::realizarConsulta($sql, $parametrosPedido);
+    public static function ultimoIDpedido() {
+        $sql = "SELECT * FROM Pedido ORDER BY Id DESC LIMIT 1";
+        $parametros = array();
+        $result = FactoryBd::realizarConsulta($sql, $parametros);
+        $ultimoPedido = $result->fetchObject();
+        return $ultimoPedido;
     }
 
-
+    
+    public static function insert($pedido, $detalle) {
+  
+            $sqlPedido = "INSERT INTO Pedido (Fecha, Direccion, PagoTotal, Borrado) VALUES (?, ?, ?, ?)";
+            $parametrosPedido = array(
+                $pedido->Fecha,
+                $pedido->Direccion,
+                $pedido->PagoTotal,
+                $pedido->Borrado
+            );
+            $pedidoInsertado=FactoryBd::realizarConsulta($sqlPedido, $parametrosPedido);
+    
+            $ultimoPedido = self::ultimoIDpedido();
+            $ultimoId = $ultimoPedido->Id;
+    
+            $sqlDetalle = "INSERT INTO DetallePedido (IdPedido, IdProducto, Cantidad, PrecioUnidad, Total, Borrado) VALUES (?, ?, ?, ?, ?, ?)";
+            $parametrosDetalle = array(
+                $ultimoId,
+                $detalle->IdProducto,
+                $detalle->Cantidad,
+                $detalle->PrecioUnidad,
+                $detalle->Total,
+                $detalle->Borrado
+            );
+            $detalleInsertado=FactoryBd::realizarConsulta($sqlDetalle, $parametrosDetalle);
+           if($pedidoInsertado && $detalleInsertado){
+            return true;
+           }
+    }
+    
 }
+    
+
+
+
+
 
     
 

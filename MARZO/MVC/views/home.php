@@ -16,26 +16,28 @@
     </style>
 </head>
 <body>
-    <h1 class="text-center mt-3">ESTO ES EL HOME</h1>
-    <?
-    $productos=array();
-    $productos=$_SESSION['productos'];
-    foreach ($productos as $producto) {
-        echo '<article class="col-md-4 mb-4">';
-        echo '<div class="card" style="width: 18rem;">';
-        // echo '<img src="Media/' . $row['Imagen'] . '" class="card-img-top img-fluid" alt="' . $row['Nombre'] . '">';
-        echo '<div class="card-body">';
-        echo '<h5 class="card-title fw-bold">' . $producto->Nombre . '</h5>';
-        echo '<p class="card-text">' . $Producto->Descripcion. '</p>';
-        echo '<form method="POST" action="paginas/producto.php" class="d-flex justify-content-between align-items-center" name="comprar">';
-        echo '<p class="fw-bold mb-0">Precio: €' . number_format($producto->Precio, 2) . '</p>';
-        echo '<input type="hidden" name="producto_id" value="' . $producto->Id . '">';
-        echo '<button class="btn btn-outline-primary" type="submit">Comprar</button>';
-        echo '</form>';
-        echo '</div>';
-        echo '</div>';
-        echo '</article>';
-    }
-    ?>
+<h1 class="text-center mt-3">ESTO ES EL HOME</h1>
+<?php
+$productos = $_SESSION['productos'];
+echo '<div class="row">';
+foreach ($productos as $producto) {
+    echo '<article class="col-md-2 mb-4">';
+    echo '<div class="card" style="width: 18rem;">';
+    echo '<img src="' . IMG . 'productoDefault.jpg" class="card-img-top img-fluid" alt="' . $producto->Nombre . '">';
+    echo '<div class="card-body">';
+    echo '<h5 class="card-title fw-bold">' . $producto->Nombre . '</h5>';
+    echo '<p class="card-text">' . $producto->Descripcion . '</p>';
+    echo '<form method="POST" action="paginas/producto.php" class="d-flex justify-content-between align-items-center" name="comprar">';
+    echo '<p class="fw-bold mb-0">Precio: €' . number_format($producto->Precio, 2) . '</p>';
+    echo '<input type="hidden" name="producto_id" value="' . $producto->Id . '">';
+    echo '<button class="btn btn-outline-primary" type="submit">Comprar</button>';
+    echo '</form>';
+    echo '</div>';
+    echo '</div>';
+    echo '</article>';
+}
+echo '</div>';
+?>
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?
 //constantes que vamos usar en la app
-define('IMG', './webroot/imagenes/');
+define('IMG', './webRoot/img/');
 define('CSS', './webroot/css/');
 define('JS', './webroot/js/');
 define('VIEW', './views/');
