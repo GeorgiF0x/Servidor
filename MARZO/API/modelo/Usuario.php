@@ -25,7 +25,7 @@ private $Borrado;
             return $this->$att;
         }
     }
-
+    
     function __set($att,$value){
         if(property_exists(__CLASS__,$att)){
             $this->$att = $value;

@@ -1,6 +1,6 @@
 <?php
 
-class Producto{
+class Carrito{
 private $Id;
 private $IdUsuario;
 private $IdProducto;

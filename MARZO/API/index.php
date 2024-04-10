@@ -3,6 +3,7 @@
 require("./controlador/Base.php");
 require('./controlador/UserController.php');
 require('./controlador/ProductoController.php');
+require('./controlador/CarritoController.php');
 
 
 
@@ -29,6 +30,8 @@ if(isset($_SERVER['PATH_INFO'])){
     }
     elseif ($recurso[1]==="productos") {
         ProductoController::productos();
+    }elseif($recurso[1]==="carrito"){
+        CarritoController::carrito();
     }
 
     
