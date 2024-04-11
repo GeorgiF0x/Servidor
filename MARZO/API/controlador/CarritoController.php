@@ -41,21 +41,20 @@ class CarritoController extends Base{
                 $datos = file_get_contents('php://input');
                 $datos = json_decode($datos,true);
                 // Verificar si se han proporcionado los atributos necesarios 
-                if (isset($datos['Id'], $datos['IdUsuario'], $datos['IdProducto'], $datos['Borrado'])) {
+                if (isset( $datos['IdUsuario'], $datos['IdProducto'], $datos['Borrado'],$datos['Cantidad'])) {
                     // Crear un objeto Producto con los datos proporcionados
-                    $usuario = new Carrito(
+                    $carrito = new Carrito(
                         null, 
                         $datos['IdUsuario'],
                         $datos['IdProducto'],
                         $datos['Borrado'],
+                        $datos['Cantidad']
                     );
-                    
-                    UserDAO::insert($usuario);
+                    CarritoDAO::insert($carrito);
                 }
                 // Si no se proporcionan los atributos necesarios, devolver un error
                 else{
-                    self::response('HTTP/1.0 400 No esta introduciendo los atributos del usuario (nombre, contraseña, email
-                    ,fecha de nacimiento y el id de rol');
+                    self::response('HTTP/1.0 400 No esta introduciendo los atributos del Carrito (idUsuario, idProducto, Cantidad)');
                 }
                 break;
             case 'PUT':
@@ -92,7 +91,7 @@ class CarritoController extends Base{
 static function put(){
     $recursos = self::divideURI();
     if(count($recursos) == 3){
-        $permitimos = ['IdUsuario','Cantidad','IdProducto','Borrado'];
+        $permitimos = ['Cantidad'];
         $datos = file_get_contents('php://input');
         $datos = json_decode($datos,true);
         if($datos == null){
@@ -115,24 +114,11 @@ static function put(){
                 $carrito = json_encode($carrito);
                 self::response('HTTP/1.0 201 Recurso modificado', $carrito);
             }else{
-                self::response('HTTP/1.0 400 No esta introduciendo los atributos de carrito(nombre, localidad, telefono');
+                self::response('HTTP/1.0 400 No esta introduciendo los atributos de carrito(IdUsuario,IdProducto, Cantidad');
             }
         }else{
             self::response('HTTP/1.0 400 No se ha encontrado el carrito con ese ID');
         }
-        // if(count($carrito) == 1){
-        //     $carrito = (object)$carrito[0];
-            
-        //     if(carritoDAO::update($datos,$carrito)){
-        //         $carrito = carritoDAO::findbyId($recursos[2]);
-        //         $carrito = json_encode($carrito);
-        //         self::response('HTTP/1.0 201 Recurso modificado', $carrito);
-        //     }else{
-        //         self::response('HTTP/1.0 400 No esta introduciendo los atributos de carrito(nombre, localidad, telefono');
-        //     }
-        // }else{
-        //     self::response('HTTP/1.0 400 No se ha encontrado el carrito con ese ID');
-        // }
     }else{
         self::response('HTTP/1.0 400 No ha indicado el id');
     }

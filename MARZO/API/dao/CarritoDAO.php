@@ -48,27 +48,30 @@ class CarritoDAO{
             return null;
     }
     public static function insert($carrito){
-        $sql = "insert into Carrito (IdUsuario,IdProducto,Borrado) values (?,?,?)";
+        $sql = "insert into Carrito (IdUsuario,IdProducto,Borrado,Cantidad) values (?,?,?,?)";
         $parametros = array(
             $carrito->IdUsuario,
             $carrito->IdProducto,
-            $carrito->Borrado
+            $carrito->Borrado,
+            $carrito->Cantidad
         );
         return FactoryBd::realizaConsulta($sql, $parametros);
     }
 
     public static function update($carrito){
-        $sql = "update Carrito set IdUsuario = ?, IdProducto = ?, Precio = ?, Borrado = ? where id = ?";
+        $sql = "update Carrito set IdUsuario = ?, IdProducto = ?, Borrado = ?, Cantidad = ? where Id = ?";
         $parametros = array(
             $carrito->IdUsuario,
             $carrito->IdProducto,
-            $carrito->Borrado
+            $carrito->Borrado,
+            $carrito->Cantidad,
+            $carrito->Id 
         );
         return FactoryBd::realizaConsulta($sql, $parametros);
     }
 
     public static function delete($id){
-        $sql = "delete from Carrito where id = ?";
+        $sql = "delete from Carrito where Id = ?";
         $parametros = array($id);
         return FactoryBd::realizaConsulta($sql, $parametros);
     }

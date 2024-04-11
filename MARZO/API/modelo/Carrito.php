@@ -5,13 +5,15 @@ private $Id;
 private $IdUsuario;
 private $IdProducto;
 private $Borrado;
+private $Cantidad;
 
 
-    public function __construct($Id,$IdUsuario,$IdProducto,$Borrado=0){
+    public function __construct($Id,$IdUsuario,$IdProducto,$Borrado=0,$Cantidad){
         $this->Id = $Id;
         $this->IdUsuario = $IdUsuario;
         $this->IdProducto = $IdProducto;
         $this->Borrado = $Borrado;
+        $this->Cantidad = $Cantidad;
     }
 
     function __get($att){
