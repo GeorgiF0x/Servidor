@@ -68,7 +68,6 @@ class ProductoController extends Base{
                 }
                 break;
             case 'PUT':
-            
                 self::put();
                 break;
     
@@ -77,9 +76,9 @@ class ProductoController extends Base{
         //         $recursos = self::divideURI();
         //         if(count($recursos) == 3){
         //             // Verificar si la matrícula existe antes de intentar eliminarla
-        //             if(!empty(matriculaDAO::findbyId($recursos[2]))){
+        //             if(!empty(productoDAO::findbyId($recursos[2]))){
         //                 // Eliminar la matrícula de la base de datos
-        //                 if(matriculaDAO::delete($recursos[2])){
+        //                 if(productoDAO::delete($recursos[2])){
         //                     self::response('HTTP/1.0 200 Recurso eliminado');
         //                 }else{
         //                     self::response('HTTP/1.0 400 No se pudo eliminar el recurso');
@@ -102,46 +101,46 @@ class ProductoController extends Base{
 static function put(){
     $recursos = self::divideURI();
     if(count($recursos) == 3){
-        $permitimos = ['coche_id','matricula'];
+        $permitimos = ['CantidadStock','Descripcion','Precio'];
         $datos = file_get_contents('php://input');
         $datos = json_decode($datos,true);
         if($datos == null){
             self:: response('HTTP/1.0 400 El cuerpo no está bien formado'); 
         }
-        // Verificar que lo recibido en el body son los matriculas
+        // Verificar que lo recibido en el body son los productos
         foreach ($datos as $key => $value) {
             if(!in_array($key,$permitimos)){
                 self::response("HTTP/1.0 400 No se permite la condicion utilizada: " .$key);
             }
         }
-        $matricula = matriculaDAO::findbyId($recursos[2]);
-        if(count($matricula) == 1){
-            $matricula = (object)$matricula[0];
+        $producto = ProductoDAO::findbyId($recursos[2]);
+        if(count($producto) == 1){
+            $producto = (object)$producto[0];
             foreach ($datos as $key => $value) {
-                $matricula->$key = $value;
+                $producto->$key = $value;
             }
-            if(matriculaDAO::update($matricula)){
-                $matricula = matriculaDAO::findbyId($recursos[2]);
-                $matricula = json_encode($matricula);
-                self::response('HTTP/1.0 201 Recurso modificado', $matricula);
+            if(ProductoDAO::update($producto)){
+                $producto = ProductoDAO::findbyId($recursos[2]);
+                $producto = json_encode($producto);
+                self::response('HTTP/1.0 201 Recurso modificado', $producto);
             }else{
-                self::response('HTTP/1.0 400 No esta introduciendo los atributos de matricula(nombre, localidad, telefono');
+                self::response('HTTP/1.0 400 No esta introduciendo los atributos de producto(nombre, localidad, telefono');
             }
         }else{
-            self::response('HTTP/1.0 400 No se ha encontrado el matricula con ese ID');
+            self::response('HTTP/1.0 400 No se ha encontrado el producto con ese ID');
         }
-        // if(count($matricula) == 1){
-        //     $matricula = (object)$matricula[0];
+        // if(count($producto) == 1){
+        //     $producto = (object)$producto[0];
             
-        //     if(matriculaDAO::update($datos,$matricula)){
-        //         $matricula = matriculaDAO::findbyId($recursos[2]);
-        //         $matricula = json_encode($matricula);
-        //         self::response('HTTP/1.0 201 Recurso modificado', $matricula);
+        //     if(productoDAO::update($datos,$producto)){
+        //         $producto = productoDAO::findbyId($recursos[2]);
+        //         $producto = json_encode($producto);
+        //         self::response('HTTP/1.0 201 Recurso modificado', $producto);
         //     }else{
-        //         self::response('HTTP/1.0 400 No esta introduciendo los atributos de matricula(nombre, localidad, telefono');
+        //         self::response('HTTP/1.0 400 No esta introduciendo los atributos de producto(nombre, localidad, telefono');
         //     }
         // }else{
-        //     self::response('HTTP/1.0 400 No se ha encontrado el matricula con ese ID');
+        //     self::response('HTTP/1.0 400 No se ha encontrado el producto con ese ID');
         // }
     }else{
         self::response('HTTP/1.0 400 No ha indicado el id');
@@ -153,7 +152,7 @@ static function put(){
 
     // static function buscaConFiltros(){
     //     // Comprobar si el nombre del filtro está permitido
-    //     $permitimos = ['coche_id','matricula'];
+    //     $permitimos = ['coche_id','producto'];
     //     $filtros = self::condiciones();
 
     //     foreach ($filtros as $key => $value) {
@@ -162,7 +161,7 @@ static function put(){
     //         }
     //     }
 
-    //     return matriculaDAO::findbyFiltros($filtros);
+    //     return productoDAO::findbyFiltros($filtros);
     // }
     
 }

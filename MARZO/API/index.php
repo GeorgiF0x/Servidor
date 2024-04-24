@@ -7,11 +7,17 @@ require('./controlador/CarritoController.php');
 
 
 
-// require_once('./dao/UserDAO.php');
-// echo "PRUEBA";
-// echo"<pre>";
-// $prueba=UserDAO::validarUser("georgi","userpass");
-// print_r($prueba);
+// require_once('./dao/ProductoDAO.php');
+// $producto=ProductoDAO::findById(6);
+// echo "<pre>";
+// $producto[0]['Descripcion']="JAJAJA";
+// print_r($producto);
+
+// ProductoDAO::update($producto);
+// $productoPrueba=ProductoDAO::findById(6);
+
+
+
 
 
 

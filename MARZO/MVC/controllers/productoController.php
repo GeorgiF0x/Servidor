@@ -1,6 +1,7 @@
 <?
 //http://192.168.7.203/MARZO/API/index.php/productos?Id=7
 $datosProducto=get("productos/".$_SESSION['id_producto']);
+echo"<pre>";
 $datosProducto=json_decode($datosProducto);
 $producto=$datosProducto;
 if($producto){
@@ -14,10 +15,16 @@ if(isset($_REQUEST["ir_carrito"])){
     $InCarrito=$datosCarritoUser=$datosProducto=get("carrito?IdUsuario=".$usuario->Id."&IdProducto=".$producto->Id);
     if($InCarrito){
         $nuevaCantidad = array("Cantidad" => $unidades);
-        $updateCarrito=put("carrito",$producto->Id,$nuevaCantidad);
+        $updateCarrito=put("carrito",$producto[0]->Id,$nuevaCantidad);
     }else{
         
     }
+}
+
+if(isset($_REQUEST['rem_stock'])){
+    $cantidadQuitar=$_REQUEST['unidades'];
+    $nuevaCantidad=$producto[0]->CantidadStock-$cantidadQuitar;
+    
 }
 
 

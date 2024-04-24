@@ -4,26 +4,7 @@ require("./modelo/Producto.php");
 require_once("./dao/factoryBD.php");
 
 class ProductoDAO{
-    // public static function findAll2(){
-    //     $sql = "select * from Producto";
-    //     $parametros = array();
-    //     $result = FactoryBd::realizaConsulta($sql,$parametros);
-    //     $arrayProductos = array();
-    //     while ($productosStd = $result->fetchObject()) {
-    //         $producto = new Producto(
-    //             $productosStd->Id,
-    //             $productosStd->Nombre,
-    //             $productosStd->Descripcion,
-    //             $productosStd->Precio,
-    //             $productosStd->Categoria,
-    //             $productosStd->RutaImg,
-    //             $productosStd->CantidadStock,
-    //             $productosStd->Borrado
-    //         );
-    //         array_push($arrayProductos, $producto);
-    //     }
-    //     return $arrayProductos;
-    // }
+
 
     public static function findAll() {
         $sql = "select * from Producto";
@@ -61,7 +42,7 @@ class ProductoDAO{
     }
 
     public static function update($producto){
-        $sql = "update Producto set Nombre = ?, Descripcion = ?, Precio = ?, Categoria = ?, RutaImg = ? ,CnatidadStock = ? , Borrado = ? where id = ?";
+        $sql = "update Producto set Nombre = ?, Descripcion = ?, Precio = ?, Categoria = ?, RutaImg = ? ,CantidadStock = ? , Borrado = ? where Id = ?";
         $parametros = array(
             $producto->Nombre,
             $producto->Descripcion,
@@ -69,11 +50,12 @@ class ProductoDAO{
             $producto->Categoria,
             $producto->RutaImg,
             $producto->CantidadStock,
-            $producto->Borrado
+            $producto->Borrado,
+            $producto->Id
         );
         return FactoryBd::realizaConsulta($sql, $parametros);
     }
-
+    
     public static function delete($id){
         $sql = "delete from Producto where id = ?";
         $parametros = array($id);
