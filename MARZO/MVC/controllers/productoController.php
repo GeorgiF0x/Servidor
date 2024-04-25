@@ -23,8 +23,22 @@ if(isset($_REQUEST["ir_carrito"])){
 
 if(isset($_REQUEST['rem_stock'])){
     $cantidadQuitar=$_REQUEST['unidades'];
-    $nuevaCantidad=$producto[0]->CantidadStock-$cantidadQuitar;
+    $nuevoStock=$producto[0]->CantidadStock-$cantidadQuitar;
+    $updateStock=put("productos",$producto[0]->Id,$nuevoStock);
     
+}elseif (isset($_REQUEST['add_stock'])) {
+    $cantidadSumar=$_REQUEST['unidades'];
+    $nuevoStock=$producto[0]->CantidadStock+$cantidadSumar;
+    $updateStock=put("productos",$producto[0]->Id,$nuevoStock);
 }
+
+if(isset($_REQUEST['producto_cambio'])){
+    $Descripcion=$_REQUEST['producto_Descripcion'];
+    $Precio=$_REQUEST['producto_Precio'];
+    $Stock=$_REQUEST['producto_Stock'];
+    $updateStock=put("productos",$producto[0]->Id,$Descripcion,$Precio,$Stock);
+}
+
+
 
 

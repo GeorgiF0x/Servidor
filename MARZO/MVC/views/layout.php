@@ -13,6 +13,16 @@
             border: 1px solid black;
             text-align: center;
         }
+      .card-body,
+      .card-text {
+          margin: 0;
+          padding: 0;
+      }
+
+      /* CSS para ajustar la altura si es necesario */
+      .card {
+          height: auto; /* O ajusta la altura según sea necesario */
+      }
     </style>
 </head>
 <body>
