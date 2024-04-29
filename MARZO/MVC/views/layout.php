@@ -26,55 +26,56 @@
     </style>
 </head>
 <body>
-<header class="row">
-<div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-      <img src="<?php echo IMG . 'LogoTienda.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">
-    </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav  mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Item 1</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Item 2</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Item 3</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Item 4</a>
-        </li>
-        <div class="d-flex">
-          <?php if (validado()) { ?>
-            <form action="" method="post" class="ms-2">
-              <input type="submit" value="Cerrar Sesión" name="Login_CerrarSesion" class="btn btn-link">
-              <input type="submit" value="Home" name="home" class="btn btn-link">
+  <div class="container">
+    <header class="mt-5">
+      <div class="row border border-danger ">
+        <div class="col-2">
+            <img src="<?php echo IMG . 'LogoTienda.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">
+          </div>
+          <div class="col-8 d-flex align-items-center justify-content-evenly">
+            <form>
+                <input type="submit" class="btn btn-primary rounded-pill " value="Cápsula 1">
             </form>
-          <?php } else { ?>
-            <form action="" method="post" class="ms-2">
-              <input type="submit" value="Login" name="ir_login" class="btn btn-link">
+            <form>
+                <input type="submit" class="btn btn-primary rounded-pill" value="Cápsula 2">
             </form>
-          <?php } ?>
-        </div>
-      </ul>
-    </div>
-  </nav>
+            <form>
+                <input type="submit" class="btn btn-primary rounded-pill" value="Cápsula 3">
+            </form>
+
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+
+          <div class="col-2 d-flex align-items-center justify-content-evenly">
+            <?php if (validado()) { ?>
+              <form action="" method="post" class="ms-2">
+                <input type="submit" value="Log Out" name="Login_CerrarSesion" class="btn btn-primary w-50 ">
+                <input type="submit" value="Home" name="home" class="btn btn-primary ">
+              </form>
+            <?php } else { ?>
+              <form action="" method="post" class="ms-2">
+                <input type="submit" value="Login" name="ir_login" class="btn btn-link">
+              </form>
+            <?php } ?>
+          </div>
+      </div>
+  </header>
+  <main>
+      <?php
+          if(!isset($_SESSION['vista'])){
+              require VIEW.'login.php';
+          } else {
+              require $_SESSION['vista'];
+          }
+      ?>
+  </main>
+  <footer>
+  
+  </footer>
 </div>
 
-    </header>
-    <main>
-        <?php
-            if(!isset($_SESSION['vista'])){
-                require VIEW.'login.php';
-            } else {
-                require $_SESSION['vista'];
-            }
-        ?>
-    </main>
-    <footer>
-
-    </footer>
 </body>
 </html>
