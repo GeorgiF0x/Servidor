@@ -27,26 +27,7 @@
 </head>
 <body>
 <header class="row">
-            <div>
-                <?php
-                    if(validado()){
-                        ?>
-                        <h1 >
-                        <?
-                        echo "Bienvenido  ".$_SESSION['usuario']['Nombre'];
-                        echo "<br>";
-                        echo $_SESSION['vista'];
-                        echo "<br>";
-                        echo $_SESSION['controlador'];
-                        echo "<br>";
-                        ?>
-                        </h1>
-                        <?
-                    }else{
-                    }
-                ?>
-            </div>
-            <div class="container">
+<div class="container">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">
       <img src="<?php echo IMG . 'LogoTienda.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">

@@ -1,78 +1,48 @@
-<?
-    $producto=$_SESSION['productoElegido'];
+<?php
+    $producto = $_SESSION['productoElegido'];
+    $esAdmin = ($_SESSION['usuario']['IdRol'] == 2 || $_SESSION['usuario']['IdRol'] == 3);
 ?>
 
-<div class="container">
-    <div class="row">
-        <div class="col-5  ">
-            <img src="<?php echo IMG . 'productoDefault.jpg'; ?>" class="card-img-top" alt="<?php echo $producto[0]->Nombre; ?>">
+<div class="container my-5">
+    <div class="row gx-5 justify-content-around">
+        <div class="col-5">
+            <img src="<?php echo IMG . 'productoDefault.jpg'; ?>" class="img-fluid" alt="<?php echo $producto[0]->Nombre; ?>">
         </div>
-        <div class="col-5 mx-5  d-flex justify-content-center">
-            <div class="card d-flex align-self-center text-center" style="width: 100%; height: 100%;">
-                <div class="card-body">
-                    <h2 class="card-title"><?php echo $producto[0]->Nombre; ?></h2>
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="row">
-                            <?php
-                            if($_SESSION['usuario']['IdRol'] == 1 || $_SESSION['usuario']['IdRol'] == 2) {
-                                ?>
-                                <div class="col">
-                                    <form action="" method="post">
-                                        <div class="mb-3">
-                                            <label for="producto_Descripcion" class="form-label">Descripción del producto:</label>
-                                            <textarea class="form-control" id="producto_Descripcion" name="producto_Descripcion"><?php echo $producto[0]->Descripcion; ?></textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="producto_Precio" class="form-label">Precio del producto:</label>
-                                            <input type="number" class="form-control" id="producto_Precio" name="producto_Precio" value="<?php echo $producto[0]->Precio;?>€">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="producto_Stock" class="form-label">Cantidad En Stock:</label>
-                                            <input type="number" class="form-control" id="producto_Stock" name="producto_Stock" value="<?php echo $producto[0]->CantidadStock; ?>">
-                                        </div>
-                                        <div class="row BORDER border-primary">
-                                            <div class="col-5">
-                                                <button type="submit" class="btn btn-danger" name="producto_cambios">Guardar Cambios</button>
-                                            </div>
-                                            <div class="col-5">
-                                                <button type="submit" class="btn btn-success" name="dar_baja">Dar De baja</button>
-                                                <button type="submit" class="btn btn-success" name="rem_stock">Añadir Unidades</button>
-                                                <button type="submit" class="btn btn-success" name="add_stock">Quitar Unidades</button>
-                                            </div>
-                                            
-                                        </div>
-                                    </form>
-                                </div>
-                                <?php
-                            } else {
-                                ?>
-                                <div class="col border border-danger">
-                                    <form action="" method="post">
-                                        <div class="card-text border border-primary">
-                                            <p class="card-text">Descripción: <?php echo $producto[0]->Descripcion; ?></p>
-                                            <input type="hidden" name="producto_id" value="<?php echo $producto[0]->Id; ?>">
-                                        </div>
-                                        <div class="card-text border border-primary">
-                                            <p class="card-text"><?php echo $producto[0]->Precio;?>€</p>
-                                        </div>
-                                        <div class="card-text border border-primary">
-                                            <button type="submit" class="btn btn-danger me-2" name="rem_stock">Quitar Unidades</button>
-                                            <button type="submit" class="btn btn-success" name="add_stock">Añadir Unidades</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <?php
-                            }
-                            ?>
+        <div class="col-5   text-center">
+            <h2><?php echo $producto[0]->Nombre; ?></h2>
+            <p><?php echo $producto[0]->Descripcion; ?></p>
+            <p>Precio: <?php echo $producto[0]->Precio; ?></p>
+            <div class="row">
+                <form action="" method="post">
+                    <input type="hidden" name="producto_id" value="<?php echo $producto[0]->ID; ?>">
+                    <div class="mb-3 d-flex  flex-column  align-items-center  justify-content-center">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <label for="cantidad" class="form-label me-2">Cantidad:</label>
+                            <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" value="1" style="width: 80px;">
                         </div>
                     </div>
-                </div>
+                    <?php if ($esAdmin): ?>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" value="<?php echo $producto[0]->Nombre; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción:</label>
+                            <input type="text" id="descripcion" name="producto_Descripcion" class="form-control" value="<?php echo $producto[0]->Descripcion; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidad_stock" class="form-label">Cantidad en Stock:</label>
+                            <input type="number" id="cantidad_stock" name="cantidad_stock" class="form-control" min="0" value="<?php echo $producto[0]->CantidadStock; ?>">
+                        </div>
+                    <?php endif; ?>
+                    <div class="row d-flex justify-content-center ">
+                        <input class="btn btn-danger w-25 ms-5 " type="submit" value="Carrito">
+                        <input class="btn btn-primary w-25 mx-5" type="submit" value="Comprar">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
-
-
 
     

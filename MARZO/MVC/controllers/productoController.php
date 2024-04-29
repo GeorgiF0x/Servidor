@@ -1,7 +1,6 @@
 <?
 //http://192.168.7.203/MARZO/API/index.php/productos?Id=7
 $datosProducto=get("productos/".$_SESSION['id_producto']);
-echo"<pre>";
 $datosProducto=json_decode($datosProducto);
 $producto=$datosProducto;
 if($producto){
@@ -33,10 +32,20 @@ if(isset($_REQUEST['rem_stock'])){
 }
 
 if(isset($_REQUEST['producto_cambio'])){
-    $Descripcion=$_REQUEST['producto_Descripcion'];
-    $Precio=$_REQUEST['producto_Precio'];
-    $Stock=$_REQUEST['producto_Stock'];
-    $updateStock=put("productos",$producto[0]->Id,$Descripcion,$Precio,$Stock);
+    $producto_id = $producto[0]->Id; // Obtén el ID del producto
+    $descripcion = $_REQUEST['producto_Descripcion'];
+    $precio = $_REQUEST['producto_Precio'];
+    $stock = $_REQUEST['cantidad_stock'];
+
+    // Crear el array con los datos a actualizar
+    $datos_actualizados = array(
+        "Descripcion" => $descripcion,
+        "Precio" => $precio,
+        "Stock" => $stock
+    );
+
+    // Llamar a la función put() para actualizar los datos del producto
+    $updateStock = put("productos", $producto_id, $datos_actualizados);
 }
 
 
