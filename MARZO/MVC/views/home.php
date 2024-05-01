@@ -1,3 +1,6 @@
+<?
+    $esAdmin = ($_SESSION['usuario']['IdRol'] == 1 || $_SESSION['usuario']['IdRol'] == 2);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +22,19 @@
 <h1 class="text-center mt-3">ESTO ES EL HOME</h1>
 
 <div class="container">
+<?
+        if($esAdmin){
+            echo '<div class="row mt-4 mb-5">';
+            echo '<div class="col-md-12 text-center">';
+            echo '<form method="POST">';
+            echo '<button type="submit" name="agregar_producto" class="btn btn-primary">
+                     Agregar Producto
+                    </button>';
+            echo '</form>';
+            echo '</div>';
+            echo '</div>';
+        }
+    ?>
     <div class="row">
         <?php
         $productos = $_SESSION['productos'];
@@ -40,6 +56,7 @@
         }
         ?>
     </div>
+
 </div>
 
 </body>

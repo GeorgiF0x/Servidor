@@ -9,29 +9,7 @@ class UserDAO{
    
 
 
-    // public static function validarUser($nombre,$contraseña){
-    //     // $contraseña = sha1($contraseña);
-    //     $sql = "select * from Usuario where Nombre = ? and Contraseña = ?";
-    //     $parametros = array($nombre,$contraseña);
-    //     $result = FactoryBd::realizaConsulta($sql, $parametros);
-    //     $arrayUsuario=array();
-    //     if ($result->rowCount() == 1) {
-    //         $usuarioStd = $result->fetchObject();
-    //         $usuario = new Usuario(
-    //             $usuarioStd->Id,
-    //             $usuarioStd->Nombre,
-    //             $usuarioStd->Contraseña,
-    //             $usuarioStd->Email,
-    //             $usuarioStd->FechaNacimiento,
-    //             $usuarioStd->IdRol,
-    //             $usuarioStd->Borrado
-    //         );
-    //         array_push($arrayUsuario, $usuario);
-    //         return;
-    //     } else
-     
-    //         return null;
-    // }
+
     //devolver array asociativo
     public static function validarUser($nombre, $contraseña) {
         // $contraseña = sha1($contraseña);
@@ -46,7 +24,16 @@ class UserDAO{
             return null; 
         }
     }
-    
+    public static function findById($id){
+        $sql = "select * from   Usuario where Id  = ?";
+        $parametros = array($id);
+        $result = FactoryBd::realizaConsulta($sql, $parametros);
+        if ($result->rowCount() == 1) {
+            $productoStd = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $productoStd;
+        } else
+            return null;
+    }
 
     public static function insert($usuario){
         $sql = "insert into Usuario (Nombre,Contraseña,Email,FechaNacimiento,IdRol,Borrado) values (?,?,?,?,?,?)";

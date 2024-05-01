@@ -33,26 +33,28 @@ class UserController extends Base{
                 break;
             
             
-            case 'POST':
-                // Obtener los datos del cuerpo de la solicitud POST
-                $datos = file_get_contents('php://input');
-                $datos = json_decode($datos,true);
-                // Verificar si se han proporcionado los atributos necesarios 
-                if (isset($datos['Nombre'], $datos['Contraseña'], $datos['Email'], $datos['Fecha_nacimiento'], $datos['Id_rol'], $datos['Borrado'])) {
-                    // Crear un objeto Usuario con los datos proporcionados
-                    $usuario = new User(
-                        null, 
-                        $datos['nombre'],
-                        sha1($datos['contraseña']),
-                        $datos['email'],
-                        $datos['fecha_nacimiento'],
-                        $datos['id_rol'],
-                        $datos['borrado']
-                    );
-                    
-                    UserDAO::insert($usuario);
-
-                }
+                case 'POST':
+                    // Obtener los datos del cuerpo de la solicitud POST
+                    $datos = file_get_contents('php://input');
+                    $datos = json_decode($datos, true);
+                    // Verificar si se han proporcionado los atributos necesarios
+                    if (isset($datos['Nombre'], $datos['Contraseña'], $datos['Email'], $datos['FechaNacimiento'], $datos['IdRol'], $datos['Borrado'])) {
+                        // Crear un objeto Usuario con los datos proporcionados
+                        $usuario = new Usuario(
+                            null, 
+                            $datos['Nombre'], // Nombre del atributo corregido
+                            sha1($datos['Contraseña']), // Nombre del atributo corregido
+                            $datos['Email'], // Nombre del atributo corregido
+                            $datos['FechaNacimiento'], // Nombre del atributo corregido
+                            $datos['IdRol'], // Nombre del atributo corregido
+                            $datos['Borrado'] // Nombre del atributo corregido
+                        );
+                        if( UserDAO::insert($usuario)){
+                            self::response('HTTP/1.0 201 Usuario Creado Correctamente');
+                        }
+                        
+                    }
+                
                 // Si no se proporcionan los atributos necesarios, devolver un error
                 else{
                     self::response('HTTP/1.0 400 No esta introduciendo los atributos del usuario (nombre, contraseña, email
@@ -64,25 +66,25 @@ class UserController extends Base{
                 self::put();
                 break;
     
-        //     case 'DELETE':
-        //         // Verificar si se está solicitando eliminar una matrícula por ID
-        //         $recursos = self::divideURI();
-        //         if(count($recursos) == 3){
-        //             // Verificar si la matrícula existe antes de intentar eliminarla
-        //             if(!empty(matriculaDAO::findbyId($recursos[2]))){
-        //                 // Eliminar la matrícula de la base de datos
-        //                 if(matriculaDAO::delete($recursos[2])){
-        //                     self::response('HTTP/1.0 200 Recurso eliminado');
-        //                 }else{
-        //                     self::response('HTTP/1.0 400 No se pudo eliminar el recurso');
-        //                 }
-        //             }else{
-        //                 self::response('HTTP/1.0 400 No se pudo localizar el recurso a eliminar');
-        //             }
-        //         }else{
-        //             self::response('HTTP/1.0 400 No ha indicado el id');
-        //         }
-        //         break;
+            case 'DELETE':
+                // Verificar si se está solicitando eliminar una matrícula por ID
+                $recursos = self::divideURI();
+                if(count($recursos) == 3){
+                    // Verificar si la matrícula existe antes de intentar eliminarla
+                    if(!empty(UserDAO::findbyId($recursos[2]))){
+                        // Eliminar la matrícula de la base de datos
+                        if(UserDAO::delete($recursos[2])){
+                            self::response('HTTP/1.0 200 Recurso eliminado');
+                        }else{
+                            self::response('HTTP/1.0 400 No se pudo eliminar el recurso');
+                        }
+                    }else{
+                        self::response('HTTP/1.0 400 No se pudo localizar el recurso a eliminar');
+                    }
+                }else{
+                    self::response('HTTP/1.0 400 No ha indicado el id');
+                }
+                break;
     
             default:
                 // Si se utiliza un método no permitido, devolver un error

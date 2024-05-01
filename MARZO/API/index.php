@@ -4,10 +4,16 @@ require("./controlador/Base.php");
 require('./controlador/UserController.php');
 require('./controlador/ProductoController.php');
 require('./controlador/CarritoController.php');
+require('./controlador/CategoriaController.php');
+
+
+// require_once('./dao/UserDAO.php');
+// $nombre="Georgi";
+// $pass="userpass";
 
 
 
-// require_once('./dao/ProductoDAO.php');
+
 // $producto=ProductoDAO::findById(6);
 // echo "<pre>";
 // $producto[0]['Descripcion']="JAJAJA";
@@ -15,7 +21,7 @@ require('./controlador/CarritoController.php');
 
 // ProductoDAO::update($producto);
 // $productoPrueba=ProductoDAO::findById(6);
-
+ 
 
 
 
@@ -38,6 +44,8 @@ if(isset($_SERVER['PATH_INFO'])){
         ProductoController::productos();
     }elseif($recurso[1]==="carrito"){
         CarritoController::carrito();
+    }elseif($recurso[1]==="categoria"){
+        CategoriaController::categoria();
     }
 
     

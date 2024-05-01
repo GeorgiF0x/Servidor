@@ -29,6 +29,7 @@ class ProductoController extends Base{
                     
                     $datos=ProductoDAO::findById($recursos[2]);
                 }
+                
                 // Si no se cumplen las condiciones anteriores, devolver un error
                 else {
                     self::response("HTTP/1.0 400 No está indicando los recursos necesarios");

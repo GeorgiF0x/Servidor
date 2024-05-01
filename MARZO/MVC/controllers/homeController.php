@@ -15,3 +15,9 @@ if(isset($_REQUEST['ir_producto'])){
   require $_SESSION['controlador'];
 }
 
+if(isset($_REQUEST['agregar_producto'])){
+  $_SESSION['vista'] = VIEW.'addProducto.php';
+  $_SESSION['controlador'] = CON.'addProductoController.php';
+  require $_SESSION['controlador'];
+}
+
