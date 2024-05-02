@@ -130,19 +130,6 @@ static function put(){
         }else{
             self::response('HTTP/1.0 400 No se ha encontrado el producto con ese ID');
         }
-        // if(count($producto) == 1){
-        //     $producto = (object)$producto[0];
-            
-        //     if(productoDAO::update($datos,$producto)){
-        //         $producto = productoDAO::findbyId($recursos[2]);
-        //         $producto = json_encode($producto);
-        //         self::response('HTTP/1.0 201 Recurso modificado', $producto);
-        //     }else{
-        //         self::response('HTTP/1.0 400 No esta introduciendo los atributos de producto(nombre, localidad, telefono');
-        //     }
-        // }else{
-        //     self::response('HTTP/1.0 400 No se ha encontrado el producto con ese ID');
-        // }
     }else{
         self::response('HTTP/1.0 400 No ha indicado el id');
     }
@@ -151,18 +138,6 @@ static function put(){
 
 
 
-    // static function buscaConFiltros(){
-    //     // Comprobar si el nombre del filtro está permitido
-    //     $permitimos = ['coche_id','producto'];
-    //     $filtros = self::condiciones();
 
-    //     foreach ($filtros as $key => $value) {
-    //         if(!in_array($key,$permitimos)){
-    //             self::response("HTTP/1.0 400 No se permite la condicion utilizada: " .$key);
-    //         }
-    //     }
-
-    //     return productoDAO::findbyFiltros($filtros);
-    // }
     
 }

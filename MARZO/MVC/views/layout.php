@@ -40,7 +40,7 @@
                 <input type="submit" class="btn btn-primary rounded-pill" value="Cápsula 2">
             </form>
             <form>
-                <input type="submit" class="btn btn-primary rounded-pill" value="Cápsula 3">
+                <input type="submit" class="btn btn-primary rounded-pill" name="ver_usuario" value="Mi usuario">
             </form>
 
             <form class="d-flex" role="search">
@@ -53,7 +53,7 @@
             <?php if (validado()) { ?>
               <form action="" method="post" class="ms-2">
                 <input type="submit" value="Log Out" name="Login_CerrarSesion" class="btn btn-primary w-50 ">
-                <input type="submit" value="Home" name="home" class="btn btn-primary ">
+                <input type="submit" value="Home" name="ir_home" class="btn btn-primary ">
               </form>
             <?php } else { ?>
               <form action="" method="post" class="ms-2">

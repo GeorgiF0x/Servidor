@@ -29,8 +29,8 @@ class UserDAO{
         $parametros = array($id);
         $result = FactoryBd::realizaConsulta($sql, $parametros);
         if ($result->rowCount() == 1) {
-            $productoStd = $result->fetchAll(PDO::FETCH_ASSOC);
-            return $productoStd;
+            $usuarioStd = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $usuarioStd;
         } else
             return null;
     }
@@ -38,6 +38,7 @@ class UserDAO{
     public static function insert($usuario){
         $sql = "insert into Usuario (Nombre,Contraseña,Email,FechaNacimiento,IdRol,Borrado) values (?,?,?,?,?,?)";
         $parametros = array(
+            $usuario->Id,
             $usuario->Nombre,
            sha1( $usuario->Contraseña),
             $usuario->Email,
@@ -48,18 +49,22 @@ class UserDAO{
         return FactoryBd::realizaConsulta($sql, $parametros);
     }
 
+
+
     public static function update($usuario){
-        $sql = "update Usuario set Nombre = ?, Contraseña = ?, Email = ?, FechaNacimiento = ?, IdRol = ? ,Borrado = ?  where Id = ?";
+        $sql = "update Usuario set Nombre = ?, Contraseña = ?, Email = ?, FechaNacimiento = ?, IdRol = ? , Borrado = ? where Id = ?";
         $parametros = array(
             $usuario->Nombre,
-            sha1($usuario->Contraseña),
+            $usuario->Contraseña,
             $usuario->Email,
             $usuario->FechaNacimiento,
             $usuario->IdRol,
-            $usuario->Borrado
+            $usuario->Borrado,
+            $usuario->Id
         );
         return FactoryBd::realizaConsulta($sql, $parametros);
     }
+    
 
     public static function delete($id){
         $sql = "delete from Usuario where Id = ?";
