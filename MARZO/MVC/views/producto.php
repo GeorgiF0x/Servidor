@@ -13,7 +13,7 @@
             <p><?php echo $producto[0]->Descripcion; ?></p>
             <p>Precio: <?php echo $producto[0]->Precio; ?></p>
             <div class="row">
-                <form action="" method="post">
+                <form action="" method="post"  >
                     <input type="hidden" name="producto_id" value="<?php echo $producto[0]->ID; ?>">
                     <div class="mb-3 d-flex  flex-column  align-items-center  justify-content-center">
                         <div class="d-flex align-items-center justify-content-center">

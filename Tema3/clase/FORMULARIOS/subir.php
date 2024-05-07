@@ -2,7 +2,7 @@
     include("/var/www/Servidor/FuncionesUtiles/funcionesUtiles.php");
 if(count($_FILES)!=0){
     // echo "<pre>";
-    // print_r($_FILES);
+    print_r($_FILES);
     //guardar el fichero subido
     //ruta para guardar el fichero
     $ruta= "/var/www/Servidor/Tema3/";

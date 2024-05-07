@@ -9,10 +9,11 @@
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
+
 <div class="container mt-5">
     <h2 class="mb-4 text text-center">Agregar Nuevo Producto</h2>
     <div class="row">
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre:</label>
             <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -26,12 +27,19 @@
             <input type="number" step="0.01" min="0" class="form-control" id="precio" name="precio" required>
         </div>
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría:</label>
-            <input type="text" class="form-control" id="categoria" name="categoria" required>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Selecciona la categoria</option>
+                    <?
+                        foreach ($_SESSION['categorias'] as $categoria => $value) {
+                            //echo $_SESSION['categorias'][$categoria]->Nombre;
+                            echo "<option value =".$categoria.">".$_SESSION['categorias'][$categoria]->Nombre."</option>";
+                        }
+                    ?>
+            </select>
         </div>
         <div class="mb-3">
-            <label for="ruta_img" class="form-label">Ruta de la Imagen:</label>
-            <input type="text" class="form-control" id="ruta_img" name="ruta_img">
+            <label for="formFile" class="form-label">Imagen del producto:</label>
+            <input class="form-control" type="file" id="formFile" name="ruta_img" >
         </div>
         <div class="mb-3">
             <label for="cantidad_stock" class="form-label">Cantidad en Stock:</label>
