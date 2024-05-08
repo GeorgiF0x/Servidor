@@ -27,12 +27,12 @@
             <input type="number" step="0.01" min="0" class="form-control" id="precio" name="precio" required>
         </div>
         <div class="mb-3">
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select" aria-label="Default select example" name="categoria">
                 <option selected>Selecciona la categoria</option>
                     <?
                         foreach ($_SESSION['categorias'] as $categoria => $value) {
                             //echo $_SESSION['categorias'][$categoria]->Nombre;
-                            echo "<option value =".$categoria.">".$_SESSION['categorias'][$categoria]->Nombre."</option>";
+                            echo "<option value =".$_SESSION['categorias'][$categoria]->Id.">".$_SESSION['categorias'][$categoria]->Nombre."</option>";
                         }
                     ?>
             </select>

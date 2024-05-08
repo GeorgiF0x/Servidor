@@ -46,9 +46,9 @@ class ProductoController extends Base{
                 $datos = file_get_contents('php://input');
                 $datos = json_decode($datos,true);
                 // Verificar si se han proporcionado los atributos necesarios 
-                if (isset($datos['Id'], $datos['Nombre'], $datos['Descripcion'], $datos['Precio'], $datos['Categoria'], $datos['RutaImg'],$datos['CantidadStock'],$datos['Borrado'])) {
+                if (isset($datos['Id'])&& isset( $datos['Nombre'])&& isset($datos['Descripcion'])&& isset($datos['Precio'])&& isset($datos['Categoria'])&& isset($datos['RutaImg']) && isset($datos['CantidadStock']) && isset($datos['Borrado'])) {
                     // Crear un objeto Producto con los datos proporcionados
-                    $usuario = new Producto(
+                    $producto= new Producto(
                         null, 
                         $datos['Nombre'],
                         $datos['Descripcion'],
@@ -58,14 +58,12 @@ class ProductoController extends Base{
                         $datos['CantidadStock'],
                         $datos['borrado']
                     );
-                    
-                    UserDAO::insert($usuario);
-
+                    ProductoDAO::insert($producto);
                 }
                 // Si no se proporcionan los atributos necesarios, devolver un error
                 else{
-                    self::response('HTTP/1.0 400 No esta introduciendo los atributos del usuario (nombre, contraseña, email
-                    ,fecha de nacimiento y el id de rol');
+                    self::response('HTTP/1.0 400 No esta introduciendo los atributos del producto (nombre, descripcion, precio,categoria
+                    ,RutaImg y cantidad en stock)');
                 }
                 break;
             case 'PUT':

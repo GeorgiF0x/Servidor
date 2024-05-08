@@ -36,7 +36,7 @@ class UserDAO{
     }
 
     public static function insert($usuario){
-        $sql = "insert into Usuario (Nombre,Contraseña,Email,FechaNacimiento,IdRol,Borrado) values (?,?,?,?,?,?)";
+        $sql = "insert into Usuario (Nombre,Contraseña,Email,FechaNacimiento,IdRol,Borrado) values (?,?,?,?,?,?,?)";
         $parametros = array(
             $usuario->Id,
             $usuario->Nombre,

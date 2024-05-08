@@ -20,32 +20,26 @@ if(isset($_REQUEST["ir_carrito"])){
     }
 }
 
-if(isset($_REQUEST['rem_stock'])){
-    $cantidadQuitar=$_REQUEST['unidades'];
-    $nuevoStock=$producto[0]->CantidadStock-$cantidadQuitar;
-    $updateStock=put("productos",$producto[0]->Id,$nuevoStock);
-    
-}elseif (isset($_REQUEST['add_stock'])) {
-    $cantidadSumar=$_REQUEST['unidades'];
-    $nuevoStock=$producto[0]->CantidadStock+$cantidadSumar;
-    $updateStock=put("productos",$producto[0]->Id,$nuevoStock);
-}
+
 
 if(isset($_REQUEST['producto_cambio'])){
     $producto_id = $producto[0]->Id; // Obtén el ID del producto
-    $descripcion = $_REQUEST['producto_Descripcion'];
-    $precio = $_REQUEST['producto_Precio'];
-    $stock = $_REQUEST['cantidad_stock'];
-
+    $Descripcion = $_REQUEST['producto_Descripcion'];
+    $Precio = $_REQUEST['producto_Precio'];
+    $CantidadStock = $_REQUEST['cantidad_stock'];
     // Crear el array con los datos a actualizar
     $datos_actualizados = array(
-        "Descripcion" => $descripcion,
-        "Precio" => $precio,
-        "Stock" => $stock
+        "Descripcion" => $Descripcion,
+        "Precio" => $Precio,
+        "CantidadStock" => $CantidadStock
+        // Llamar a la función put() para actualizar los datos del producto
     );
-
-    // Llamar a la función put() para actualizar los datos del producto
     $updateStock = put("productos", $producto_id, $datos_actualizados);
+    if($updateStock){
+        $_SESSION['vista'] = VIEW.'home.php';
+        $_SESSION['controlador'] = CON.'homeController.php';
+        require $_SESSION['controlador'];
+    }
 }
 
 

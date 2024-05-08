@@ -25,15 +25,13 @@ if(isset($_REQUEST['login'])){
                 $_SESSION['vista'] = VIEW.'home.php';
                 $_SESSION['controlador'] = CON.'homeController.php';
                 require $_SESSION['controlador'];
-            }
-
-            //comprobar carrito
-            $datosCarritoUser=$datosProducto=get("carrito?".$usuario->Id);
-            $datosCarritoUser=json_decode($datosCarritoUser);
-            if($datosCarritoUser){
-                $_SESSION['carrito']=$datosCarritoUser;
-            }
-            
+                //comprobar carrito
+                $datosCarritoUser=$datosProducto=get("carrito?".$usuario->Id);
+                $datosCarritoUser=json_decode($datosCarritoUser);
+                if($datosCarritoUser){
+                    $_SESSION['carrito']=$datosCarritoUser;
+                }
+            }   
         }
 
 } 

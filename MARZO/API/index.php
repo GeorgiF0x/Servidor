@@ -16,8 +16,10 @@ require('./controlador/CategoriaController.php');
 
 // $producto=ProductoDAO::findById(6);
 // echo "<pre>";
-// $producto[0]['Descripcion']="JAJAJA";
-// print_r($producto);
+// $productoNuevo=new Producto(null,"prueba","prueba",666,2,null,66,0);
+// ProductoDAO::insert($productoNuevo);
+
+
 
 // ProductoDAO::update($producto);
 // $productoPrueba=ProductoDAO::findById(6);
@@ -32,7 +34,7 @@ require('./controlador/CategoriaController.php');
 
 
 
-// Se verifica si se ha especificado la información de la ruta en la solicitud
+//Se verifica si se ha especificado la información de la ruta en la solicitud
 if(isset($_SERVER['PATH_INFO'])){
     // Se obtiene la información de la ruta y se divide en segmentos
     $recurso = Base::divideURI();
