@@ -20,7 +20,6 @@ class   CategoriaController extends Base{
                 //para buscar categoria por nombre
                 elseif (count($recursos) == 2 && count($filtros)==1) {
                     if(isset($filtros['Nombre'])){
-
                         $datos=CategoriaDAO::findByNombre($filtros['Nombre']);
                     }
                 }
@@ -41,22 +40,23 @@ class   CategoriaController extends Base{
                 $datos = file_get_contents('php://input');
                 $datos = json_decode($datos,true);
                 // Verificar si se han proporcionado los atributos necesarios 
-                if (isset($datos['Id'], $datos['Nombre'],$datos['Borrado'])) {
-                    // Crear un objeto Producto con los datos proporcionados
+                if (isset($datos['Nombre'], $datos['Borrado'])) {
+          
                     $categoria = new Categoria(
                         null, 
-                        $datos['Nombre'],
-                        $datos['borrado'],
+                        $datos['Nombre'], // Nombre del atributo corregido
+                        $datos['Borrado'] // Nombre del atributo corregido
                     );
+                    if( CategoriaDAO::insert($categoria)){
+                        self::response('HTTP/1.0 201 Categoria Creada Correctamente');
+                    }
                     
-                    CategoriaDAO::insert($categoria);
-
                 }
-                // Si no se proporcionan los atributos necesarios, devolver un error
-                else{
-                    self::response('HTTP/1.0 400 No esta introduciendo los atributos del usuario (nombre, contraseña, email
-                    ,fecha de nacimiento y el id de rol');
-                }
+            
+            // Si no se proporcionan los atributos necesarios, devolver un error
+            else{
+                self::response('HTTP/1.0 400 No esta introduciendo los atributos necesarios (nombre');
+            }
                 break;
     
             case 'DELETE':

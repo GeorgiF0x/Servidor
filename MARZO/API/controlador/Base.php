@@ -2,16 +2,16 @@
 
 class Base{
     // Método para enviar una respuesta HTTP al cliente
-    public static function response($head, $body = ''){
-        // Establecer el encabezado HTTP utilizando el valor proporcionado
-        header($head, $body);
-        
-        // Imprimir el cuerpo de la respuesta si se proporciona
-        echo $body;
-        
-        // Detener la ejecución del script
-        exit;
-    }
+ public static function response($head, $body = ''){
+    // Establecer el encabezado HTTP utilizando el valor proporcionado
+    header($head);
+    
+    // Imprimir el cuerpo de la respuesta si se proporciona
+    echo $body;
+    
+    // Detener la ejecución del script
+    exit;
+}
 
     // Método para dividir la URI en sus componentes
     public static function divideURI(){

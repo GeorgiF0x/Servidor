@@ -36,18 +36,19 @@ class UserDAO{
     }
 
     public static function insert($usuario){
-        $sql = "insert into Usuario (Nombre,Contraseña,Email,FechaNacimiento,IdRol,Borrado) values (?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO Usuario (Nombre, Contraseña, Email, FechaNacimiento, IdRol, Borrado) VALUES (?, ?, ?, ?, ?, ?)";
         $parametros = array(
-            $usuario->Id,
             $usuario->Nombre,
-           sha1( $usuario->Contraseña),
+            sha1($usuario->Contraseña),
             $usuario->Email,
             $usuario->FechaNacimiento,
             $usuario->IdRol,
             $usuario->Borrado
         );
+        
         return FactoryBd::realizaConsulta($sql, $parametros);
     }
+    
 
 
 

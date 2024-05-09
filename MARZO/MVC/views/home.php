@@ -27,8 +27,12 @@
             echo '<div class="row mt-4 mb-5">';
             echo '<div class="col-md-12 text-center">';
             echo '<form method="POST">';
-            echo '<button type="submit" name="agregar_producto" class="btn btn-primary">
+            echo '<button type="submit" name="agregar_producto" class="btn btn-warning text-white">
                      Agregar Producto
+                    </button>';
+
+            echo '<button type="submit" name="agregar_categoria" class="btn btn-info text-white ms-5">
+            Agregar Categoria
                     </button>';
             echo '</form>';
             echo '</div>';

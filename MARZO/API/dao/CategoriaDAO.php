@@ -27,8 +27,9 @@ class CategoriaDAO{
         } else
             return null;
     }
+    
     public static function findByNombre($nombre){
-        $sql = "SELECT * FROM Producto WHERE Nombre LIKE ?";
+        $sql = "SELECT * FROM Categoria WHERE Nombre LIKE ?";
         $parametros = array("%$nombre%");
         $result = FactoryBd::realizaConsulta($sql, $parametros);
         if ($result->rowCount() > 0) {
