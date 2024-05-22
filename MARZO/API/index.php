@@ -7,7 +7,7 @@ require('./controlador/CarritoController.php');
 require('./controlador/CategoriaController.php');
 
 
-// require_once('./dao/UserDAO.php');
+
 // $nombre="Georgi";
 // $pass="userpass";
 

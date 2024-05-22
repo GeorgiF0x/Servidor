@@ -27,6 +27,15 @@
 </head>
 <body>
 
+                        <h1 >
+                            <?
+                        echo $_SESSION['vista'];
+                        echo "<br>";
+                        echo $_SESSION['controlador'];
+                        echo "<br>";
+                        ?>
+                        </h1>
+                        
   <div class="container">
     <header class="mt-5">
       <div class="row border border-danger ">
