@@ -21,32 +21,10 @@ if(isset($_REQUEST['agregar_producto'])){
   require $_SESSION['controlador'];
 }
 
-if(isset($_REQUEST['agregar_categoria'])){
+if(isset($_REQUEST['gestion_categoria'])){
   $_SESSION['vista'] = VIEW.'addCategoria.php';
-  $_SESSION['controlador'] = CON.'addCategoriaController.php';
+  $_SESSION['controlador'] = CON.'gestionCategoriaController.php';
   require $_SESSION['controlador'];
 }
 
-// if(isset($_REQUEST['producto_borrar'])){
-//   $producto_id = $_REQUEST['producto_id']; 
-//   $datosProducto=get("productos/".$_REQUEST['producto_id']);
-// $datosProducto=json_decode($datosProducto);
-// $producto=$datosProducto;
-//   $ruta_imagen = $producto[0]->RutaImg; // Concatenar la ruta base con la ruta relativa de la imagen
-//   $delete = deleteFromAPI("productos", $producto_id); // Eliminar el producto de la API
-//   if($delete){
-//       // Eliminar el archivo de imagen asociado
-//       if(file_exists(IMG.$ruta_imagen)) {
-//           unlink(IMG.$ruta_imagen); // Eliminar el archivo
-//           echo "Archivo eliminado correctamente.";
-//       } else {
-//           echo "El archivo no existe.";
-//       }
-//       // Redirigir o realizar otras acciones después de eliminar el producto
-      
-//       // $_SESSION['vista'] = VIEW.'home.php';
-//       // $_SESSION['controlador'] = CON.'homeController.php';
-//       // require $_SESSION['controlador'];
-//   }
-// }
 

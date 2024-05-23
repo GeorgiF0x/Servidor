@@ -49,7 +49,7 @@ if(isset($_SERVER['PATH_INFO'])){
         ProductoController::productos();
     }elseif($recurso[1]==="carrito"){
         CarritoController::carrito();
-    }elseif($recurso[1]==="categoria"){
+    }elseif($recurso[1]==="categorias"){
         CategoriaController::categoria();
     }
 
