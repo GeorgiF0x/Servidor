@@ -41,11 +41,6 @@
                         </h1>
                         
   <div class="container">
-  <div class="row justify-content-center">
-            <div class="col-md-6 mt-4">
-                <img src="<?php echo IMG. 'titulo.png'; ?>" class="img-fluid" alt="Imagen centrada">
-            </div>
-        </div>
     <header class="mt-5">
       <div class="row  ">
         <div class="col-2">
@@ -81,7 +76,13 @@
             <?php } ?>
           </div>
       </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 mt-4">
+                <img src="<?php echo IMG. 'titulo.png'; ?>" class="img-fluid" alt="Imagen centrada">
+            </div>
+        </div>
   </header>
+  
   <main>
       <?php
           if(!isset($_SESSION['vista'])){
