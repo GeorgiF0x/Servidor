@@ -46,6 +46,9 @@ if (isset($_SESSION['Coche'])) {
             <th>coche_id</th>
             <th>Matricula</th>
         </tr>
+    </thead>
+    <tbody>
+
         <?php
         if (!empty($_SESSION['matriculas'])) { 
             foreach ($_SESSION['matriculas'] as $matricula) {
@@ -61,7 +64,7 @@ if (isset($_SESSION['Coche'])) {
             echo "No hay matriculas disponibles.";
         }
         ?>
-    </thead>
+    </tbody>
     <?
      if(isset($errores['borrar']) && isset($_REQUEST['borrar'])){
         echo '<span style="color: red;">' . $errores['borrar'] . '</span>';

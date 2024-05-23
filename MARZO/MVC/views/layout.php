@@ -47,19 +47,19 @@
             </div>
         </div>
     <header class="mt-5">
-      <div class="row border border-danger ">
+      <div class="row  ">
         <div class="col-2">
             <img src="<?php echo IMG . 'LogoTienda.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">
           </div>
           <div class="col-8 d-flex align-items-center justify-content-evenly">
             <form>
-                <input type="submit" class="btn btn-primary rounded-pill " value="Cápsula 1">
+                <input type="submit" class="btn btn-dark rounded-pill " value="Cápsula 1">
             </form>
             <form>
-                <input type="submit" class="btn btn-primary rounded-pill" value="Cápsula 2">
+                <input type="submit" class="btn btn-dark rounded-pill" value="Cápsula 2">
             </form>
             <form>
-                <input type="submit" class="btn btn-primary rounded-pill" name="ver_usuario" value="Mi usuario">
+                <input type="submit" class="btn btn-dark rounded-pill" name="ver_usuario" value="Mi usuario">
             </form>
 
             <form class="d-flex" role="search">
@@ -71,8 +71,8 @@
           <div class="col-2 d-flex align-items-center justify-content-evenly">
             <?php if (validado()) { ?>
               <form action="" method="post" class="ms-2">
-                <input type="submit" value="Log Out" name="Login_CerrarSesion" class="btn btn-primary w-50 ">
-                <input type="submit" value="Home" name="ir_home" class="btn btn-primary ">
+                <input type="submit" value="Log Out" name="Login_CerrarSesion" class="btn btn-dark w-50 ">
+                <input type="submit" value="Home" name="ir_home" class="btn btn-dark ">
               </form>
             <?php } else { ?>
               <form action="" method="post" class="ms-2">

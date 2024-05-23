@@ -46,7 +46,7 @@
         <?php
         $productos = $_SESSION['productos'];
         foreach ($productos as $producto) {
-            echo '<div class="col-md-4 mb-4">';
+            echo '<div class="col-md-4 mb-4 mt-5">';
             echo '<div class="card">';
             echo '<img src="' . IMG . $producto->RutaImg. '" class="card-img-top" alt="' . $producto->Nombre . '">';
             echo '<div class="card-body">';
@@ -56,7 +56,7 @@
             echo '<p class="fw-bold mb-0">Precio: €' . number_format($producto->Precio, 2) . '</p>';
             echo '<form method="POST">';
             echo '<input type="hidden" name="producto_id" value="' . $producto->Id . '">';
-            echo '<button type="submit" name="ir_producto" class="btn btn-outline-primary">Comprar</button>';
+            echo '<button type="submit" name="ir_producto" class="btn btn-outline-dark">Comprar</button>';
             echo '</form>';
             echo '</div>'; // Cierre de div.d-flex
             echo '</div>'; // Cierre de div.card-body
