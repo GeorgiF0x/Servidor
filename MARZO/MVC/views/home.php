@@ -53,7 +53,7 @@
             echo '<h5 class="card-title fw-bold text-center">' . $producto->Nombre . '</h5>';
             echo '<p class="card-text text-center fst-italic">' . $producto->Descripcion . '</p>';
             echo '<div class="d-flex justify-content-between align-items-center">';
-            echo '<p class="fw-bold mb-0">Precio: €' . number_format($producto->Precio, 2) . '</p>';
+            echo '<p class="fw-bold mb-0">Precio: ' . number_format($producto->Precio, 2) . '€</p>';
             echo '<form method="POST">';
             echo '<input type="hidden" name="producto_id" value="' . $producto->Id . '">';
             echo '<button type="submit" name="ir_producto" class="btn btn-outline-dark">Comprar</button>';

@@ -1,0 +1,34 @@
+/* Define a class for the gradient background */
+
+* {
+    font-family: Copperplate Gothic;
+  }
+.gradient-button {
+    background: linear-gradient(90deg, #ff0000 0%, #8b0000 100%);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.rounded-pill {
+    background-image: linear-gradient(to right, #780e7a, #0d020d, #000000);
+  }
+
+  .rounded-pill {
+    background-image: linear-gradient(to right, #ff0000, #8b0000, #000000);
+  }
+  
+  .btn-dark {
+    background-image: linear-gradient(to right, #000000, #ff0000);
+  }
+  
+
+  

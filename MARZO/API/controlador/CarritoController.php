@@ -13,28 +13,35 @@ class CarritoController extends Base{
         // switch para manejar diferentes métodos HTTP
         switch ($metodo) {
             case 'GET':
-                //para todos los productos
-                if (count($recursos) == 2 && count($filtros)==0) {
-                        $datos = CarritoDAO::findAll();
-                }
-                elseif (count($recursos) == 2 && count($filtros)==1) {
-                    if(isset($filtros['IdUsuario'])){
-                        $datos=CarritoDAO::findByUserId($filtros['IdUsuario']);
+                // Inicializar la variable $datos a null
+                $datos = null;
+            
+                // Para todos los productos
+                if (count($recursos) == 2 && count($filtros) == 0) {
+                    $datos = CarritoDAO::findAll();
+                } elseif (count($recursos) == 2 && count($filtros) == 1) {
+                    if (isset($filtros['IdUsuario'])) {
+                        $datos = CarritoDAO::findByUserId($filtros['IdUsuario']);
                     }
-                }
-                elseif (count($recursos) == 2 && count($filtros)==2) {
-                    if(isset($filtros['IdUsuario'])&&isset($filtros['IdProducto'])){
-                        $datos=CarritoDAO::findByUserAndProductoId($filtros['IdUsuario'],$filtros['IdProducto']);
+                } elseif (count($recursos) == 2 && count($filtros) == 2) {
+                    if (isset($filtros['IdUsuario']) && isset($filtros['IdProducto'])) {
+                        $datos = CarritoDAO::findByUserAndProductoId($filtros['IdUsuario'], $filtros['IdProducto']);
                     }
-                }
-                // Si no se cumplen las condiciones anteriores, devolver un error
-                else {
+                } else {
+                    // Si no se cumplen las condiciones anteriores, devolver un error
                     self::response("HTTP/1.0 400 No está indicando los recursos necesarios");
                     break;
                 }
-                // Convertir los datos a formato JSON y enviar la respuesta
-                $datos = json_encode($datos);
-                self::response('HTTP/1.0 200 OK', $datos);
+            
+                // Verificar si $datos está definido antes de usarlo
+                if ($datos !== null) {
+                    // Convertir los datos a formato JSON y enviar la respuesta
+                    $datos = json_encode($datos);
+                    self::response('HTTP/1.0 200 OK', $datos);
+                } else {
+                    // Si $datos es null, devolver un error
+                    self::response("HTTP/1.0 404 No se encontraron datos");
+                }
                 break;
             case 'POST':
                 // Obtener los datos del cuerpo de la solicitud POST
@@ -61,31 +68,31 @@ class CarritoController extends Base{
                 self::put();
                 break;
     
-        //     case 'DELETE':
-        //         // Verificar si se está solicitando eliminar una matrícula por ID
-        //         $recursos = self::divideURI();
-        //         if(count($recursos) == 3){
-        //             // Verificar si la matrícula existe antes de intentar eliminarla
-        //             if(!empty(carritoDAO::findbyId($recursos[2]))){
-        //                 // Eliminar la matrícula de la base de datos
-        //                 if(carritoDAO::delete($recursos[2])){
-        //                     self::response('HTTP/1.0 200 Recurso eliminado');
-        //                 }else{
-        //                     self::response('HTTP/1.0 400 No se pudo eliminar el recurso');
-        //                 }
-        //             }else{
-        //                 self::response('HTTP/1.0 400 No se pudo localizar el recurso a eliminar');
-        //             }
-        //         }else{
-        //             self::response('HTTP/1.0 400 No ha indicado el id');
-        //         }
-        //         break;
+                case 'DELETE':
+                    // Verificar si se está solicitando eliminar un producto por ID
+                    if (count($recursos) == 3) {
+                        $idProducto = $recursos[2];
+                        // Verificar si el producto existe antes de intentar eliminarlo
+                        if (!empty(CarritoDAO::findById($idProducto))) {
+                            // Eliminar el producto de la base de datos
+                            if (CarritoDAO::delete($idProducto)) {
+                                self::response('HTTP/1.0 200 Recurso eliminado');
+                            } else {
+                                self::response('HTTP/1.0 500 No se pudo eliminar el recurso');
+                            }
+                        } else {
+                            self::response('HTTP/1.0 404 No se pudo localizar el recurso a eliminar');
+                        }
+                    } else {
+                        self::response('HTTP/1.0 400 No ha indicado el ID');
+                    }
+                    break;
     
-            default:
-                // Si se utiliza un método no permitido, devolver un error
-                self::response("HTTP/1.0 400 No permite el metodo utilizado");
-                break;
-    }
+                default:
+                    // Si se utiliza un método no permitido, devolver un error
+                    self::response("HTTP/1.0 405 Método no permitido");
+                    break;
+            }
 }
 
 static function put(){

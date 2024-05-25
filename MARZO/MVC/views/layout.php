@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="<?echo CSS.'botones.css'?>">
+    <!-- Asegúrate de incluir el CSS de Bootstrap Icons en tu proyecto -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
     <style>
         tr, td, th {
             border: 1px solid black;
@@ -23,65 +26,75 @@
       .card {
           height: auto; /* O ajusta la altura según sea necesario */
       }
+      .btn-no-border {
+        border: none;
+        padding: 0;
+        background: none;
+    }
+
+    .btn-no-border img {
+        display: block;
+    }
+
     </style>
 </head>
-<body>
+<body> 
 
-                        <h1 >
-                            <?
-                        // echo $_SESSION['vista'];
-                        // echo "<br>";
-                        // echo $_SESSION['controlador'];
-                        // echo "<br>";
-                        // if(isset($_SESSION['cambios'])){
-                        //     echo $_SESSION['cambios'];
-                          
-                        // }
-                        ?>
-                        </h1>
                         
   <div class="container">
-    <header class="mt-5">
-      <div class="row  ">
-        <div class="col-2">
-            <img src="<?php echo IMG . 'LogoTienda.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">
-          </div>
-          <div class="col-8 d-flex align-items-center justify-content-evenly">
-            <form>
-                <input type="submit" class="btn btn-dark rounded-pill " value="Cápsula 1">
-            </form>
-            <form>
-                <input type="submit" class="btn btn-dark rounded-pill" value="Cápsula 2">
-            </form>
-            <form>
-                <input type="submit" class="btn btn-dark rounded-pill" name="ver_usuario" value="Mi usuario">
-            </form>
-
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-
-          <div class="col-2 d-flex align-items-center justify-content-evenly">
-            <?php if (validado()) { ?>
-              <form action="" method="post" class="ms-2">
-                <input type="submit" value="Log Out" name="Login_CerrarSesion" class="btn btn-dark w-50 ">
-                <input type="submit" value="Home" name="ir_home" class="btn btn-dark ">
-              </form>
-            <?php } else { ?>
-              <form action="" method="post" class="ms-2">
-                <input type="submit" value="Login" name="ir_login" class="btn btn-link">
-              </form>
-            <?php } ?>
-          </div>
-      </div>
-        <div class="row justify-content-center">
+  <div class="row justify-content-center">
+    
             <div class="col-md-6 mt-4">
-                <img src="<?php echo IMG. 'titulo.png'; ?>" class="img-fluid" alt="Imagen centrada">
+                <img src="<?php echo IMG . 'titulo.png'; ?>" class="img-fluid" alt="Imagen centrada">
             </div>
         </div>
-  </header>
+  <header class="">
+        <div class="row">
+            
+        <form action="" method="post" class="col-2">
+            <div class="">
+                <button type="submit" class="rounded btn-no-border" name="ir_home">
+                    <img src="<?php echo IMG . 'nuevoLogo.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">
+                </button>
+            </div>
+        </form>
+
+
+            <div class="col-8 d-flex align-items-center justify-content-evenly">
+                <form>
+                    <input type="submit" class="btn btn-dark rounded-pill  fst-italic fw-bold text-white " value="Cápsula 1">
+                </form>
+                <form>
+                    <input type="submit" class="btn btn-dark rounded-pill  fst-italic fw-bold text-white " value="Cápsula 2">
+                </form>
+                <form>
+                    <input type="submit" class="btn btn-dark rounded-pill  fst-italic fw-bold text-white" name="ver_usuario" value="Mi usuario">
+                </form>
+
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+
+            <div class="col-2 d-flex align-items-center justify-content-evenly">
+                <?php if (validado()) { ?>
+             
+                       <form action="" method="post" class="ms-1">
+                        <button type="submit" name="ir_carrito" class="btn btn-dark fst-italic fw-bold text-white">
+                            <i class="bi bi-cart"></i> 
+                        </button>
+                        <input type="submit" value="Log Out" name="Login_CerrarSesion" class="btn btn-dark w-50 fst-italic fw-bold text-white">
+                    </form>
+                <?php } else { ?>
+                    <form action="" method="post" class="ms-2">
+                        <input type="submit" value="Login" name="ir_login" class="btn btn-link fst-italic fw-bold text-white ">
+                    </form>
+                <?php } ?>
+            </div>
+        </div>
+
+    </header>
   
   <main>
       <?php

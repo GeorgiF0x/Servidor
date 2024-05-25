@@ -6,7 +6,7 @@
 <div class="container my-5">
     <div class="row gx-5 justify-content-around border border-dark">
         <div class="col-5">
-            <img src="<?php echo IMG . 'productoDefault.jpg'; ?>" class="img-fluid" alt="<?php echo $producto[0]->Nombre; ?>">
+            <img src="<?php echo IMG .$producto[0]->RutaImg ; ?>" class="img-fluid" alt="<?php echo $producto[0]->Nombre; ?>">
         </div>
         <div class="col-5 text-center">
             <h2><?php echo $producto[0]->Nombre; ?></h2>
