@@ -27,6 +27,8 @@ class AlbaranController extends Base{
                 elseif (count($recursos) == 2 &&  count($filtros) == 1) {
                     if(isset($filtros['ultimo'])){
                         $datos = AlbaranDAO::findLast();
+                    }else{
+                        
                     }
                     if ($datos === null) {
                         self::response("HTTP/1.0 404 No se encontró el último albarán");

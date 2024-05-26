@@ -30,18 +30,22 @@
         </thead>
         <tbody>
         <?php
-        foreach ($categorias as $categoria) {
-            echo '<tr>';
-            echo '<td>' . htmlspecialchars($categoria->Id) . '</td>';
-            echo '<td>' . htmlspecialchars($categoria->Nombre) . '</td>';
-            echo '<td>';
-            echo '<form method="POST" action="" style="display:inline-block;">';
-            echo '<input type="hidden" name="categoria_id" value="' . htmlspecialchars($categoria->Id) . '">';
-            echo '<button type="submit" name="borrar_categoria" class="btn btn-danger">Borrar</button>';
-            echo '</form>';
-            echo '</td>';
-            echo '</tr>';
-        }
+            if (empty($categorias)) {
+                echo '<h2 class="text text-center">No hay categorías disponibles</h2>';
+            } else {
+                foreach ($categorias as $categoria) {
+                    echo '<tr>';
+                    echo '<td>' . htmlspecialchars($categoria->Id) . '</td>';
+                    echo '<td>' . htmlspecialchars($categoria->Nombre) . '</td>';
+                    echo '<td>';
+                    echo '<form method="POST" action="" style="display:inline-block;">';
+                    echo '<input type="hidden" name="categoria_id" value="' . htmlspecialchars($categoria->Id) . '">';
+                    echo '<button type="submit" name="borrar_categoria" class="btn btn-danger">Borrar</button>';
+                    echo '</form>';
+                    echo '</td>';
+                    echo '</tr>';
+                }
+            }
         ?>
         </tbody>
     </table>

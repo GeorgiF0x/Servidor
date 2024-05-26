@@ -18,8 +18,8 @@ class UserController extends Base{
                 if (count($recursos) == 2 && count($filtros)==2) {
                    if(isset($filtros['Nombre'])&&isset($filtros['Contraseña'])){
                     //para los cifrados
-                    //$datos = UserDAO::validarUser($filtros['Nombre'],sha1($filtros['Contraseña']));
-                       $datos = UserDAO::validarUser($filtros['Nombre'],$filtros['Contraseña']);
+                    $datos = UserDAO::validarUser($filtros['Nombre'],sha1($filtros['Contraseña']));
+                       //$datos = UserDAO::validarUser($filtros['Nombre'],$filtros['Contraseña']);
                     //    echo " **PRUEBA**<pre>";
                     //    echo"<br>*******************************************************<br>";
                     }
@@ -45,7 +45,7 @@ class UserController extends Base{
                         $usuario = new Usuario(
                             null, 
                             $datos['Nombre'], // Nombre del atributo corregido
-                            sha1($datos['Contraseña']), // Nombre del atributo corregido
+                            $datos['Contraseña'], // Nombre del atributo corregido
                             $datos['Email'], // Nombre del atributo corregido
                             $datos['FechaNacimiento'], // Nombre del atributo corregido
                             $datos['IdRol'], // Nombre del atributo corregido

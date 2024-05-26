@@ -69,6 +69,17 @@ class DetalleAlbaranDAO{
             return null;
         }
     }
+    
+    public static function findByAlbaranId($idAlbaran) {
+        $sql = "SELECT * FROM DetalleAlbaran WHERE IdAlbaran = ?";
+        $parametros = array($idAlbaran);
+        $result = FactoryBd::realizaConsulta($sql, $parametros);
+        if ($result->rowCount() > 0) {
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null;
+        }
+    }
 }
 
 ?>

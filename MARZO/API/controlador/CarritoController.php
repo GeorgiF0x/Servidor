@@ -57,7 +57,11 @@ class CarritoController extends Base{
                         $datos['Borrado'],
                         $datos['Cantidad']
                     );
-                    CarritoDAO::insert($carrito);
+                    if (CarritoDAO::insert($carrito)) {
+                        self::response('HTTP/1.0 201 Carrito Creado Correctamente');
+                    } else {
+                        self::response('HTTP/1.0 500 Error al insertar el carrito');
+                    }  
                 }
                 // Si no se proporcionan los atributos necesarios, devolver un error
                 else{

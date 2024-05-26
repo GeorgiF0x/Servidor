@@ -1,4 +1,5 @@
 <?
+   $esAdmin = ($_SESSION['usuario']['IdRol'] == 1 || $_SESSION['usuario']['IdRol'] == 2);
 //http://192.168.7.203/MARZO/API/index.php/productos?Id=7
 $datosProducto=get("productos/".$_SESSION['id_producto']);
 $datosProducto=json_decode($datosProducto);
@@ -6,32 +7,42 @@ $producto=$datosProducto;
 if($producto){
     $_SESSION['productoElegido']=$producto;
 }
+// var_dump($producto);
 // echo is_array($producto) ? 'Array' : 'not an Array';
 // echo "\n";
-if(isset($_REQUEST["ir_carrito"])){
+if(isset($_REQUEST["ir_carrito_compra"])){
     //comprobar si el producto esta en el carrito del usuario
-    $unidades=$_REQUEST['unidades'];
-    $InCarrito=$datosCarritoUser=$datosProducto=get("carritos?IdUsuario=".$usuario->Id."&IdProducto=".$producto->Id);
+    if($esAdmin && isset($_REQUEST['cantidad_stock'])) {
+        $unidades = $_REQUEST['cantidad_stock'];
+    }else{
+        $unidades=$_REQUEST['unidades'];
+    }
+    $InCarrito=$datosCarritoUser=$datosProducto=get("carritos?IdUsuario=".$_SESSION['usuario']['Id']."&IdProducto=".$producto[0]->Id);
+    $InCarrito=json_decode($InCarrito);
+    // var_dump($InCarrito);
     if($InCarrito){
+        $carritoId = $InCarrito[0]->Id;
         $nuevaCantidad = array("Cantidad" => $unidades);
-        $updateCarrito=put("carrito",$producto[0]->Id,$nuevaCantidad);
+        $updateCarrito=put("carritos",$carritoId,$nuevaCantidad);
         $_SESSION['vista'] = VIEW . 'carrito.php';
-    $_SESSION['controlador'] = CON . 'carritoController.php';
-    // Requerir el controlador del carrito
-    require $_SESSION['controlador'];
+        $_SESSION['controlador'] = CON . 'carritoController.php';
+        // Requerir el controlador del carrito
+        require $_SESSION['controlador'];
     }else{
         //crear el carrito
         $idUser=$_SESSION['usuario']['Id'];
         $datos_carrito = array(
             "IdUsuario" => $idUser,
-            "IdProducto" => $producto->Id,
+            "IdProducto" => $producto[0]->Id,
             "Borrado" => 0,
             "Cantidad" => $unidades
         );
-        $crearCarritos = post("carritos", $datos_carrito);
-        $_SESSION['vista'] = VIEW . 'carrito.php';
-        $_SESSION['controlador'] = CON . 'carritoController.php';
-        require $_SESSION['controlador'];
+        if($crearCarrito = post("carritos", $datos_carrito)){
+            $_SESSION['vista'] = VIEW . 'carrito.php';
+            $_SESSION['controlador'] = CON . 'carritoController.php';
+            require $_SESSION['controlador'];
+        }
+        
     }
 }
 
@@ -70,9 +81,9 @@ if(isset($_REQUEST['producto_cambio'])){
     "Borrado" => 0
 );
 if($crearDetalleAlbaran = post("detalleAlbaranes", $datos_detalleAlbaran)){
-    echo "se ha creado bien el albaran ";
-    $_SESSION['vista'] = VIEW.'home.php';
-    $_SESSION['controlador'] = CON.'homeController.php';
+    // echo "se ha creado bien el albaran ";
+    $_SESSION['vista'] = VIEW.'verAlbaran.php';
+    $_SESSION['controlador'] = CON.'albaranController.php';
     require $_SESSION['controlador'];
 }else{
     echo "fallo al hacer el albaran";

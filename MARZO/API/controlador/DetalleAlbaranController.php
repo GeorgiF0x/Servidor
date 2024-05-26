@@ -19,11 +19,17 @@ class DetalleAlbaranController extends Base {
                 if (count($recursos) == 2 && count($filtros) == 0) {
                     $datos = DetalleAlbaranDAO::findAll();
                 }
+                //para un detalle específico por ID
                 elseif (count($recursos) == 3 && count($filtros) == 0) {
                     $datos = DetalleAlbaranDAO::findById($recursos[2]);
                 }
-                elseif (count($recursos) == 2 && count($filtros) == 1) {
+                //para detalles por IdProducto
+                elseif (count($recursos) == 2 && isset($filtros['IdProducto'])) {
                     $datos = DetalleAlbaranDAO::findByIdProducto($filtros['IdProducto']);
+                }
+                //para detalles por IdAlbaran
+                elseif (count($recursos) == 2 && isset($filtros['IdAlbaran'])) {
+                    $datos = DetalleAlbaranDAO::findByAlbaranId($filtros['IdAlbaran']);
                 }
                 // Si no se cumplen las condiciones anteriores, devolver un error
                 else {
@@ -34,7 +40,10 @@ class DetalleAlbaranController extends Base {
                 $datos = json_encode($datos);
                 self::response('HTTP/1.0 200 OK', $datos);
                 break;
-            
+
+            // Otros casos (POST, PUT, DELETE) como están en tu código actual
+
+   
             case 'POST':
                 // Obtener los datos del cuerpo de la solicitud POST
                 $datos = file_get_contents('php://input');

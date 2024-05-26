@@ -1,0 +1,60 @@
+.gradient-green-button {
+    background: linear-gradient(90deg, #000000 0%, #1cdb07 100%);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+    font-weight: bolder;
+  }
+  
+  .gradient-green-button:hover {
+    background: linear-gradient(90deg, #000000 0%, #00cc00 100%);
+}
+  .btn-success {
+    background-image: linear-gradient(to right, #000000, #00ff00);
+  }
+  .gradient-blue-button {
+    background: linear-gradient(90deg, #000000 0%, #003366 100%);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.gradient-blue-button:hover {
+    background: linear-gradient(90deg, #000000 0%, #0055aa 100%);
+}
+
+/* Botón Comprar */
+.gradient-yellow-button {
+    background: linear-gradient(90deg, #000000 0%, #FFD700 100%);
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.gradient-yellow-button:hover {
+    background: linear-gradient(90deg, #000000 0%, #FFB800 100%);
+}
