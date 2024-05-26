@@ -40,51 +40,54 @@
 </head>
 <body> 
 
-                        
-  <div class="container">
-  <div class="row justify-content-center">
-    
-            <div class="col-md-6 mt-4">
-                <img src="<?php echo IMG . 'titulo.png'; ?>" class="img-fluid" alt="Imagen centrada">
+                            
+    <div class="container">
+    <div class="row justify-content-center">
+            <?
+                // echo $_SESSION['vista'];
+                // echo "<br>";
+                // echo $_SESSION['controlador'];
+            ?>
+                <div class="col-md-6 mt-4">
+                    <img src="<?php echo IMG . 'titulo.png'; ?>" class="img-fluid" alt="Imagen centrada">
+                </div>
             </div>
-        </div>
-  <header class="">
+            <header class="">
         <div class="row">
-            
-        <form action="" method="post" class="col-2">
-            <div class="">
-                <button type="submit" class="rounded btn-no-border" name="ir_home">
-                    <img src="<?php echo IMG . 'nuevoLogo.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">
-                </button>
-            </div>
-        </form>
+            <form action="" method="post" class="col-2">
+                <div class="">
+                    <button type="submit" class="rounded btn-no-border" name="ir_home">
+                        <img src="<?php echo IMG . 'nuevoLogo.png'; ?>" class="card-img-top img-fluid" alt="Imagen" style="width: 150px;">
+                    </button>
+                </div>
+            </form>
 
-
-            <div class="col-8 d-flex align-items-center justify-content-evenly">
+            <div class="col-6 d-flex align-items-center justify-content-evenly">
                 <form>
                     <input type="submit" class="btn btn-dark rounded-pill  fst-italic fw-bold text-white " value="Cápsula 1">
                 </form>
                 <form>
                     <input type="submit" class="btn btn-dark rounded-pill  fst-italic fw-bold text-white " value="Cápsula 2">
-                </form>
-                <form>
-                    <input type="submit" class="btn btn-dark rounded-pill  fst-italic fw-bold text-white" name="ver_usuario" value="Mi usuario">
-                </form>
+                </form>     
 
-                <form class="d-flex" role="search">
+                <form class="d-flex ms-5 search-container" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-dark" type="submit">Buscar</button>
                 </form>
             </div>
 
-            <div class="col-2 d-flex align-items-center justify-content-evenly">
+            <div class="col-4 d-flex align-items-center justify-content-evenly button-group">
                 <?php if (validado()) { ?>
-             
-                       <form action="" method="post" class="ms-1">
-                        <button type="submit" name="ir_carrito" class="btn btn-dark fst-italic fw-bold text-white">
+                    <form action="" method="post" class="ms-1 mx-3">
+                        <button type="submit" name="ir_carrito" class="btn btn-dark rounded-pill fst-italic fw-bold text-white button-large">
                             <i class="bi bi-cart"></i> 
                         </button>
-                        <input type="submit" value="Log Out" name="Login_CerrarSesion" class="btn btn-dark w-50 fst-italic fw-bold text-white">
+                        <button type="submit" name="ver_usuario" class="btn btn-dark rounded-pill fst-italic fw-bold text-white button-large">
+                            <i class="bi bi-person"></i> <!-- Icono de usuario -->
+                        </button>
+                        <button type="submit" name="Login_CerrarSesion" class="btn btn-dark rounded-pill fst-italic fw-bold text-white button-large">
+                            <i class="bi bi-box-arrow-right"></i> <!-- Icono de log out -->
+                        </button>
                     </form>
                 <?php } else { ?>
                     <form action="" method="post" class="ms-2">
@@ -93,87 +96,87 @@
                 <?php } ?>
             </div>
         </div>
-
     </header>
-  
-  <main>
-      <?php
-          if(!isset($_SESSION['vista'])){
-              require VIEW.'login.php';
-          } else {
-              require $_SESSION['vista'];
-          }
-      ?>
-  </main>
-  </div>
-  <footer class="bg-dark text-white mt-5">
-    <div class="container p-4">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Sobre Nosotros</h5>
-                <p>
-                    Somos una tienda especializada en figuras de Warhammer, ofreciendo una gran variedad de productos para todos los entusiastas de este fascinante hobby.
-                </p>
-            </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Enlaces Rápidos</h5>
-                <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="#!" class="text-white">Inicio</a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white">Tienda</a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white">Contacto</a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white">Sobre Nosotros</a>
-                    </li>
-                </ul>
-            </div>
+    
+    <main>
+        <?php
+            if(!isset($_SESSION['vista'])){
+                require VIEW.'login.php';
+            } else {
+                require $_SESSION['vista'];
+            }
+        ?>
+    </main>
+    </div>
+    <footer class="bg-dark text-white mt-5">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Sobre Nosotros</h5>
+                    <p>
+                        Somos una tienda especializada en figuras de Warhammer, ofreciendo una gran variedad de productos para todos los entusiastas de este fascinante hobby.
+                    </p>
+                </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Contacta con Nosotros</h5>
-                <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="#!" class="text-white">Email: info@warhammerstore.com</a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white">Teléfono: +34 123 456 789</a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white">Dirección: Calle Falsa 123, Madrid</a>
-                    </li>
-                </ul>
-            </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Enlaces Rápidos</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#!" class="text-white">Inicio</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white">Tienda</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white">Contacto</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white">Sobre Nosotros</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Síguenos</h5>
-                <ul class="list-unstyled d-flex">
-                    <li>
-                        <a href="#!" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-                    </li>
-                    <li>
-                        <a href="#!" class="text-white me-3"><i class="fab fa-linkedin"></i></a>
-                    </li>
-                </ul>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Contacta con Nosotros</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#!" class="text-white">Email: info@warhammerstore.com</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white">Teléfono: +34 123 456 789</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white">Dirección: Calle Falsa 123, Madrid</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Síguenos</h5>
+                    <ul class="list-unstyled d-flex">
+                        <li>
+                            <a href="#!" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-white me-3"><i class="fab fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2024 Warhammer Store | Todos los derechos reservados
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2024 Warhammer Store | Todos los derechos reservados
+        </div>
+    </footer>
     </div>
-</footer>
-</div>
-
+    <script src="<?php echo JS; ?>card.js"></script>
 </body>
 </html>

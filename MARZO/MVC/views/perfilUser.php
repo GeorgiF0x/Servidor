@@ -1,9 +1,25 @@
+<?
+    $esAdmin = ($_SESSION['usuario']['IdRol'] == 1 || $_SESSION['usuario']['IdRol'] == 2);
+?>
+
 <div class="row">
     <div class="col-lg-4 d-flex align-items-stretch">
         <div class="card mb-4 mt-4 d-flex justify-content-center flex-fill">
-            <div class="d-flex justify-content-center">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                     class="rounded-circle img-fluid ms-auto mx-auto mt-1" style="width: 150px;">
+        <div class="d-flex justify-content-center">
+                <?php
+                if ($esAdmin) {
+                    ?>
+            <img src="<?php echo IMG . 'perfilAdmin.jpg'; ?>" alt="avatar"
+                            class="rounded-circle img-fluid ms-auto mx-auto mt-1" style="width: 150px;">
+                    <?php
+                } else {
+                    // Si no es un administrador, imprime la imagen predeterminada
+                    ?>
+                    <img src="<?php echo IMG . 'perfilUser.jpg'; ?>" alt="avatar"
+                            class="rounded-circle img-fluid ms-auto mx-auto mt-1" style="width: 150px;">
+                    <?php
+                }
+                ?>
             </div>
             <div class="card-body text-center">
                 <h5 class="my-3"><?php echo $_SESSION['usuario']['Nombre']; ?></h5>

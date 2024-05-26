@@ -2,6 +2,10 @@
 // http://192.168.7.203/MARZO/API/index.php/productos
 $datosProductos=get("productos");
 $datosProductos=json_decode($datosProductos);
+// $idAlbaran=get("albaranes?ultimo");
+// $idAlbaran=json_decode($idAlbaran);
+// var_dump($idAlbaran);
+// echo $idAlbaran->Id;
 $productos=$datosProductos;
 if($productos){
   $_SESSION['productos']=$productos;

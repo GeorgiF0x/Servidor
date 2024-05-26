@@ -24,6 +24,11 @@ else if(isset($_REQUEST['ir_home'])){
     $_SESSION['controlador'] = CON.'perfilController.php';
     require $_SESSION['controlador'];
 }
+else if(isset($_REQUEST['ir_carrito'])){
+    $_SESSION['vista'] = VIEW.'carrito.php';
+    $_SESSION['controlador'] = CON.'carritoController.php';
+    require $_SESSION['controlador'];
+}
 else{
     require $_SESSION['controlador'];
 }

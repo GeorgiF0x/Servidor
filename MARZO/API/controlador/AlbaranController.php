@@ -1,10 +1,10 @@
 <?php
 
-require("./dao/ProductoDAO.php");
+require("./dao/AlbaranDao.php");
 
-class ProductoController extends Base{
+class AlbaranController extends Base{
 
-    public static function productos(){
+    public static function albaranes(){
         // Obtener el método de la solicitud HTTP (GET, POST, PUT, DELETE)
         $metodo = $_SERVER['REQUEST_METHOD'];
         
@@ -16,22 +16,23 @@ class ProductoController extends Base{
         switch ($metodo) {
             case 'GET':
                 //para todos los productos
-                if (count($recursos) == 2 && count($filtros)==0) {
-                       $datos = ProductoDAO::findAll();
+                if (count($recursos) == 2 && count($filtros) == 0) {
+                    $datos = AlbaranDAO::findAll();
                 }
-                elseif (count($recursos) == 3 && count($filtros)==0) {
-                    
-                    $datos=ProductoDAO::findById($recursos[2]);
-                }elseif (count($recursos) == 2 &&  count($filtros) == 1) {
+                //para un producto especifico por ID
+                elseif (count($recursos) == 3 && count($filtros) == 0) {
+                    $datos = AlbaranDAO::findById($recursos[2]);
+                }
+                //para obtener el último albarán
+                elseif (count($recursos) == 2 &&  count($filtros) == 1) {
                     if(isset($filtros['ultimo'])){
-                        $datos =ProductoDAO::findLast();
+                        $datos = AlbaranDAO::findLast();
                     }
                     if ($datos === null) {
                         self::response("HTTP/1.0 404 No se encontró el último albarán");
                         break;
                     }
                 }
-                
                 // Si no se cumplen las condiciones anteriores, devolver un error
                 else {
                     self::response("HTTP/1.0 400 No está indicando los recursos necesarios");
@@ -43,33 +44,27 @@ class ProductoController extends Base{
                 break;
             
             
-            case 'POST':
-                // Obtener los datos del cuerpo de la solicitud POST
-                $datos = file_get_contents('php://input');
-                $datos = json_decode($datos,true);
-                // Verificar si se han proporcionado los atributos necesarios 
-                if (isset($datos['Nombre'], $datos['Descripcion'], $datos['Precio'], $datos['Categoria'], $datos['RutaImg'],$datos['CantidadStock'],$datos['Borrado'])){
-                    $producto = new Producto(
-                        null, 
-                        $datos['Nombre'], 
-                        $datos['Descripcion'],
-                        $datos['Precio'], 
-                        $datos['Categoria'], 
-                        $datos['RutaImg'],
-                        $datos['CantidadStock'], 
-                        $datos['Borrado'] 
-                    );
-                    if (ProductoDAO::insert($producto)) {
-                        self::response('HTTP/1.0 201 Producto Creado Correctamente');
+                case 'POST':
+                    // Obtener los datos del cuerpo de la solicitud POST
+                    $datos = file_get_contents('php://input');
+                    $datos = json_decode($datos, true);
+                    // Verificar si se han proporcionado los atributos necesarios 
+                    if (isset($datos['Fecha'], $datos['IdUsuario'], $datos['Borrado'])) {
+                        $albaran = new Albaran(
+                            null, 
+                            $datos['Fecha'], 
+                            $datos['IdUsuario'], 
+                            $datos['Borrado']
+                        );
+                        if (AlbaranDAO::insert($albaran)) {
+                            self::response('HTTP/1.0 201 Albarán Creado Correctamente');
+                        } else {
+                            self::response('HTTP/1.0 500 Error al insertar el albarán');
+                        }
                     } else {
-                        self::response('HTTP/1.0 500 Error al insertar el producto');
-                    }  
-                } else {
-                    self::response('HTTP/1.0 400 No está introduciendo los atributos necesarios (Nombre, Descripción, Precio, Categoría, RutaImg, CantidadStock, Borrado)');
-                }
-                
-
-                break;
+                        self::response('HTTP/1.0 400 No está introduciendo los atributos necesarios (Fecha, IdUsuario, Borrado)');
+                    }
+                    break;
             case 'PUT':
                 self::put();
                 break;
@@ -78,9 +73,9 @@ class ProductoController extends Base{
                     if (count($recursos) == 3) {
                         $idProducto = $recursos[2];
                         // Verificar si el producto existe antes de intentar eliminarlo
-                        if (!empty(ProductoDAO::findById($idProducto))) {
+                        if (!empty(AlbaranDAO::findById($idProducto))) {
                             // Eliminar el producto de la base de datos
-                            if (ProductoDAO::delete($idProducto)) {
+                            if (AlbaranDAO::delete($idProducto)) {
                                 self::response('HTTP/1.0 200 Recurso eliminado');
                             } else {
                                 self::response('HTTP/1.0 500 No se pudo eliminar el recurso');
@@ -103,7 +98,7 @@ class ProductoController extends Base{
 static function put(){
     $recursos = self::divideURI();
     if(count($recursos) == 3){
-        $permitimos = ['CantidadStock','Descripcion','Precio'];
+        $permitimos = ['Fecha'];
         $datos = file_get_contents('php://input');
         $datos = json_decode($datos,true);
         if($datos == null){
@@ -115,14 +110,14 @@ static function put(){
                 self::response("HTTP/1.0 400 No se permite la condicion utilizada: " .$key);
             }
         }
-        $producto = ProductoDAO::findbyId($recursos[2]);
+        $producto = AlbaranDAO::findbyId($recursos[2]);
         if(count($producto) == 1){
             $producto = (object)$producto[0];
             foreach ($datos as $key => $value) {
                 $producto->$key = $value;
             }
-            if(ProductoDAO::update($producto)){
-                $producto = ProductoDAO::findbyId($recursos[2]);
+            if(AlbaranDAO::update($producto)){
+                $producto = AlbaranDAO::findbyId($recursos[2]);
                 $producto = json_encode($producto);
                 self::response('HTTP/1.0 201 Recurso modificado', $producto);
             }else{

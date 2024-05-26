@@ -2,7 +2,7 @@
 //constantes que vamos usar en la app
 define('IMG', './webRoot/img/');
 define('CSS', './webRoot/CSS/');
-define('JS', './webroot/js/');
+define('JS', './webRoot/JS/');
 define('VIEW', './views/');
 define('CON', './controllers/');
 

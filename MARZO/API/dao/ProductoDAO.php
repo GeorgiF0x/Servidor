@@ -17,6 +17,17 @@ class ProductoDAO{
             return null; 
         }
     }
+    public static function findLast() {
+        $sql = "SELECT * FROM Producto ORDER BY Id DESC LIMIT 1";
+        $parametros = array();
+        $result = FactoryBd::realizaConsulta($sql, $parametros);
+        if ($result->rowCount() == 1) {
+            $productoStd = $result->fetch(PDO::FETCH_ASSOC);
+            return $productoStd;
+        } else {
+            return null;
+        }
+    }
     public static function findById($id){
         $sql = "select * from Producto where Id  = ?";
         $parametros = array($id);

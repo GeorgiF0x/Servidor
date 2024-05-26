@@ -4,44 +4,53 @@
 ?>
 
 <div class="container my-5">
-    <div class="row gx-5 justify-content-around border border-dark">
-        <div class="col-5">
-            <img src="<?php echo IMG .$producto[0]->RutaImg ; ?>" class="img-fluid" alt="<?php echo $producto[0]->Nombre; ?>">
-        </div>
-        <div class="col-5 text-center">
-            <h2><?php echo $producto[0]->Nombre; ?></h2>
-            <p><?php echo $producto[0]->Descripcion; ?></p>
-            <p>Precio: <?php echo $producto[0]->Precio; ?> €</p>
-            <div class="row">
-                <form action="" method="post"  class="mb-3" >
-                    <input type="hidden" name="producto_id" value="<?php echo $producto[0]->ID; ?>">
-                    <h3 class="text text-center">Modificar Producto</h3>
-                    <?php if ($esAdmin): ?>
-                        <div class="mb-3">
-                            <label for="descripcion" class="form-label">Descripción:</label>
-                            <input type="text" id="descripcion" name="producto_Descripcion" class="form-control" value="<?php echo $producto[0]->Descripcion; ?>">
-                        </div>
-                        <div class="mb-3">
-                            <label for="precio" class="form-label">Precio:</label>
-                            <input type="number" id="precio" name="producto_Precio" class="form-control"  value="<?php echo $producto[0]->Precio; ?>">
-                        </div>
-                        <div class="mb-3">
-                            <label for="cantidad_stock" class="form-label">Cantidad en Stock:</label>
-                            <input type="number" id="cantidad_stock" name="cantidad_stock" class="form-control" min="0" value="<?php echo $producto[0]->CantidadStock; ?>">
-                        </div>
-                        <div class="row d-flex justify-content-center mb-3">
-                            <input class="btn btn-success w-25 ms-auto" type="submit" value="Guardar cambios" name="producto_cambio">
-                            <input class="btn btn-success w-25 mx-auto " type="submit" value="Dar De baja" name="producto_borrar">
-                        </div>
-                    <?php endif; ?>
-                    <div class="row d-flex justify-content-center">
-                        <input class="btn btn-danger w-25 ms-auto" type="submit" value="Carrito">
-                        <input class="btn btn-primary w-25 mx-auto " type="submit" value="Comprar">
-                    </div>
-                </form>
+<div class="row gx-5 justify-content-around border border-dark" style="min-height: 80vh; align-items: center;">
+    <div class="col-5 mt-2">
+        <img src="<?php echo IMG . $producto[0]->RutaImg; ?>" class="img-fluid rounded" alt="<?php echo $producto[0]->Nombre; ?>">
+    </div>
+    <div class="col-5 text-center">
+        <h2 class="text-uppercase" style="color: #E60000;"><?php echo $producto[0]->Nombre; ?></h2>
+        <p style="font-size: 1.2em;"><?php echo $producto[0]->Descripcion; ?></p>
+        <p style="font-size: 1.5em; font-weight: bold;">Precio: <?php echo $producto[0]->Precio; ?> €</p>
+        <div class="row">
+        <form action="" method="post" class="mb-3">
+            <input type="hidden" name="producto_id" value="<?php echo $producto[0]->ID; ?>">
+
+            <?php if ($esAdmin): ?>
+                <h3 class="text text-center">Modificar Producto</h3>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    <textarea id="descripcion" name="producto_Descripcion" class="form-control" rows="5"><?php echo $producto[0]->Descripcion; ?></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="precio" class="form-label">Precio:</label>
+                    <input type="number" id="precio" name="producto_Precio" class="form-control" value="<?php echo $producto[0]->Precio; ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="cantidad_stock" class="form-label">Cantidad en Stock:</label>
+                    <input type="number" id="cantidad_stock" name="cantidad_stock" class="form-control" min="0" value="<?php echo $producto[0]->CantidadStock; ?>">
+                </div>
+                <div class="row d-flex justify-content-center mb-3">
+                    <input class="gradient-button w-25 ms-auto" type="submit" value="Guardar cambios" name="producto_cambio">
+                    <input class="btn-dark w-25 mx-auto" type="submit" value="Dar De baja" name="producto_borrar">
+                </div>
+            <?php else: ?>
+                <div class="mb-3">
+                    <label for="cantidad" class="form-label">Cantidad:</label>
+                    <input type="number" id="cantidad" name="unidades" class="form-control" min="1" value="1">
+                </div>
+            <?php endif; ?>
+
+            <div class="row d-flex justify-content-center">
+                <input class="rounded-pill w-25 ms-auto" type="submit" name="ir_carrito" value="Carrito">
+                <input class="btn-dark w-25 mx-auto" type="submit" value="Comprar">
             </div>
+        </form>
         </div>
     </div>
+</div>
+</div>
+
     <div class="row mt-4">
         <div class="col-md-12">
             <hr>

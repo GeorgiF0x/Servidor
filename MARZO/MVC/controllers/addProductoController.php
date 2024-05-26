@@ -1,13 +1,13 @@
 
  
 <?
-$datosCategoria=get("categoria");
+$datosCategoria=get("categorias");
 $datosCategoria=json_decode($datosCategoria);
 $categoria=$datosCategoria;
 if($categoria){
     $_SESSION['categorias']=$categoria;
   }
-
+// print_r($_SESSION['categorias']);
 //print_r($_SESSION['controlador']);
 if(isset($_REQUEST['guardar_producto'])){
 
@@ -50,9 +50,46 @@ if(isset($_REQUEST['guardar_producto'])){
     // $response = post("productos", $datos_producto);
     
     if($response = post("productos", $datos_producto)){
+        // Crear el albarán
+        $fecha = date("Y-m-d");
+        $idUser = $_SESSION['usuario']['Id'];
+        $datos_albaran = array(
+            "Fecha" => $fecha,
+            "IdUsuario" => $idUser,
+            "Borrado" => 0
+        );
+        $crearAlbaran = post("albaranes", $datos_albaran);
+
+    // Obtener el ID del último albarán
+    $idAlbaran = get("albaranes?ultimo");
+    $idAlbaran = json_decode($idAlbaran);
+
+    // Obtener el ID del último producto
+    $idProducto = get("productos?ultimo");
+    $idProducto = json_decode($idProducto);
+
+    // Crear el detalle del albarán
+    $datos_detalleAlbaran = array(
+        "IdAlbaran" => $idAlbaran->Id,
+        "IdProducto" => $idProducto->Id,
+        "Unidades" => $CantidadStock,
+        "Borrado" => 0
+    );
+    if ($crearDetalleAlbaran = post("detalleAlbaranes", $datos_detalleAlbaran)) {
+        echo "Se ha creado bien el albarán.";
+        // Obtener la vista y el controlador de inicio nuevamente
         $_SESSION['vista'] = VIEW.'home.php';
         $_SESSION['controlador'] = CON.'homeController.php';
         require $_SESSION['controlador'];
+    } else {
+        echo "Fallo al hacer el albarán.";
     }
+    }else {
+    echo "Fallo al crear el producto.";
+    }
+
+    
+
+
 }
 ?>

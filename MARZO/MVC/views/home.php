@@ -44,14 +44,21 @@
         ?>
     <div class="row">
         <?php
+        if(isset($_SESSION['productos'])){
+
+        
         $productos = $_SESSION['productos'];
         foreach ($productos as $producto) {
             echo '<div class="col-md-4 mb-4 mt-5">';
-            echo '<div class="card">';
-            echo '<img src="' . IMG . $producto->RutaImg. '" class="card-img-top" alt="' . $producto->Nombre . '">';
+            echo '<div class="card shadow">'; // Añadimos la clase "shadow"
+            echo '<img src="' . IMG . $producto->RutaImg . '" class="card-img-top" alt="' . $producto->Nombre . '">';
             echo '<div class="card-body">';
             echo '<h5 class="card-title fw-bold text-center">' . $producto->Nombre . '</h5>';
-            echo '<p class="card-text text-center fst-italic">' . $producto->Descripcion . '</p>';
+            echo '<p class="card-text text-center fst-italic">';
+            echo '<span class="description-short">' . substr($producto->Descripcion, 0, 100) . '...</span>';
+            echo '<span class="description-long" style="display: none;">' . substr($producto->Descripcion, 100) . '</span>';
+            echo '</p>';
+            echo '<p class="text-center"><button class="btn btn-link read-more-btn" style="padding: 0;">Leer más</button></p>';
             echo '<div class="d-flex justify-content-between align-items-center">';
             echo '<p class="fw-bold mb-0">Precio: ' . number_format($producto->Precio, 2) . '€</p>';
             echo '<form method="POST">';
@@ -63,7 +70,12 @@
             echo '</div>'; // Cierre de div.card
             echo '</div>'; // Cierre de div.col-md-4
         }
+    }else{
         ?>
+        <h1 class="text fw-bold fst-italic text text-center">No hay productos disponibles</h1>
+    <?
+    }
+    ?>
     </div>
 
 

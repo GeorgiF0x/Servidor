@@ -1,66 +1,73 @@
 <?php
 
-require("./modelo/Pedido.php");
-require("./modelo/Producto.php");
-require("./modelo/DetallePedido.php");
+require_once("./modelo/Pedido.php");
 require_once("./dao/factoryBD.php");
 
 class PedidoDAO{
 
-    public static function findAll(){
-        $sql = "select * from Pedido";
+    public static function findAll() {
+        $sql = "SELECT * FROM Pedido";
         $parametros = array();
-        $result = FactoryBd::realizarConsulta($sql,$parametros);
-        $arrayPedidos = array();
-        while ($pedidoStd = $result->fetchObject()) {
-            $pedido = new Pedido(
-                $pedidoStd->Id,
-                $pedidoStd->Fecha,
-                $pedidoStd->Direccion,
-                $pedidoStd->PagoTotal,
-                $pedidoStd->Borrado,
-                $pedidoStd->contrasena
-            );
-            array_push($arrayPedidos, $pedido);
+        $result = FactoryBd::realizaConsulta($sql, $parametros);
+        if ($result->rowCount() > 0) {
+            $pedidos = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $pedidos;
+        } else {
+            return null;
         }
-        return $arrayPedidos;
-    }
-    public static function ultimoIDpedido() {
-        $sql = "SELECT * FROM Pedido ORDER BY Id DESC LIMIT 1";
-        $parametros = array();
-        $result = FactoryBd::realizarConsulta($sql, $parametros);
-        $ultimoPedido = $result->fetchObject();
-        return $ultimoPedido;
     }
 
-    
-    public static function insert($pedido, $detalle) {
-  
-            $sqlPedido = "INSERT INTO Pedido (Fecha, Direccion, PagoTotal, Borrado) VALUES (?, ?, ?, ?)";
-            $parametrosPedido = array(
-                $pedido->Fecha,
-                $pedido->Direccion,
-                $pedido->PagoTotal,
-                $pedido->Borrado
-            );
-            $pedidoInsertado=FactoryBd::realizarConsulta($sqlPedido, $parametrosPedido);
-    
-            $ultimoPedido = self::ultimoIDpedido();
-            $ultimoId = $ultimoPedido->Id;
-    
-            $sqlDetalle = "INSERT INTO DetallePedido (IdPedido, IdProducto, Cantidad, PrecioUnidad, Total, Borrado) VALUES (?, ?, ?, ?, ?, ?)";
-            $parametrosDetalle = array(
-                $ultimoId,
-                $detalle->IdProducto,
-                $detalle->Cantidad,
-                $detalle->PrecioUnidad,
-                $detalle->Total,
-                $detalle->Borrado
-            );
-            $detalleInsertado=FactoryBd::realizarConsulta($sqlDetalle, $parametrosDetalle);
-           if($pedidoInsertado && $detalleInsertado){
-            return true;
-           }
+    public static function findById($id) {
+        $sql = "SELECT * FROM Pedido WHERE Id = ?";
+        $parametros = array($id);
+        $result = FactoryBd::realizaConsulta($sql, $parametros);
+        if ($result->rowCount() == 1) {
+            $pedido = $result->fetch(PDO::FETCH_ASSOC);
+            return $pedido;
+        } else {
+            return null;
+        }
+    }
+
+    public static function insert($pedido) {
+        $sql = "INSERT INTO Pedido (Fecha, Direccion, PagoTotal, Borrado) VALUES (?, ?, ?, ?)";
+        $parametros = array(
+            $pedido->Fecha,
+            $pedido->Direccion,
+            $pedido->PagoTotal,
+            $pedido->Borrado
+        );
+        return FactoryBd::realizaConsulta($sql, $parametros);
+    }
+
+    public static function update($pedido) {
+        $sql = "UPDATE Pedido SET Fecha = ?, Direccion = ?, PagoTotal = ?, Borrado = ? WHERE Id = ?";
+        $parametros = array(
+            $pedido->Fecha,
+            $pedido->Direccion,
+            $pedido->PagoTotal,
+            $pedido->Borrado,
+            $pedido->Id
+        );
+        return FactoryBd::realizaConsulta($sql, $parametros);
+    }
+
+    public static function delete($id) {
+        $sql = "DELETE FROM Pedido WHERE Id = ?";
+        $parametros = array($id);
+        return FactoryBd::realizaConsulta($sql, $parametros);
+    }
+
+    public static function findLastRecord() {
+        $sql = "SELECT * FROM Pedido ORDER BY Id DESC LIMIT 1";
+        $parametros = array();
+        $result = FactoryBd::realizaConsulta($sql, $parametros);
+        if ($result->rowCount() == 1) {
+            $pedido = $result->fetch(PDO::FETCH_ASSOC);
+            return $pedido;
+        } else {
+            return null;
+        }
     }
     
 }

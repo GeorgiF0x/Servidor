@@ -5,39 +5,15 @@ require('./controlador/UserController.php');
 require('./controlador/ProductoController.php');
 require('./controlador/CarritoController.php');
 require('./controlador/CategoriaController.php');
-
-
-
-// $nombre="Georgi";
-// $pass="userpass";
-
-
-
-
-// $producto=ProductoDAO::findById(6);
-// echo "<pre>";
-// $productoNuevo=new Producto(null,"prueba","prueba",666,2,null,66,0);
-// ProductoDAO::insert($productoNuevo);
-
-// $cat= new Categoria(null,"Prueba",0);
-// if(CategoriaDAO::insert($cat)){
-//     echo " se ha insertado Bien";
-// }else{
-//     echo "se ha insertado Mal";
-// }
-
- 
+require('./controlador/AlbaranController.php');
+require('./controlador/DetalleAlbaranController.php');
+require('./controlador/PedidoController.php');
+require('./controlador/DetallePedidoController.php');
 
 
 
 
-
-
-
-
-
-
-// Se verifica si se ha especificado la información de la ruta en la solicitud
+//Se verifica si se ha especificado la información de la ruta en la solicitud
 if(isset($_SERVER['PATH_INFO'])){
     // Se obtiene la información de la ruta y se divide en segmentos
     $recurso = Base::divideURI();
@@ -47,11 +23,21 @@ if(isset($_SERVER['PATH_INFO'])){
     }
     elseif ($recurso[1]==="productos") {
         ProductoController::productos();
-    }elseif($recurso[1]==="carrito"){
+    }elseif($recurso[1]==="carritos"){
         CarritoController::carrito();
     }elseif($recurso[1]==="categorias"){
         CategoriaController::categoria();
+    }elseif($recurso[1]==="albaranes"){
+        AlbaranController::albaranes();
     }
+    elseif($recurso[1]==="detalleAlbaranes"){
+        DetalleAlbaranController::detalleAlbaranes();
+    }   elseif($recurso[1]==="pedidos"){
+        PedidoController::pedidos();
+    }elseif($recurso[1]==="detallePedidos"){
+        DetallePedidoController::detallePedidos();
+    }
+
 
     
 } else {

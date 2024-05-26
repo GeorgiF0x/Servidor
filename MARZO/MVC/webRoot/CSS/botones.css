@@ -1,34 +1,63 @@
 /* Define a class for the gradient background */
-
 * {
-    font-family: Copperplate Gothic;
-  }
+  font-family: Copperplate Gothic;
+}
+
 .gradient-button {
-    background: linear-gradient(90deg, #ff0000 0%, #8b0000 100%);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s;
+  background: linear-gradient(90deg, #ff0000 0%, #8b0000 100%);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
 }
 
 .rounded-pill {
-    background-image: linear-gradient(to right, #780e7a, #0d020d, #000000);
-  }
+  background-image: linear-gradient(to right, #780e7a, #0d020d, #000000);
+}
 
-  .rounded-pill {
-    background-image: linear-gradient(to right, #ff0000, #8b0000, #000000);
-  }
-  
-  .btn-dark {
-    background-image: linear-gradient(to right, #000000, #ff0000);
-  }
-  
+.rounded-pill {
+  background-image: linear-gradient(to right, #ff0000, #8b0000, #000000);
+}
 
-  
+.btn-dark {
+  background-image: linear-gradient(to right, #000000, #ff0000);
+}
+
+/* Increase the width of the search bar */
+.search-container {
+  flex-grow: 1;
+}
+
+/* Make the buttons on the right larger */
+.button-group .button-large {
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+textarea.form-control {
+  background-color: #333333; /* Fondo del campo de texto */
+  color: #ffffff; /* Color del texto del campo de texto */
+  border: 1px solid #E60000; /* Borde rojo oscuro */
+  resize: vertical; /* Permite cambiar el tamaño verticalmente */
+}
+
+.description-long {
+  display: none;
+}
+
+.read-more-btn {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.read-more-btn:hover {
+  text-decoration: underline;
+}
+
